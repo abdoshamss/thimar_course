@@ -4,10 +4,15 @@ class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-
-
   Widget build(BuildContext context) {
-    return const Scaffold();
-
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          'assets/images/logo.jpg',
+          height: 157,
+          width: 159,
+        ),
+      ),
+    );
   }
 }
