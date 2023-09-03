@@ -18,7 +18,7 @@ class LoginCubit extends Cubit<LoginStates> {
   //   123456789
   Future<void> postLogin( ) async {
     emit(LoginLoadingState());
-    final response = await DioHelper.sendData(
+    final response = await DioHelper.post(
       "login",
       data: {
         "phone": phoneController.text,

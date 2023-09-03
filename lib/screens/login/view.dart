@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                     Input(
                       controller: cubit.passwordController,
                       labelText: 'كلمة المرور',
-                      iconPath: 'assets/icons/phone.jpg',
+                      iconPath: 'assets/icons/password.jpg',
                       inputType: InputType.password,
                       textInputAction: TextInputAction.done,
                     ),
@@ -102,6 +102,7 @@ class LoginScreen extends StatelessWidget {
                           }
                           return Btn(
                               text: 'تسجيل الدخول',
+
                               onPress: () {
                                 cubit.postLogin( );
                               });

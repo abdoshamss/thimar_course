@@ -24,15 +24,16 @@ class _HomePageState extends State<HomePage> {
     "https://domf5oio6qrcr.cloudfront.net/medialibrary/11499/3b360279-8b43-40f3-9b11-604749128187.jpg",
     "https://domf5oio6qrcr.cloudfront.net/medialibrary/11499/3b360279-8b43-40f3-9b11-604749128187.jpg",
     "https://domf5oio6qrcr.cloudfront.net/medialibrary/11499/3b360279-8b43-40f3-9b11-604749128187.jpg",
-    "https://scontent.fcai21-1.fna.fbcdn.net/v/t39.30808-6/362888435_1922345361467836_3732765969943332876_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=Yynu-Djg9-sAX_5PCCR&_nc_ht=scontent.fcai21-1.fna&oh=00_AfCiJAgr2VifcCFkFCYWtA25XJbIO597_jpCdiXuKb_Hug&oe=64F356ED",
+    "https://domf5oio6qrcr.cloudfront.net/medialibrary/11499/3b360279-8b43-40f3-9b11-604749128187.jpg",
+
   ];
   List<String> namesOfCategories = [
     "الخضار",
     "الفاكهة",
     "اللحوم",
     "المانجا",
-    "باسل صاحبي",
-  ];
+    "المانجا",
+    ];
 
   int currentIndex = 0;
 

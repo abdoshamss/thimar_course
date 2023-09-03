@@ -17,7 +17,7 @@ class GiveAdviceCubit extends Cubit<GiveAdviceStates> {
   Future<void> sendData() async {
     emit(GiveAdviceLoadingState());
 
-    final response = await DioHelper.sendData("contact", data: {
+    final response = await DioHelper.post("contact", data: {
       "fullname": nameController.text,
       "phone": phoneController.text,
       "title": titleController.text,

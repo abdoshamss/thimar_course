@@ -60,7 +60,7 @@ class GiveAdvicesScreen extends StatelessWidget {
                 Input(
                   controller: cubit.contentController,
                   labelText: "الموضوع",
-                  minLines: 4,
+                  maxLines: 4,
                 ),
                 BlocBuilder(
                     bloc: cubit,

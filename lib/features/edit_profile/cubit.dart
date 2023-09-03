@@ -11,7 +11,7 @@ class EditProfileCubit extends Cubit<EditProfileStates> {
   EditProfileCubit() : super(EditProfileStates());
   Future<void> updateData(File image,String name,String phone ,int cityId ) async {
     emit(EditProfileLoadingState());
-    final response = await DioHelper.sendData("client/profile", data: {
+    final response = await DioHelper.post("client/profile", data: {
       "image":image==null?null:  MultipartFile.fromFileSync(image.path,filename: image.path.split("/").last),
       "fullname": name,
       "phone": phone ,

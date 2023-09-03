@@ -10,10 +10,10 @@ final VoidCallback? onTap;
   final String? iconPath;
 final bool isEnabled;
   final InputType inputType;
-  final int minLines;
+  final int maxLines;
   final TextEditingController? controller;
   final TextInputAction textInputAction;
-  final int maxLength;
+  final int? maxLength;
   const Input({
     Key? key,
     this.labelText,
@@ -21,8 +21,8 @@ final bool isEnabled;
     this.iconPath,
     this.inputType = InputType.normal,
     this.textInputAction = TextInputAction.next,
-    this.maxLength = 22,
-    this.minLines = 1,
+    this.maxLength ,
+    this.maxLines = 1,
     this.controller,  this.isEnabled=true,   this.onTap,
   }) : super(key: key);
 
@@ -41,8 +41,7 @@ class _InputState extends State<Input> {
         child: TextFormField(
           enabled: widget.onTap==null ,
           controller: widget.controller,
-          maxLines: 6,
-          minLines: widget.minLines,
+          maxLines: widget.maxLines,
           maxLength: widget.maxLength,
           textInputAction: widget.textInputAction,
           decoration: InputDecoration(
@@ -66,12 +65,15 @@ class _InputState extends State<Input> {
                   )
                 : null,
             prefixIcon: widget.iconPath != null
-                ? Image.asset(
-                    widget.iconPath!,color: Theme.of(context).primaryColor,
-                    width: 12.w,
-                    height: 12.h,
-                    fit: BoxFit.scaleDown,
-                  )
+                ? Padding(
+                  padding:   EdgeInsets.all(12.r),
+                  child: Image.asset(
+                      widget.iconPath!,
+                      width: 20.w,
+                      height: 20.h,
+                      fit: BoxFit.scaleDown,
+                    ),
+                )
                 : null,
             filled: true,
             fillColor: widget.inputType == InputType.search

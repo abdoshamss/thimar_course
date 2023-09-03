@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/dio_helper.dart';
 import 'package:thimar_course/features/get_cities/model.dart';
 import 'states.dart';
@@ -13,7 +14,7 @@ class GetCitiesScreenCubit extends Cubit<GetCitiesScreenStates> {
     if (response.isSuccess) {
       final list =CitiesData.fromJson(response.response!.data).list;
       emit(GetCitiesScreenSuccessState(list: list));
-
+// CacheHelper.
     } else {
       emit(GetCitiesScreenErrorState());
     }

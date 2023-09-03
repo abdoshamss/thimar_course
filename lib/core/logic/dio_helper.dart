@@ -9,7 +9,7 @@ class DioHelper {
       "Authorization":"Bearer ${CacheHelper.getToken()}",
     }
   ));
-  static Future<CustomResponse> sendData(String endPoint,
+  static Future<CustomResponse> post(String endPoint,
       {Map<String, dynamic>? data}) async {
     print(data);
     try {
