@@ -5,12 +5,12 @@ import '../res/colors.dart';
 
 enum BtnType { elevated, outline, outlineDisabled, cancel, reject }
 
-class Btn extends StatelessWidget {
+class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback onPress;
   final BtnType type;
   final bool isBig, isLoading;
-  const Btn({
+  const AppButton({
     Key? key,
     required this.text,
     required this.onPress,
@@ -25,8 +25,10 @@ class Btn extends StatelessWidget {
         ? SizedBox(width: 30.w,height: 30.w,
           child: FittedBox(
       fit: BoxFit.scaleDown,
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
         )
@@ -45,8 +47,8 @@ class Btn extends StatelessWidget {
                     onPressed: () {
                       if (type == BtnType.outlineDisabled) {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        onPress();
                       }
+                        onPress();
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: type != BtnType.outlineDisabled
@@ -58,11 +60,11 @@ class Btn extends StatelessWidget {
                             : Theme.of(context).unselectedWidgetColor,
                       ),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(15.r),
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding:   EdgeInsets.all(20.0.r),
                       child: Text(
                         text,
                         style: TextStyle(
@@ -79,6 +81,7 @@ class Btn extends StatelessWidget {
                       onPress();
                     },
                     style: ElevatedButton.styleFrom(
+
                       backgroundColor: type == BtnType.cancel
                           ? const Color(0xffFFE1E1)
                           : null,
@@ -89,15 +92,15 @@ class Btn extends StatelessWidget {
                       fixedSize:
                           Size(isBig ? 343.w : 115.w, isBig ? 60.h : 30.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(15.r),
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(isBig ? 20 : 4),
+                      padding: EdgeInsets.all(isBig ? 20.r : 0),
                       child: Text(
                         text,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                        style:   TextStyle(
+                            fontSize: isBig?18.sp:12.sp, fontWeight: FontWeight.w600,),
                       ),
                     ),
                   ),

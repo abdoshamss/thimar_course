@@ -2,23 +2,24 @@ import 'package:dio/dio.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 
 class DioHelper {
-  static final _dio = Dio(BaseOptions(
-    baseUrl: "https://thimar.amr.aait-d.com/api/",
-    headers: {
-      "Accept":"application/json",
-      "Authorization":"Bearer ${CacheHelper.getToken()}",
-    }
-  ));
-  static Future<CustomResponse> post(String endPoint,
+  final _dio =
+      Dio(BaseOptions(baseUrl: "https://thimar.amr.aait-d.com/api/", headers: {
+    "Accept": "application/json",
+    "Authorization": "Bearer ${CacheHelper.getToken()}",
+  }));
+
+  Future<CustomResponse> post(String endPoint,
       {Map<String, dynamic>? data}) async {
     print(data);
     try {
-      final response = await _dio.post(endPoint, data: FormData.fromMap(data??{}),options: Options(
-        headers: {
-          "Accept":"application/json",
-          "Authorization":"Bearer ${CacheHelper.getToken()}",
-        },
-      ));
+      final response = await _dio.post(endPoint,
+          data: FormData.fromMap(data ?? {}),
+          options: Options(
+            headers: {
+              "Accept": "application/json",
+              "Authorization": "Bearer ${CacheHelper.getToken()}",
+            },
+          ));
       print(response.data);
       return CustomResponse(
         message: response.data["message"],
@@ -26,7 +27,7 @@ class DioHelper {
         response: response,
       );
     } on DioError catch (e) {
-      print (e.response);
+      print(e.response);
       print(e.toString());
       return CustomResponse(
           message: e.response?.data["message"] ?? "Failed",
@@ -35,7 +36,7 @@ class DioHelper {
     }
   }
 
-  static Future<CustomResponse> getData(String endPoint,
+  Future<CustomResponse> get(String endPoint,
       {Map<String, dynamic>? params}) async {
     print(params);
     try {
@@ -71,3 +72,59 @@ class CustomResponse {
   CustomResponse(
       {this.response, required this.message, required this.isSuccess});
 }
+
+// import 'package:dio/dio.dart';
+//
+// class DioHelper{
+//   static Dio? dio;
+//
+//   static init(){
+//     dio = Dio(
+//         BaseOptions(
+//           baseUrl:'https://thimar.amr.aait-d.com/public/api/' ,
+//           receiveDataWhenStatusError: true,
+//
+//         )
+//     );
+//   }
+//
+//
+//   static Future<Response> getData({
+//     required String url,
+//     required Map<String, dynamic> query,
+//     String lang ='ar',
+//     String? token,
+//   }
+//
+//       ) async
+//   {
+//     dio!.options=BaseOptions(
+//         headers: {
+//           'lang':lang,
+//           'token':token
+//         }
+//     );
+//     return await dio!.get(url,queryParameters:query);
+//   }
+//
+//
+//   static Future<Response> postData({
+//     required String url,
+//     Map<String, dynamic>? query,
+//     required Map<String, dynamic> data,
+//     String lang ='ar',
+//     String? token,
+//   }) async
+//   {
+//     dio!.options.headers={
+//       'lang':lang,
+//       'token':token
+//     };
+//     return await dio!.post(
+//       url,
+//       queryParameters:query,
+//       data: data,
+//     );
+//   }
+// }
+

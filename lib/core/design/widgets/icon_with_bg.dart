@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IconWithBg extends StatelessWidget {
   final IconData icon;
@@ -20,7 +21,7 @@ class IconWithBg extends StatelessWidget {
         padding:   EdgeInsets.all(iconPadding),
         decoration: BoxDecoration(
             color: color.withOpacity(.13),
-            borderRadius: BorderRadius.circular(9)),
+            borderRadius: BorderRadius.circular(9.r)),
         child: Icon(
           icon,
           color: color,

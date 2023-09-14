@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:thimar_course/gen/assets.gen.dart';
 
 enum InputType { phone, password, email, normal, search }
 
 class Input extends StatefulWidget {
   final String? labelText;
   final String? hintText;
-final VoidCallback? onTap;
+  final VoidCallback? onTap;
   final String? iconPath;
-final bool isEnabled;
+  final bool isEnabled;
+  final FormFieldValidator<String> validator;
   final InputType inputType;
   final int maxLines;
   final TextEditingController? controller;
   final TextInputAction textInputAction;
   final int? maxLength;
+
   const Input({
     Key? key,
     this.labelText,
@@ -21,9 +25,12 @@ final bool isEnabled;
     this.iconPath,
     this.inputType = InputType.normal,
     this.textInputAction = TextInputAction.next,
-    this.maxLength ,
+    this.maxLength,
     this.maxLines = 1,
-    this.controller,  this.isEnabled=true,   this.onTap,
+    this.controller,
+    this.isEnabled = true,
+    this.onTap,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -31,7 +38,7 @@ final bool isEnabled;
 }
 
 class _InputState extends State<Input> {
-  bool isPasswordShown = false;
+  bool isPasswordShown = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,10 +46,17 @@ class _InputState extends State<Input> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: TextFormField(
-          enabled: widget.onTap==null ,
+          validator: widget.validator,
+          keyboardType: widget.inputType == InputType.phone
+              ? TextInputType.phone
+              : TextInputType.text,
+          enabled: widget.onTap == null,
           controller: widget.controller,
           maxLines: widget.maxLines,
           maxLength: widget.maxLength,
+          inputFormatters: widget.inputType == InputType.phone
+              ? [FilteringTextInputFormatter.allow(RegExp("[0-9]+"))]
+              : [],
           textInputAction: widget.textInputAction,
           decoration: InputDecoration(
             labelText: widget.labelText,
@@ -66,14 +80,14 @@ class _InputState extends State<Input> {
                 : null,
             prefixIcon: widget.iconPath != null
                 ? Padding(
-                  padding:   EdgeInsets.all(12.r),
-                  child: Image.asset(
+                    padding: EdgeInsets.all(12.r),
+                    child: Image.asset(
                       widget.iconPath!,
                       width: 20.w,
                       height: 20.h,
                       fit: BoxFit.scaleDown,
                     ),
-                )
+                  )
                 : null,
             filled: true,
             fillColor: widget.inputType == InputType.search
@@ -96,7 +110,7 @@ class _InputState extends State<Input> {
                     child: Column(
                       children: [
                         Image.asset(
-                          'assets/images/saudi.jpg',
+                          Assets.images.saudi.path,
                           width: 32.w,
                           height: 20.h,
                         ),
@@ -128,16 +142,17 @@ class _InputState extends State<Input> {
             //           color: Theme.of(context).unselectedWidgetColor,
             //         ),
             // ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.r),
-              borderSide: widget.inputType == InputType.search
-                  ? BorderSide.none
-                  : BorderSide(
-                      color: Theme.of(context).unselectedWidgetColor,
-                    ),
-            ),
+            // enabledBorder: OutlineInputBorder(
+            //   borderRadius: BorderRadius.circular(15.r),
+            //   borderSide: widget.inputType == InputType.search
+            //       ? BorderSide.none
+            //       : BorderSide(
+            //           color: Theme.of(context).unselectedWidgetColor,
+            //         ),
+            // ),
           ),
-          obscureText: widget.inputType == InputType.password && isPasswordShown,
+          obscureText:
+              widget.inputType == InputType.password && isPasswordShown,
         ),
       ),
     );
