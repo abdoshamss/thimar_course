@@ -14,20 +14,19 @@ import 'login.dart';
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({Key? key}) : super(key: key);
 
-
-
   @override
   State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-    final bloc = KiwiContainer().resolve<ForgetPasswordBloc>();
-    @override
+  final bloc = KiwiContainer().resolve<ForgetPasswordBloc>();
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     bloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
