@@ -18,8 +18,16 @@ class $AssetsIconsGen {
   /// File path: assets/icons/add.png
   AssetGenImage get add => const AssetGenImage('assets/icons/add.png');
 
+  /// File path: assets/icons/add_background.png
+  AssetGenImage get addBackground =>
+      const AssetGenImage('assets/icons/add_background.png');
+
   /// File path: assets/icons/address.png
   AssetGenImage get address => const AssetGenImage('assets/icons/address.png');
+
+  /// File path: assets/icons/arrow_down.png
+  AssetGenImage get arrowDown =>
+      const AssetGenImage('assets/icons/arrow_down.png');
 
   /// File path: assets/icons/back.png
   AssetGenImage get back => const AssetGenImage('assets/icons/back.png');
@@ -27,6 +35,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/back_home.png
   AssetGenImage get backHome =>
       const AssetGenImage('assets/icons/back_home.png');
+
+  /// File path: assets/icons/calender.png
+  AssetGenImage get calender =>
+      const AssetGenImage('assets/icons/calender.png');
 
   /// File path: assets/icons/call.png
   AssetGenImage get call => const AssetGenImage('assets/icons/call.png');
@@ -36,6 +48,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/check.png
   AssetGenImage get check => const AssetGenImage('assets/icons/check.png');
+
+  /// File path: assets/icons/clock.png
+  AssetGenImage get clock => const AssetGenImage('assets/icons/clock.png');
 
   /// File path: assets/icons/dollar.png
   AssetGenImage get dollar => const AssetGenImage('assets/icons/dollar.png');
@@ -66,8 +81,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/log_out.png
   AssetGenImage get logOut => const AssetGenImage('assets/icons/log_out.png');
 
+  /// File path: assets/icons/mastercard.png
+  AssetGenImage get mastercard =>
+      const AssetGenImage('assets/icons/mastercard.png');
+
   /// File path: assets/icons/minus.png
   AssetGenImage get minus => const AssetGenImage('assets/icons/minus.png');
+
+  /// File path: assets/icons/money.png
+  AssetGenImage get money => const AssetGenImage('assets/icons/money.png');
 
   /// File path: assets/icons/note.png
   AssetGenImage get note => const AssetGenImage('assets/icons/note.png');
@@ -109,8 +131,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/star.png
   AssetGenImage get star => const AssetGenImage('assets/icons/star.png');
 
+  /// File path: assets/icons/tick_square.png
+  AssetGenImage get tickSquare =>
+      const AssetGenImage('assets/icons/tick_square.png');
+
   /// File path: assets/icons/user.png
   AssetGenImage get user => const AssetGenImage('assets/icons/user.png');
+
+  /// File path: assets/icons/visa_pay.png
+  AssetGenImage get visaPay => const AssetGenImage('assets/icons/visa_pay.png');
 
   /// File path: assets/icons/wallet.png
   AssetGenImage get wallet => const AssetGenImage('assets/icons/wallet.png');
@@ -119,12 +148,16 @@ class $AssetsIconsGen {
   List<AssetGenImage> get values => [
         favs,
         add,
+        addBackground,
         address,
+        arrowDown,
         back,
         backHome,
+        calender,
         call,
         cart,
         check,
+        clock,
         dollar,
         edit,
         editAddress,
@@ -134,7 +167,9 @@ class $AssetsIconsGen {
         home,
         info,
         logOut,
+        mastercard,
         minus,
+        money,
         note,
         notification,
         orders,
@@ -147,7 +182,9 @@ class $AssetsIconsGen {
         search,
         share,
         star,
+        tickSquare,
         user,
+        visaPay,
         wallet
       ];
 }
@@ -164,6 +201,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/drawer_background.png
   AssetGenImage get drawerBackground =>
       const AssetGenImage('assets/images/drawer_background.png');
+
+  /// File path: assets/images/fruit_small.png
+  AssetGenImage get fruitSmall =>
+      const AssetGenImage('assets/images/fruit_small.png');
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
@@ -187,17 +228,22 @@ class $AssetsImagesGen {
   AssetGenImage get topLeaves =>
       const AssetGenImage('assets/images/top_leaves.png');
 
+  /// File path: assets/images/visa.png
+  AssetGenImage get visa => const AssetGenImage('assets/images/visa.png');
+
   /// List of all assets
   List<dynamic> get values => [
         appIcon,
         city,
         drawerBackground,
+        fruitSmall,
         logo,
         mainLogo,
         saudi,
         sideLeaves,
         splashBackground,
-        topLeaves
+        topLeaves,
+        visa
       ];
 }
 

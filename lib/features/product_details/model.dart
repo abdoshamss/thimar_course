@@ -25,7 +25,7 @@ class Data {
   late final int isActive;
   late final bool isFavorite;
   late final Unit unit;
-  late final List <ImageModel>images;
+  late final List<ImageModel> images;
   late final String mainImage;
   late final String createdAt;
 
@@ -38,15 +38,15 @@ class Data {
     priceBeforeDiscount = json['price_before_discount'] ?? 0;
     price = double.parse(json['price'].toString());
     discount = json['discount'] ?? 0.0;
-    amount = double.parse(json['amount'].toString()) ;
+    amount = double.parse(json['amount'].toString());
     isActive = json['is_active'] ?? 0;
     isFavorite = json['is_favorite'] ?? false;
     unit = Unit.fromJson(json['unit']);
     mainImage = json['main_image'] ?? "";
-    images = List.from(json['images']).map((e) => ImageModel.fromJson(e)).toList();
+    images =
+        List.from(json['images']).map((e) => ImageModel.fromJson(e)).toList();
     createdAt = json['created_at'] ?? "";
-
-   }
+  }
 }
 
 class Unit {
@@ -57,22 +57,20 @@ class Unit {
   late final String updatedAt;
 
   Unit.fromJson(Map<String, dynamic> json) {
-    id = json['id']??0;
-    name = json['name']??"";
-    type = json['type']??"";
-    createdAt = json['created_at']??"";
-    updatedAt = json['updated_at']??"";
+    id = json['id'] ?? 0;
+    name = json['name'] ?? "";
+    type = json['type'] ?? "";
+    createdAt = json['created_at'] ?? "";
+    updatedAt = json['updated_at'] ?? "";
   }
 }
-class ImageModel {
 
+class ImageModel {
   late final String name;
   late final String url;
 
-  ImageModel.fromJson(Map<String, dynamic> json){
+  ImageModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     url = json['url'];
   }
-
-
 }

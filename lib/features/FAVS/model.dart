@@ -7,8 +7,8 @@ class FAVSData {
 
   FAVSData.fromJson(Map<String, dynamic> json) {
     data = List.from(json['data']).map((e) => FAVSModel.fromJson(e)).toList();
-    status = json['status'] ?? "";
-    message = json['message'] ?? "";
+    status = json['status'] ;
+    message = json['message'];
   }
 }
 
@@ -18,8 +18,8 @@ class FAVSModel {
   late final String title;
   late final String description;
   late final String code;
-  late final int priceBeforeDiscount;
-  late final int price;
+  late final double priceBeforeDiscount;
+  late final double price;
   late final double discount;
   late final double amount;
   late final int isActive;
@@ -35,10 +35,10 @@ class FAVSModel {
     title = json['title'] ?? "";
     description = json['description'] ?? "";
     code = json['code'] ?? "";
-    priceBeforeDiscount = json['price_before_discount'] ?? 0;
-    price = int.tryParse(json['price'].toString()) ?? 0;
+    priceBeforeDiscount = double.parse(json['price_before_discount'].toString()) ;
+    price = double.parse(json['price'].toString()) ;
     discount = json['discount'] ?? 0.0;
-    amount = double.parse(json['amount'] .toString())?? 0;
+    amount = double.parse(json['amount'] .toString());
     isActive = json['is_active'] ?? 0;
     isFavorite = json['is_favorite'] ?? false;
     // unit = Unit.fromJson(json['unit']);

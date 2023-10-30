@@ -14,8 +14,8 @@ class AddAddressesScreen extends StatefulWidget {
   final String phone;
   final String describe;
 
-    double lat;
-    double lng;
+  double lat;
+  double lng;
 
   String type;
   AddAddressesScreen({
@@ -23,10 +23,8 @@ class AddAddressesScreen extends StatefulWidget {
     required this.phone,
     required this.describe,
     this.type = "المنزل",
-
-     required this.lat ,
-    required this.lng ,
-
+    required this.lat,
+    required this.lng,
     this.id = 0,
   }) : super(key: key);
 
@@ -35,8 +33,6 @@ class AddAddressesScreen extends StatefulWidget {
 }
 
 class _AddAddressesScreenState extends State<AddAddressesScreen> {
-
-
   // String type = "المنزل";
   // bool isActive = true;
 
@@ -56,9 +52,7 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
         title: Text(
           "اضافة عنوان",
           style: TextStyle(
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
             fontSize: 24.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -68,9 +62,7 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
           padding: EdgeInsetsDirectional.only(start: 16.r),
           child: IconWithBg(
             icon: Icons.arrow_back_ios_outlined,
-            color: Theme
-                .of(context)
-                .primaryColor,
+            color: Theme.of(context).primaryColor,
             onPress: () {
               Navigator.pop(context);
             },
@@ -82,7 +74,10 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
           SizedBox(
               width: double.infinity,
               height: 400.h,
-              child: MapItem(lat: widget.lat,lng: widget.lng,)),
+              child: MapItem(
+                lat: widget.lat,
+                lng: widget.lng,
+              )),
           Padding(
             padding: EdgeInsets.all(16.0.r),
             child: Form(
@@ -102,9 +97,7 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                           Text(
                             "نوع العنوان",
                             style: TextStyle(
-                                color: Theme
-                                    .of(context)
-                                    .hintColor,
+                                color: Theme.of(context).hintColor,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w300),
                           ),
@@ -112,11 +105,11 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                           Row(
                             children: [
                               SelectableItem('المنزل', widget.type == "المنزل",
-                                      () {
-                                    setState(() {
-                                      widget.type = "المنزل";
-                                    });
-                                  }),
+                                  () {
+                                setState(() {
+                                  widget.type = "المنزل";
+                                });
+                              }),
                               // GestureDetector(
                               //   onTap: () {
                               //     setState(() {
@@ -151,11 +144,11 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                               ),
 
                               SelectableItem('العمل', widget.type == "العمل",
-                                      () {
-                                    setState(() {
-                                      widget.type = "العمل";
-                                    });
-                                  })
+                                  () {
+                                setState(() {
+                                  widget.type = "العمل";
+                                });
+                              })
                               // GestureDetector(
                               //   onTap: () {
                               //     setState(() {
@@ -232,15 +225,16 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                             description: describeController.text,
                             lat: widget.lat,
                             lng: widget.lng,
-
                           ));
                           debugPrint(widget.id.toString());
-                          debugPrint("aasssdasasss");
+                          phoneController.clear();
+                          describeController.clear();
                         } else {
                           bloc.add(EditAddressesDataEvent(
                               id: widget.id, type: widget.type));
                           debugPrint(widget.id.toString());
-                          debugPrint("aasssdasasss");
+                          phoneController.clear();
+                          describeController.clear();
                         }
                       }
                     },
@@ -259,4 +253,3 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
     );
   }
 }
-

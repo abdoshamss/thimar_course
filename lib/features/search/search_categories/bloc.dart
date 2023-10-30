@@ -15,19 +15,22 @@ class SearchCategoriesBloc
     on<GetSearchCategoriesDataEvent>(_getData);
   }
   final searchController = TextEditingController();
- late List<SearchResult> list;
+  late List<SearchResult> list;
+
   Future<void> _getData(GetSearchCategoriesDataEvent event,
       Emitter<SearchCategoriesStates> emit) async {
     emit(SearchCategoriesLoadingState());
     final response =
         await dioHelper.get("search_category/${event.id}", params: {
       if (searchController.text.isNotEmpty) "keyword": event.value,
-      // "filter": "",
-      // "min_price": "",
-      // "max_price": "",
+      "filter": event.filter,
+     "min_price": event.minPrice,
+       "max_price": event.maxPrice,
     });
     if (response.isSuccess) {
-      list=SearchCategoriesData.fromJson(response.response!.data).data.searchResult;
+      list = SearchCategoriesData.fromJson(response.response!.data)
+          .data
+          .searchResult;
       emit(SearchCategoriesSuccessState());
     } else {
       emit(SearchCategoriesErrorState());

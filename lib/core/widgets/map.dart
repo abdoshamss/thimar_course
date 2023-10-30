@@ -8,11 +8,11 @@ import 'package:thimar_course/core/logic/helper_methods.dart';
 class MapItem extends StatefulWidget {
   double lat;
   double lng;
-
+final bool lightMode;
   MapItem({
     Key? key,
     required this.lat,
-    required this.lng,
+    required this.lng,   this.lightMode=false,
   }) : super(key: key);
 
   @override
@@ -36,6 +36,8 @@ class _State extends State<MapItem> {
       alignment: Alignment.bottomLeft,
       children: [
         GoogleMap(
+          liteModeEnabled: widget.lightMode,
+
           mapType: MapType.hybrid,
           markers: markers,
           onTap: (location) async {

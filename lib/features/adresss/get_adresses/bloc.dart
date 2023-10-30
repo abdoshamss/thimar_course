@@ -39,7 +39,9 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
     if (response.isSuccess) {
       emit(EditAddressesSuccessState(message: response.message));
     } else {
-      emit(EditAddressesErrorState(message: response.message,statusCode: response.response!.statusCode??200));
+      emit(EditAddressesErrorState(
+          message: response.message,
+          statusCode: response.response!.statusCode ?? 200));
     }
   }
 
@@ -55,7 +57,9 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
       emit(RemoveAddressesSuccessState(message: response.message));
       addressesList.removeAt(event.index);
     } else {
-      emit(RemoveAddressesErrorState(message: response.message,statusCode: response.response!.statusCode??200));
+      emit(RemoveAddressesErrorState(
+          message: response.message,
+          statusCode: response.response!.statusCode ?? 200));
     }
   }
 
@@ -75,7 +79,9 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
     if (response.isSuccess) {
       emit(AddAddressesSuccessState(message: response.message));
     } else {
-      emit(AddAddressesErrorState(message: response.message,statusCode: response.response!.statusCode??200));
+      emit(AddAddressesErrorState(
+          message: response.message,
+          statusCode: response.response!.statusCode ?? 200));
     }
   }
 }

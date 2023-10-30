@@ -1,4 +1,7 @@
  import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../core/design/widgets/icon_with_bg.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({Key? key}) : super(key: key);
@@ -6,14 +9,28 @@ class WalletScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // final result = await FilePicker.platform.pickFiles(
-          //   allowMultiple: true,
-          //   type: FileType.any,
-          // );
-        },
-        child: const Text("Pick"),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+        "المحفظة",
+          style: TextStyle(
+
+            color: Theme.of(context).primaryColor,
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leadingWidth: 60.w,
+        leading: Padding(
+          padding: EdgeInsetsDirectional.only(start: 16.w),
+          child: IconWithBg(
+            icon: Icons.arrow_back_ios_outlined,
+            color: Theme.of(context).primaryColor,
+            onPress: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
       ),
     );
   }

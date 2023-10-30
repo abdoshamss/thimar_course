@@ -7,6 +7,7 @@ import 'package:thimar_course/core/design/widgets/icon_with_bg.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/screens/cart.dart';
 
 import '../../features/adresss/get_adresses/bloc.dart';
 import '../../screens/add_address.dart';
@@ -260,24 +261,31 @@ class _HomeAppBarState extends State<HomeAppBar> {
         ],
       ),
       actions: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding:   EdgeInsets.symmetric(vertical: 8.h,),
-              child: Badge(
-                smallSize: 8.w,
-                alignment: AlignmentDirectional.topStart,
-                label: const Text("3"),
-                child: IconWithBg(
-                  icon: Icons.lock,
-                  iconPadding: 5.r,
-                  onPress: () {},
-                  color: Theme.of(context).primaryColor,
+        GestureDetector(onTap: (){
+          navigateTo(CartScreen());
+        },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding:   EdgeInsets.symmetric(vertical: 8.h,),
+                child: Badge(
+                  smallSize: 8.w,
+                  alignment: AlignmentDirectional.topStart,
+                  label: const Text("3"),
+                  child: IconWithBg(
+                    icon: Icons.lock,
+                    iconPadding: 5.r,
+                    onPress: () {
+                      navigateTo(CartScreen());
+
+                    },
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         SizedBox(width: 16.w),
       ],

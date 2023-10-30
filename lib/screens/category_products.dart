@@ -60,7 +60,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           Input(
             enable: () {
               navigateTo(SearchCategoriesScreen(
-                id: widget.id,
+                id: widget.id, minPrice: 1,
+                maxPrice:999 ,
               ));
             },
             isEnabled: false,
@@ -97,6 +98,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                       GestureDetector(
                     onTap: () {
                       navigateTo(ProductDetailsScreen(
+
                         id: state.list.data[index].id,
                         price: state.list.data[index].price,
                         isFavorite: state.list.data[index].isFavorite,

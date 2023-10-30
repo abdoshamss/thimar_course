@@ -142,4 +142,4 @@ class MyApp extends StatelessWidget {
 
 
 ///flutter build apk --no-tree-shake-icons
-///
+/// flutter build apk --debug

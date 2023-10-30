@@ -10,7 +10,7 @@ import 'package:thimar_course/features/product_rates/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 
 import '../features/cart/add_to_cart/bloc.dart';
-import '../features/category_product/bloc.dart';
+import '../features/products/bloc.dart';
 import 'see_more_product_details.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -37,9 +37,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int counter = 1;
   final bloc = KiwiContainer().resolve<ProductDetailsBLoc>();
   final productRatesBloc = KiwiContainer().resolve<ProductRatesBloc>();
-  final categoryProductBloc = KiwiContainer().resolve<CategoryProductBloc>();
   final favsBloc = KiwiContainer().resolve<FavsBloc>();
   final addToCartBloc = KiwiContainer().resolve<AddToCartBloc>();
+  final showProductsBloc = KiwiContainer().resolve<ProductsDataBloc>();
 
   @override
   void initState() {
@@ -58,7 +58,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     // });
     bloc.add(GetProductDetailsEvent(id: widget.id, price: widget.price));
     productRatesBloc.add(GetProductRatesEvent());
+    showProductsBloc.add(GetProductsDataEvent());
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+    favsBloc.close();
+    addToCartBloc.close();
+    showProductsBloc.close();
+    productRatesBloc.close();
   }
 
   @override
@@ -66,33 +76,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // forceMaterialTransparency: true,
-        // backgroundColor: Colors.transparent,
-        leading: Padding(
-          padding: const EdgeInsets.only(),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Image.asset(
-              Assets.icons.backHome.path,
-              width: 35.w,
-              height: 35.h,
-            ),
-          ),
-        ),
-        centerTitle: true,
         title: Text(
           "تفاصيل المنتج",
           style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-          ),
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor),
+        ),
+        centerTitle: true,
+        leading: Row(
+          children: [
+            SizedBox(
+              width: 16.w,
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Image.asset(
+                  Assets.icons.backHome.path,
+                  width: 32.w,
+                  height: 32.h,
+                  fit: BoxFit.fill,
+                )),
+          ],
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             child: BlocBuilder(
               bloc: favsBloc,
               builder: (BuildContext context, state) {
@@ -116,7 +127,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         borderRadius: BorderRadius.circular(9.r)),
                     child: Icon(
                       Icons.favorite,
-                      size: 20,
+                      size: 24,
                       color: widget.isFavorite ? Colors.red : null,
                     ),
                   ),
@@ -177,7 +188,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   BlocBuilder(
                     bloc: bloc,
                     buildWhen: (previous, current) =>
-                        current is! ProductCountUpdateState,
+                        current is ProductDetailsSuccessState,
                     builder: (context, state) {
                       if (state is ProductDetailsLoadingState) {
                         loadingWidget();
@@ -338,7 +349,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               onTap: () {
                                                 counter++;
 
-                                                bloc.add(ProductUpdateEvent());
+                                                bloc.add(ProductUpdateEvent(
+                                                    id: state.list.data.id,
+                                                    amount: counter));
                                               },
                                               child: Container(
                                                 height: 30.h,
@@ -381,8 +394,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               onTap: () {
                                                 if (counter > 1) {
                                                   counter--;
-                                                  bloc.add(
-                                                      ProductUpdateEvent());
+                                                  bloc.add(ProductUpdateEvent(
+                                                      id: state.list.data.id,
+                                                      amount: counter));
                                                 }
                                               },
                                               child: Container(
@@ -630,7 +644,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Row(
                       children: [
                         Text(
-                          "تفاصيل المنتج",
+                          "منتجات مشابهة",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 17.sp,
@@ -641,11 +655,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   BlocBuilder(
-                    bloc: categoryProductBloc,
+                    bloc: showProductsBloc,
                     builder: (context, state) {
-                      if (state is CategoryProductLoadingState) {
+                      if (state is GetProductsDataLoadingState) {
                         loadingWidget();
-                      } else if (state is CategoryProductSuccessState) {
+                      } else if (state is GetProductsDataSuccessState) {
                         return SizedBox(
                           height: 215.h,
                           width: double.infinity,
@@ -659,15 +673,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             shrinkWrap: true,
                             physics: const ClampingScrollPhysics(),
-                            itemCount: state.list.data.length,
+                            itemCount: state.list.length,
                             itemBuilder: (BuildContext context, int index) =>
                                 GestureDetector(
                               onTap: () {
                                 navigateTo(ProductDetailsScreen(
-                                  id: state.list.data[index].id,
-                                  price: state.list.data[index].price,
-                                  isFavorite: state.list.data[index].isFavorite,
-                                  amount: state.list.data[index].amount,
+                                  id: state.list[index].id,
+                                  price: state.list[index].price,
+                                  isFavorite: state.list[index].isFavorite,
+                                  amount: state.list[index].amount,
                                 ));
                               },
                               child: Container(
@@ -697,8 +711,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   AlignmentDirectional.topEnd,
                                               children: [
                                                 Image.network(
-                                                  state.list.data[index]
-                                                      .mainImage,
+                                                  state.list[index].mainImage,
                                                   fit: BoxFit.fill,
                                                   width: 145.w,
                                                   height: 120.h,
@@ -719,7 +732,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                                         11.r)),
                                                   ),
                                                   child: Text(
-                                                    "${state.list.data[index].discount * 100}%",
+                                                    "${state.list[index].discount * 100}%",
                                                     style: TextStyle(
                                                       fontSize: 14.sp,
                                                       color: Colors.white,
@@ -738,7 +751,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           child: Row(
                                             children: [
                                               Text(
-                                                state.list.data[index].title,
+                                                state.list[index].title,
                                                 style: TextStyle(
                                                     fontSize: 16.sp,
                                                     fontWeight: FontWeight.bold,
@@ -751,7 +764,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Row(
                                           children: [
                                             Text(
-                                              "السعر / ${state.list.data[index].unit.name}",
+                                              "السعر / ${state.list[index].unit.name}",
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   fontWeight: FontWeight.bold,
@@ -769,7 +782,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 TextSpan(children: [
                                                   TextSpan(
                                                     text:
-                                                        "${state.list.data[index].price} ر.س",
+                                                        "${state.list[index].price} ر.س",
                                                     style: TextStyle(
                                                       fontSize: 16.sp,
                                                       fontWeight:
@@ -778,7 +791,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   ),
                                                   TextSpan(
                                                     text:
-                                                        " ${state.list.data[index].priceBeforeDiscount} ر.س",
+                                                        " ${state.list[index].priceBeforeDiscount} ر.س",
                                                     style: TextStyle(
                                                       fontSize: 13.sp,
                                                       fontWeight:
@@ -822,11 +835,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           children: [
             BlocBuilder(
                 bloc: addToCartBloc,
-                builder: (context, states) {
+                builder: (context, state) {
                   return GestureDetector(
                     onTap: () {
                       addToCartBloc.add(PostAddToCartDataEvent(
-                          id: widget.id, amount: widget.amount));
+                          id: widget.id,
+                          amount: double.parse(counter.toString())));
                     },
                     child: Row(
                       children: [
@@ -875,12 +889,5 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    bloc.close();
-    categoryProductBloc.close();
   }
 }

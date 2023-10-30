@@ -8,4 +8,8 @@ final double price;
   GetProductDetailsEvent({required this.id, required this.price});
 
 }
-class ProductUpdateEvent extends ProductDetailsEvents{}
+class ProductUpdateEvent extends ProductDetailsEvents{
+  final int amount,id;
+
+  ProductUpdateEvent({required this.amount,required this.id});
+}

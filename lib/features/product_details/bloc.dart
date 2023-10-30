@@ -1,16 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/logic/dio_helper.dart';
+import '../cart/show_cart/bloc.dart';
 
 part 'states.dart';
 part 'model.dart';
 part 'events.dart';
-class ProductDetailsBLoc extends Bloc<ProductDetailsEvents, ProductDetailsStates> {
+
+class ProductDetailsBLoc
+    extends Bloc<ProductDetailsEvents, ProductDetailsStates> {
   final DioHelper dioHelper;
 
   ProductDetailsBLoc(this.dioHelper) : super(ProductDetailsStates()) {
     on<GetProductDetailsEvent>(_getData);
-    on<ProductUpdateEvent>(_update);
-   }
+    on<ProductUpdateEvent>(_updateData);
+  }
+
+
 
   Future<void> _getData(
       GetProductDetailsEvent event, Emitter<ProductDetailsStates> emit) async {
@@ -24,9 +30,17 @@ class ProductDetailsBLoc extends Bloc<ProductDetailsEvents, ProductDetailsStates
     }
   }
 
-  Future<void> _update(
+  Future<void> _updateData(
       ProductUpdateEvent event, Emitter<ProductDetailsStates> emit) async {
-    emit(ProductCountUpdateState());
-  }
+    emit(ProductCountUpdateLoadingState());
 
+    final response = await dioHelper.post("client/cart/${event.id}",
+        data: {"_method": "PUT", "amount": event.amount});
+    if (response.isSuccess) {
+       emit(ProductCountUpdateSuccessState());
+
+    } else {
+      emit(ProductDetailsErrorState());
+    }
+  }
 }

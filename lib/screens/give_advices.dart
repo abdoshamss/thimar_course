@@ -43,7 +43,7 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
         leading: Padding(
           padding: EdgeInsetsDirectional.only(start: 16.w),
           child: IconWithBg(
-            icon: Icons.arrow_forward_ios_outlined,
+            icon: Icons.arrow_back_ios_outlined,
             color: Theme.of(context).primaryColor,
             onPress: () {
               Navigator.pop(context);

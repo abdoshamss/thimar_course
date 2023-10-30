@@ -421,7 +421,7 @@ class _HomePageState extends State<HomePage> {
                                     onPress: () {
                                       addToCartBloc.add(PostAddToCartDataEvent(
                                           id: state.list[index].id,
-                                          amount: state.list[index].amount));
+                                          amount: 1));
                                     },
                                     isBig: false,
                                   ),

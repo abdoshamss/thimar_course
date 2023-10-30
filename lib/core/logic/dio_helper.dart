@@ -6,6 +6,7 @@ class DioHelper {
     baseUrl: "https://thimar.amr.aait-d.com/api/",
     headers: {
       "Accept": "application/json",
+      "Accept-Language": "ar",
       // "Authorization": "Bearer ${CacheHelper.getToken()}",
     },
   ));

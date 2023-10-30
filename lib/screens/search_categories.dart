@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,8 +15,13 @@ import '../gen/assets.gen.dart';
 
 class SearchCategoriesScreen extends StatefulWidget {
   final int id;
-
-  const SearchCategoriesScreen({Key? key, required this.id}) : super(key: key);
+  double minPrice, maxPrice;
+  SearchCategoriesScreen(
+      {Key? key,
+      required this.id,
+      required this.minPrice,
+      required this.maxPrice})
+      : super(key: key);
 
   @override
   State<SearchCategoriesScreen> createState() => _SearchCategoriesStateScreen();
@@ -22,13 +29,21 @@ class SearchCategoriesScreen extends StatefulWidget {
 
 class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
   final searchBloc = KiwiContainer().resolve<SearchCategoriesBloc>();
+Timer? timer;
+  double _lowerValue = 1;
+  double _upperValue = 200;
+  static String filter = "asc";
+  static String? value;
   void _getData(String value) {
-    searchBloc.add(GetSearchCategoriesDataEvent(id: widget.id, value: value));
+    searchBloc.add(GetSearchCategoriesDataEvent(
+      id: widget.id,
+      value: value,
+      minPrice: widget.minPrice,
+      maxPrice: widget.maxPrice,
+      filter: filter,
+    ));
   }
 
-  double _lowerValue = 1200;
-  double _upperValue = 1500;
-  bool isSelectable = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +69,7 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
           Input(
             filterIconTap: () {
               showModalBottomSheet(
-                useSafeArea: true,
-
+                  useSafeArea: true,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(38.r),
@@ -99,6 +113,13 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
                                 height: 8.h,
                               ),
                               RangeSliderFlutter(
+                                onDragCompleted: (x, min, max) {
+                                  widget.minPrice = min;
+                                  widget.maxPrice = max;
+                                  debugPrint(widget.minPrice.toString());
+                                  debugPrint(widget.maxPrice.toString());
+                                },
+
                                 textColor: Colors.black,
                                 rtl: true,
                                 // key: Key('3343'),
@@ -110,7 +131,6 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
                                     alwaysShowTooltip: true,
                                     leftSuffix: const Text("ر.س"),
                                     textStyle: TextStyle(fontSize: 12.sp)),
-                                max: 2000,
 
                                 textPositionBottom: -130,
                                 handlerHeight: 30,
@@ -129,7 +149,8 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
                                   ),
                                 ),
 
-                                min: 1000,
+                                min: 1,
+                                max: 300,
                                 fontSize: 12.sp,
                                 textBackgroundColor: Colors.white,
                                 onDragging:
@@ -164,17 +185,19 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      isSelectable = !isSelectable;
+                                      filter = "asc";
                                       setState2(() {});
                                     },
                                     child: Container(
                                         height: 21.h,
                                         width: 23.w,
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: const Color(0xffECECEC),),
+                                          border: Border.all(
+                                            color: const Color(0xffECECEC),
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(6.r),
-                                          color: isSelectable
+                                          color: filter == "asc"
                                               ? Theme.of(context).primaryColor
                                               : null,
                                         )),
@@ -199,19 +222,21 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      isSelectable = !isSelectable;
+                                      filter = "desc";
                                       setState2(() {});
                                     },
                                     child: Container(
                                         height: 21.h,
                                         width: 23.w,
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: const Color(0xffECECEC),),
+                                          border: Border.all(
+                                            color: const Color(0xffECECEC),
+                                          ),
                                           borderRadius:
                                               BorderRadius.circular(6.r),
-                                          color: isSelectable
-                                              ? null
-                                              : Theme.of(context).primaryColor,
+                                          color: filter == "desc"
+                                              ? Theme.of(context).primaryColor
+                                              : null,
                                         )),
                                   ),
                                   SizedBox(
@@ -227,16 +252,35 @@ class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
                                   )
                                 ],
                               ),
-                              SizedBox(height: 24.h,),
-                              AppButton(text: "تطبيق", onPress: (){}),
+                              SizedBox(
+                                height: 24.h,
+                              ),
+                              AppButton(
+                                  text: "تطبيق",
+                                  onPress: () {
+                                    searchBloc.add(GetSearchCategoriesDataEvent(
+                                        id: widget.id,
+                                        minPrice: widget.minPrice,
+                                        maxPrice: widget.maxPrice,
+                                        value: value,
+                                        filter: filter));
+                                    setState2(() {});
+                                  }),
                             ],
                           ),
                         );
                       }));
             },
             controller: searchBloc.searchController,
-            onChanged: (value) {
-              _getData(value);
+            onChanged: (value)  {
+              if (timer?.isActive==true) {
+                timer?.cancel();
+              }
+              timer = Timer(const Duration(seconds: 1), () {
+                _getData(value);
+                value=value;
+              });
+
             },
             validator: (value) {
               if (value!.isEmpty) {

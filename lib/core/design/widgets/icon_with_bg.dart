@@ -18,7 +18,7 @@ class IconWithBg extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        padding:   EdgeInsets.all(iconPadding),
+        padding:   EdgeInsets.all(iconPadding.r),
         decoration: BoxDecoration(
             color: color.withOpacity(.13),
             borderRadius: BorderRadius.circular(9.r)),

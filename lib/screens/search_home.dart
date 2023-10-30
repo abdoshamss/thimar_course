@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,11 +22,9 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchStateScreen extends State<SearchScreen> {
   final searchBloc = KiwiContainer().resolve<SearchHomeBloc>();
-  // final productsDataBloc = KiwiContainer().resolve<ProductsDataBloc>();
 
   final addToCartBloc = KiwiContainer().resolve<AddToCartBloc>();
-
-
+Timer? timer;
   @override
   void initState() {
     // TODO: implement initState
@@ -32,7 +32,7 @@ class _SearchStateScreen extends State<SearchScreen> {
     // productsDataBloc.add(GetProductsDataEvent());
   }
 
-  void getData(String value) {
+  void _getData(String value) {
     searchBloc.add(GetSearchHomeDataEvent(value: value));
   }
 
@@ -47,7 +47,8 @@ class _SearchStateScreen extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( centerTitle: true,
+      appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "البحث",
           style: TextStyle(
@@ -76,12 +77,16 @@ class _SearchStateScreen extends State<SearchScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Input(
-              onEditingComplete: () {
-                //searchBloc.add(GetSearchHomeDataEvent(value: widget.value));
+              onChanged: (value)  {
+                if (timer?.isActive==true) {
+                  timer?.cancel();
+                }
+                timer = Timer(const Duration(seconds: 1), () {
+                  _getData(value);
+                });
+
               },
-              onChanged: (value) {
-                getData(value);
-              },
+
               controller: searchBloc.searchController,
               textInputAction: TextInputAction.search,
               validator: (value) {

@@ -31,7 +31,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   ];
   List<Widget> pages = [
     const HomePage(),
-    const OrdersPage(),
+    const MyOrdersPage(),
     const NotificationsPage(),
     const FAVSPage(),
     const MyAccountPage(),
