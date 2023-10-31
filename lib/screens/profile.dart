@@ -10,9 +10,10 @@ import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/features/edit_profile/cubit.dart';
 import 'package:thimar_course/features/edit_profile/states.dart';
 
-import '../core/design/widgets/icon_with_bg.dart';
 import '../core/design/widgets/input.dart';
+import '../core/widgets/custom_appbar.dart';
 import '../features/auth/get_cities/bloc.dart';
+import '../gen/assets.gen.dart';
 
 class EditProfileDetailsScreen extends StatefulWidget {
   const EditProfileDetailsScreen({Key? key}) : super(key: key);
@@ -51,28 +52,8 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "البيانات الشخصية",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leadingWidth: 60.w,
-        leading: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.r),
-          child: IconWithBg(
-            icon: Icons.arrow_back_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      appBar: CustomAppBarScreen(
+          text: "البيانات الشخصية", image: Assets.icons.backHome.path),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [

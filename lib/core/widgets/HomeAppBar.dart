@@ -262,7 +262,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
       ),
       actions: [
         GestureDetector(onTap: (){
-          navigateTo(CartScreen());
+          navigateTo(const CartScreen());
         },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -277,7 +277,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                     icon: Icons.lock,
                     iconPadding: 5.r,
                     onPress: () {
-                      navigateTo(CartScreen());
+                      navigateTo(const CartScreen());
 
                     },
                     color: Theme.of(context).primaryColor,

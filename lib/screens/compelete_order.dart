@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 
+import '../core/logic/helper_methods.dart';
 import '../core/widgets/custom_appbar.dart';
 
 class CompleteOrderScreen extends StatelessWidget {
@@ -107,7 +109,7 @@ class CompleteOrderScreen extends StatelessWidget {
                 height: 60.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.r),
-                    border: Border.all(color: Color(0xffF3F3F3))),
+                    border: Border.all(color: const Color(0xffF3F3F3))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -131,7 +133,7 @@ class CompleteOrderScreen extends StatelessWidget {
                 height: 60.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.r),
-                    border: Border.all(color: Color(0xffF3F3F3))),
+                    border: Border.all(color: const Color(0xffF3F3F3))),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -166,12 +168,14 @@ class CompleteOrderScreen extends StatelessWidget {
             height: 4.h,
           ),
           Input(
-            validator: (value) {},
+            validator: (value) {
+              return null;
+            },
             inputType: InputType.normal,
             maxLines: 5,
           ),
           SizedBox(
-            height: 32.h,
+            height: 24.h,
           ),
           Text(
             "اختر طريقة الدفع",
@@ -184,14 +188,14 @@ class CompleteOrderScreen extends StatelessWidget {
             height: 16.h,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 105.w,
+                width: 98.w,
                 height: 50.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11.r),
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: .5.h)),
+                    border: Border.all(color: Theme.of(context).primaryColor)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -210,24 +214,219 @@ class CompleteOrderScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ), SizedBox(
+              ),
+              SizedBox(
                 width: 16.w,
-              ),Container(
-                width: 105.w,
+              ),
+              Container(
+                width: 98.w,
                 height: 50.h,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11.r),
                     border: Border.all(
-                        color: Theme.of(context).primaryColor, width: .5.h)),
+                      color: const Color(0xffE9E9E9),
+                    )),
                 child: Center(
                   child: Image.asset(Assets.icons.visaPay.path),
                 ),
-              ), SizedBox(
+              ),
+              SizedBox(
+                width: 16.w,
+              ),
+              Container(
+                width: 98.w,
+                height: 50.h,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(11.r),
+                    border: Border.all(
+                      color: const Color(0xffE9E9E9),
+                    )),
+                child: Center(
+                  child: Image.asset(Assets.icons.mastercard.path),
+                ),
+              ),
+              SizedBox(
                 width: 16.w,
               ),
             ],
           ),
-
+          SizedBox(
+            height: 16.h,
+          ),
+          Text(
+            "ملخص الطلب",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17.sp,
+                color: Theme.of(context).primaryColor),
+          ),
+          SizedBox(
+            height: 8.h,
+          ),
+          Stack(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                height: 145.h,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF3F8EE),
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 76.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "الخصم",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          "-40ر.س",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Divider(
+                        height: .5.h,
+                        color: const Color(0xffE2E2E2),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "المجموع",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        Text(
+                          "180ر.س",
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              AppButton(
+                  text: "إنهاء الطلب",
+                  onPress: () {
+                    showModalBottomSheet(
+                        context: navigatorKey.currentContext!,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(38.r),
+                                topRight: Radius.circular(38.r))),
+                        builder: (BuildContext context) {
+                          return Container(
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom),
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0.r),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                      child: Image.asset(
+                                          Assets.images.orderFinished.path,width: 250.w,height: 225.h,)),
+                                  SizedBox(
+                                    height: 24.h,
+                                  ),
+                                  Text(
+                                    "شكرا لك لقد تم تنفيذ طلبك بنجاح",
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 16.h,
+                                  ),
+                                  Text(
+                                    "يمكنك متابعة حالة الطلب او الرجوع للرئيسية",
+                                    style: TextStyle(
+                                      color: const Color(0xffACACAC),
+                                      fontSize: 17.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 32.h,
+                                  ), Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          // navigateTo(  CartScreen());
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0,
+                                          fixedSize: Size(165.w, 60.h),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15.r),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                           "طلباتي",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          fixedSize: Size(165.w, 60.h),
+                                          side: BorderSide(
+                                            color: Theme.of(context).primaryColor,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(15.r),
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                           "الرئيسية",
+                                            style: TextStyle(
+                                                color: Theme.of(context).primaryColor,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  }),
+            ],
+          ),
         ],
       ),
     );

@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
-import 'package:thimar_course/core/design/widgets/icon_with_bg.dart';
 import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/features/give_advices/bloc.dart';
+import 'package:thimar_course/gen/assets.gen.dart';
+
+import '../core/widgets/custom_appbar.dart';
 
 class GiveAdvicesScreen extends StatefulWidget {
   const GiveAdvicesScreen({Key? key}) : super(key: key);
@@ -28,29 +30,8 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "الاقتراحات والشكاوي",
-          style: TextStyle(
-
-            color: Theme.of(context).primaryColor,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leadingWidth: 60,
-        leading: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.w),
-          child: IconWithBg(
-            icon: Icons.arrow_back_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+      appBar: CustomAppBarScreen(
+          text: "الشكاوي والأقتراحات", image: Assets.icons.backHome.path),
       body: Form(
           key: formKey,
           child: ListView(

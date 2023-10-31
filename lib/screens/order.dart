@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/gen/assets.gen.dart';
 
 import '../features/my_orders/current/bloc.dart';
 import '../features/my_orders/finished/bloc.dart';
@@ -149,7 +150,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                             return GestureDetector(
                               onTap: () {
                                 navigateTo(OrderDetailsScreen(
-                                  id: state.list.data[index].id, typeButton: false,
+                                  id: state.list.data[index].id,
+                                  typeButton: false,
                                 ));
                               },
                               child: Container(
@@ -159,10 +161,10 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(15.r),
                                     boxShadow: [
-                                BoxShadow(
-                                color: Colors.black.withOpacity(.02),
-                                  offset: const Offset(0, 6))]
-                                ),
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(.02),
+                                          offset: const Offset(0, 6))
+                                    ]),
                                 child: Column(
                                   children: [
                                     Row(
@@ -240,45 +242,106 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Row(
-                                                children: List.generate(
-                                                  state.list.data[index]
-                                                      .products.length,
-                                                  (indexImages) => Container(
-                                                    width: 25.w,
-                                                    height: 25.h,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
-                                                      state
-                                                          .list
-                                                          .data[index]
-                                                          .products[indexImages]
-                                                          .url,
-                                                    ))),
+                                              Row(children: [
+                                                SizedBox(
+                                                  width: 116.w,
+                                                  height: 25.h,
+                                                  child: ListView.separated(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemCount: state
+                                                                .list
+                                                                .data[index]
+                                                                .products
+                                                                .length >=
+                                                            4
+                                                        ? 4
+                                                        : state.list.data[index]
+                                                            .products.length,
+                                                    separatorBuilder:
+                                                        (context, index) =>
+                                                            SizedBox(
+                                                      width: 4.w,
+                                                    ),
+                                                    itemBuilder: (context,
+                                                            indexImages) =>
+                                                        Container(
+                                                      width: 25.w,
+                                                      height: 25.h,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(7.r),
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                        state
+                                                            .list
+                                                            .data[index]
+                                                            .products[
+                                                                indexImages]
+                                                            .url,
+                                                      ))),
+                                                    ),
                                                   ),
                                                 ),
+
+                                                // List.generate(
+                                                //   state.list.data[index].products
+                                                //       .length>=4?  4:  state.list.data[index].products
+                                                //       .length,
+                                                //       (indexImages) => Container(
+                                                //     width: 25.w,
+                                                //     height: 25.h,
+                                                //
+                                                //     decoration: BoxDecoration(
+                                                //         borderRadius: BorderRadius.circular(7.r),
+                                                //         image: DecorationImage(
+                                                //             image: NetworkImage(
+                                                //               state
+                                                //                   .list
+                                                //                   .data[index]
+                                                //                   .products[indexImages]
+                                                //                   .url,
+                                                //             ))),
+                                                //   ),
+                                                // ),
+                                              ]),
+                                              SizedBox(
+                                                width: 4.w,
                                               ),
-                                              // Container(
-                                              //   height: 25.h,
-                                              //   width: 25.w,
-                                              //   decoration: BoxDecoration(
-                                              //     color: const Color(0xffEDF5E6),
-                                              //     borderRadius:
-                                              //     BorderRadius.circular(7.r),
-                                              //   ),
-                                              //   child: Center(
-                                              //     child: Text(
-                                              //       "+2",
-                                              //       style: TextStyle(
-                                              //         fontSize: 11.sp,
-                                              //         fontWeight: FontWeight.bold,
-                                              //         color: Theme.of(context)
-                                              //             .primaryColor,
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // ),
+                                              if (state.list.data[index]
+                                                      .products.length >
+                                                  4)
+                                                Container(
+                                                  height: 25.h,
+                                                  width: 25.w,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xffEDF5E6),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7.r),
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      state
+                                                                  .list
+                                                                  .data[index]
+                                                                  .products
+                                                                  .length >
+                                                              4
+                                                          ? "${state.list.data[index].products.length - 4}+"
+                                                          : "0+",
+                                                      style: TextStyle(
+                                                        fontSize: 11.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                             ]),
                                         Text(
                                           "${state.list.data[index].orderPrice}ر.س",
@@ -317,7 +380,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           return GestureDetector(
                             onTap: () {
                               navigateTo(OrderDetailsScreen(
-                                id: state.list.data[index].id, typeButton: true,
+                                id: state.list.data[index].id,
+                                typeButton: true,
                               ));
                             },
                             child: Container(
@@ -407,7 +471,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             Row(
                                               children: List.generate(
                                                 state.list.data[index].products
-                                                    .length,
+                                                            .length >=
+                                                        4
+                                                    ? 4
+                                                    : state.list.data[index]
+                                                        .products.length,
                                                 (indexImages) => Container(
                                                   width: 25.w,
                                                   height: 25.h,
@@ -423,26 +491,42 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                 ),
                                               ),
                                             ),
-                                            // Container(
-                                            //   height: 25.h,
-                                            //   width: 25.w,
-                                            //   decoration: BoxDecoration(
-                                            //     color: const Color(0xffEDF5E6),
-                                            //     borderRadius:
-                                            //         BorderRadius.circular(7.r),
-                                            //   ),
-                                            //   child: Center(
-                                            //     child: Text(
-                                            //       "+2",
-                                            //       style: TextStyle(
-                                            //         fontSize: 11.sp,
-                                            //         fontWeight: FontWeight.bold,
-                                            //         color: Theme.of(context)
-                                            //             .primaryColor,
-                                            //       ),
-                                            //     ),
-                                            //   ),
-                                            // ),
+                                            SizedBox(
+                                              width: 4.w,
+                                            ),
+                                            if (state.list.data[index].products
+                                                    .length >
+                                                4)
+                                              Container(
+                                                height: 25.h,
+                                                width: 25.w,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      const Color(0xffEDF5E6),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          7.r),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    state
+                                                                .list
+                                                                .data[index]
+                                                                .products
+                                                                .length >
+                                                            4
+                                                        ? "${state.list.data[index].products.length - 4}+"
+                                                        : "0+",
+                                                    style: TextStyle(
+                                                      fontSize: 11.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                           ]),
                                       Text(
                                         "${state.list.data[index].totalPrice}ر.س",

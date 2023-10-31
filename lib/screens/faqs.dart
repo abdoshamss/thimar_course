@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/faqs/bloc.dart';
 
-import '../core/design/widgets/icon_with_bg.dart';
+import '../gen/assets.gen.dart';
 
 class FAQSScreen extends StatefulWidget {
   const FAQSScreen({Key? key}) : super(key: key);
@@ -26,28 +27,8 @@ class _FAQSScreenState extends State<FAQSScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "أسئلة متكررة",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leadingWidth: 60.w,
-        leading: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 16),
-          child: IconWithBg(
-            icon: Icons.arrow_forward_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+
+      appBar:CustomAppBarScreen(text: "أسئلة متكررة", image: Assets.icons.backHome.path),
       body: BlocBuilder(
         bloc: bloc,
         builder: (BuildContext context, state) {

@@ -29,6 +29,14 @@ class $AssetsIconsGen {
   AssetGenImage get arrowDown =>
       const AssetGenImage('assets/icons/arrow_down.png');
 
+  /// File path: assets/icons/arrow_tan.png
+  AssetGenImage get arrowTan =>
+      const AssetGenImage('assets/icons/arrow_tan.png');
+
+  /// File path: assets/icons/arrow_var_red.png
+  AssetGenImage get arrowVarRed =>
+      const AssetGenImage('assets/icons/arrow_var_red.png');
+
   /// File path: assets/icons/back.png
   AssetGenImage get back => const AssetGenImage('assets/icons/back.png');
 
@@ -151,6 +159,8 @@ class $AssetsIconsGen {
         addBackground,
         address,
         arrowDown,
+        arrowTan,
+        arrowVarRed,
         back,
         backHome,
         calender,
@@ -213,6 +223,10 @@ class $AssetsImagesGen {
   AssetGenImage get mainLogo =>
       const AssetGenImage('assets/images/main_logo.png');
 
+  /// File path: assets/images/order_finished.png
+  AssetGenImage get orderFinished =>
+      const AssetGenImage('assets/images/order_finished.png');
+
   /// File path: assets/images/saudi.jpg
   AssetGenImage get saudi => const AssetGenImage('assets/images/saudi.jpg');
 
@@ -239,6 +253,7 @@ class $AssetsImagesGen {
         fruitSmall,
         logo,
         mainLogo,
+        orderFinished,
         saudi,
         sideLeaves,
         splashBackground,
