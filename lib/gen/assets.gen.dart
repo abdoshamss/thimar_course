@@ -57,6 +57,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/check.png
   AssetGenImage get check => const AssetGenImage('assets/icons/check.png');
 
+  /// File path: assets/icons/check_vip.png
+  AssetGenImage get checkVip =>
+      const AssetGenImage('assets/icons/check_vip.png');
+
   /// File path: assets/icons/clock.png
   AssetGenImage get clock => const AssetGenImage('assets/icons/clock.png');
 
@@ -167,6 +171,7 @@ class $AssetsIconsGen {
         call,
         cart,
         check,
+        checkVip,
         clock,
         dollar,
         edit,
@@ -242,6 +247,9 @@ class $AssetsImagesGen {
   AssetGenImage get topLeaves =>
       const AssetGenImage('assets/images/top_leaves.png');
 
+  /// File path: assets/images/vip.png
+  AssetGenImage get vip => const AssetGenImage('assets/images/vip.png');
+
   /// File path: assets/images/visa.png
   AssetGenImage get visa => const AssetGenImage('assets/images/visa.png');
 
@@ -258,6 +266,7 @@ class $AssetsImagesGen {
         sideLeaves,
         splashBackground,
         topLeaves,
+        vip,
         visa
       ];
 }

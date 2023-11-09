@@ -5,7 +5,7 @@ class ProductRatesStates {}
 class ProductRatesLoadingState extends ProductRatesStates {}
 
 class ProductRatesSuccessState extends ProductRatesStates {
-  final List<Data> list;
+  final List<ProductRatesModel> list;
 
   ProductRatesSuccessState({required this.list});
 }

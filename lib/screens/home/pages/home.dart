@@ -209,12 +209,12 @@ class _HomePageState extends State<HomePage> {
                       height: 135.h,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: state.list.data.length,
+                        itemCount: state.list.list.length,
                         itemBuilder: (context, index) => GestureDetector(
                           onTap: () {
                             navigateTo(CategoryProductsScreen(
-                              title: state.list.data[index].name,
-                              id: state.list.data[index].id,
+                              title: state.list.list[index].name,
+                              id: state.list.list[index].id,
                             ));
                           },
                           child: Column(
@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                                   clipBehavior: Clip.antiAlias,
                                   padding: const EdgeInsets.all(16),
                                   child: Image.network(
-                                    state.list.data[index].media,
+                                    state.list.list[index].media,
                                     fit: BoxFit.fill,
                                     width: 102.w,
                                     height: 105.h,
@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                                 height: 4.h,
                               ),
                               Text(
-                                state.list.data[index].name,
+                                state.list.list[index].name,
                                 style: TextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w600,
@@ -301,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                               id: state.list[index].id,
                               price: state.list[index].price,
                               isFavorite: state.list[index].isFavorite,
-                              amount: state.list[index].amount,
+                              amount: state.list[index].amount, index: null,
                             ));
                           },
                           child: Container(

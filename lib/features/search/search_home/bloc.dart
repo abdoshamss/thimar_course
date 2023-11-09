@@ -22,7 +22,7 @@ class SearchHomeBloc extends Bloc<SearchHomeEvents, SearchHomeStates> {
     });
 
     if (response.isSuccess) {
-      list = SearchHomeData.fromJson(response.response!.data).data.searchResult;
+      list = SearchHomeData.fromJson(response.response!.data).list.searchResult;
       emit(SearchHomeSuccessState());
     } else {
       emit(SearchHomeErrorState());

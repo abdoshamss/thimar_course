@@ -29,7 +29,7 @@ class SearchCategoriesBloc
     });
     if (response.isSuccess) {
       list = SearchCategoriesData.fromJson(response.response!.data)
-          .data
+          .list
           .searchResult;
       emit(SearchCategoriesSuccessState());
     } else {

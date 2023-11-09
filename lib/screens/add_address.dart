@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/design/widgets/input.dart';
+import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/core/widgets/selectable_item.dart';
 
@@ -23,9 +24,9 @@ class AddAddressesScreen extends StatefulWidget {
     required this.phone,
     required this.describe,
     this.type = "المنزل",
-    required this.lat,
-    required this.lng,
-    this.id = 0,
+     required this.lat,
+    required  this.lng,
+   required this.id,
   }) : super(key: key);
 
   @override
@@ -223,8 +224,8 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                             type: widget.type,
                             phone: phoneController.text,
                             description: describeController.text,
-                            lat: widget.lat,
-                            lng: widget.lng,
+                            lat: double.parse(CacheHelper.getLatitude().toString()),
+                            lng:  double.parse(CacheHelper.getLongitude().toString()),
                           ));
                           debugPrint(widget.id.toString());
                           phoneController.clear();

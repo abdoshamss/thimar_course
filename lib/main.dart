@@ -11,7 +11,9 @@ import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/logic/kiwi.dart';
 import 'package:thimar_course/firebase_options.dart';
 import 'package:thimar_course/screens/auth/splash.dart';
+import 'package:thimar_course/screens/be_vip.dart';
 import 'generated/codegen_loader.g.dart';
+import 'screens/charge_now.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +107,8 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
+        // home: const BeVipScreen(),
+
       ),
     );
   }

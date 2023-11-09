@@ -1,14 +1,12 @@
 part of 'bloc.dart';
 
 class FAVSData {
-  late final List<FAVSModel> data;
-  late final String status;
-  late final String message;
+  late final List<FAVSModel> list;
+
 
   FAVSData.fromJson(Map<String, dynamic> json) {
-    data = List.from(json['data']).map((e) => FAVSModel.fromJson(e)).toList();
-    status = json['status'] ;
-    message = json['message'];
+    list = List.from(json['data']??[]).map((e) => FAVSModel.fromJson(e)).toList();
+
   }
 }
 
@@ -22,10 +20,9 @@ class FAVSModel {
   late final double price;
   late final double discount;
   late final double amount;
-  late final int isActive;
+  late final bool isActive;
   late final bool isFavorite;
   late final Unit unit;
-  // late final List<Images> images;
   late final String mainImage;
   late final String createdAt;
 
@@ -37,12 +34,10 @@ class FAVSModel {
     code = json['code'] ?? "";
     priceBeforeDiscount = double.parse(json['price_before_discount'].toString()) ;
     price = double.parse(json['price'].toString()) ;
-    discount = json['discount'] ?? 0.0;
+    discount = double.parse(json['discount'].toString()) ?? 0.0;
     amount = double.parse(json['amount'] .toString());
-    isActive = json['is_active'] ?? 0;
+    isActive = json['is_active'] ==1;
     isFavorite = json['is_favorite'] ?? false;
-    // unit = Unit.fromJson(json['unit']);
-    // images = List.from(json['images']).map((e)=>Images.fromJson(e)).toList();
     mainImage = json['main_image'] ?? "";
     createdAt = json['created_at'] ?? "";
   }
@@ -66,24 +61,3 @@ class Unit {
 
 
 }
-//
-// class Images {
-//   Images({
-//     required this.name,
-//     required this.url,
-//   });
-//   late final String name;
-//   late final String url;
-//
-//   Images.fromJson(Map<String, dynamic> json){
-//     name = json['name'];
-//     url = json['url'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final _data = <String, dynamic>{};
-//     _data['name'] = name;
-//     _data['url'] = url;
-//     return _data;
-//   }
-// }

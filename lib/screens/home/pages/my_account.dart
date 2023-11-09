@@ -462,12 +462,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
             ),
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    navigateTo(const AboutAppScreen());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0.r),
+                Padding(
+                  padding: EdgeInsets.all(16.0.r),
+                  child: GestureDetector(
+                    onTap: () {
+                      navigateTo(const AboutAppScreen());
+                    },
                     child: Row(
                       children: [
                         Image.asset(

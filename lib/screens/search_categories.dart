@@ -318,7 +318,7 @@ Timer? timer;
                         id: searchBloc.list[index].id,
                         price: searchBloc.list[index].price,
                         isFavorite: searchBloc.list[index].isFavorite,
-                        amount: searchBloc.list[index].amount,
+                        amount: searchBloc.list[index].amount, index: null,
                       ));
                     },
                     child: Container(

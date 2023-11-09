@@ -39,61 +39,61 @@ class DioHelper {
     }
   }
 
-  Future<CustomResponse> put(String endPoint,
-      {Map<String, dynamic>? data}) async {
-    print(data);
-    try {
-      final response = await _dio.put(endPoint,
-          data: FormData.fromMap(data ?? {}),
-          options: Options(
-            headers: {
-              "Accept": "application/json",
-              "Authorization": "Bearer ${CacheHelper.getToken()}",
-            },
-          ));
-      print(response.data);
-      return CustomResponse(
-        message: response.data["message"],
-        isSuccess: true,
-        response: response,
-      );
-    } on DioError catch (e) {
-      print(e.response);
-      print(e.toString());
-      return CustomResponse(
-          message: e.response?.data["message"] ?? "Failed",
-          isSuccess: false,
-          response: e.response);
-    }
-  }
-
-  Future<CustomResponse> delete(String endPoint,
-      {Map<String, dynamic>? data}) async {
-    print(data);
-    try {
-      final response = await _dio.delete(endPoint,
-          data: FormData.fromMap(data ?? {}),
-          options: Options(
-            headers: {
-              "Accept": "application/json",
-              "Authorization": "Bearer ${CacheHelper.getToken()}",
-            },
-          ));
-      print(response.data);
-      return CustomResponse(
-        message: response.data["message"],
-        isSuccess: true,
-        response: response,
-      );
-    } on DioError catch (e) {
-      print(e.response);
-      print(e.toString());
-      return CustomResponse(
-          message: e.response?.data["message"] ?? "Failed",
-          isSuccess: false,
-          response: e.response);
-    }
-  }
+  // Future<CustomResponse> put(String endPoint,
+  //     {Map<String, dynamic>? data}) async {
+  //   print(data);
+  //   try {
+  //     final response = await _dio.put(endPoint,
+  //         data: FormData.fromMap(data ?? {}),
+  //         options: Options(
+  //           headers: {
+  //             "Accept": "application/json",
+  //             "Authorization": "Bearer ${CacheHelper.getToken()}",
+  //           },
+  //         ));
+  //     print(response.data);
+  //     return CustomResponse(
+  //       message: response.data["message"],
+  //       isSuccess: true,
+  //       response: response,
+  //     );
+  //   } on DioError catch (e) {
+  //     print(e.response);
+  //     print(e.toString());
+  //     return CustomResponse(
+  //         message: e.response?.data["message"] ?? "Failed",
+  //         isSuccess: false,
+  //         response: e.response);
+  //   }
+  // }
+  //
+  // Future<CustomResponse> delete(String endPoint,
+  //     {Map<String, dynamic>? data}) async {
+  //   print(data);
+  //   try {
+  //     final response = await _dio.delete(endPoint,
+  //         data: FormData.fromMap(data ?? {}),
+  //         options: Options(
+  //           headers: {
+  //             "Accept": "application/json",
+  //             "Authorization": "Bearer ${CacheHelper.getToken()}",
+  //           },
+  //         ));
+  //     print(response.data);
+  //     return CustomResponse(
+  //       message: response.data["message"],
+  //       isSuccess: true,
+  //       response: response,
+  //     );
+  //   } on DioError catch (e) {
+  //     print(e.response);
+  //     print(e.toString());
+  //     return CustomResponse(
+  //         message: e.response?.data["message"] ?? "Failed",
+  //         isSuccess: false,
+  //         response: e.response);
+  //   }
+  // }
 
   Future<CustomResponse> get(String endPoint,
       {Map<String, dynamic>? params}) async {

@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/auth/login/bloc.dart';
@@ -42,7 +43,7 @@ class CacheHelper {
   }
 
   static Future setImage(UserData user) async {
-    await _prefs.setString("image", user.data.image ?? "");
+    await _prefs.setString("image", user.list.image ?? "");
   }
 
   // static setFCMToken(String token) async {
@@ -57,18 +58,34 @@ class CacheHelper {
     return _prefs.getString("cityName") ?? "";
   }
 
+  static String getCitID() {
+    return _prefs.getString("cityId") ?? "";
+  }
+
   static Future saveLoginData(UserData user) async {
-    await _prefs.setString("image", user.data.image);
-    await _prefs.setInt("id", user.data.id);
-    await _prefs.setString("phone", user.data.phone);
-    await _prefs.setString("email", user.data.email);
-    await _prefs.setString("fullname", user.data.fullname);
-    await _prefs.setString("token", user.data.token);
-    await _prefs.setString("cityId", user.data.city.id);
-    await _prefs.setString("cityName", user.data.city.name);
-    await _prefs.setBool("isActive", user.data.isActive);
-    await _prefs.setInt("userCartCount", user.data.userCartCount);
-    await _prefs.setInt("unreadNotifications", user.data.unreadNotifications);
+    await _prefs.setString("image", user.list.image);
+    await _prefs.setInt("id", user.list.id);
+    await _prefs.setString("phone", user.list.phone);
+    await _prefs.setString("email", user.list.email);
+    await _prefs.setString("fullname", user.list.fullname);
+    await _prefs.setString("token", user.list.token);
+    await _prefs.setString("cityId", user.list.city.id);
+    await _prefs.setString("cityName", user.list.city.name);
+    await _prefs.setBool("isActive", user.list.isActive);
+    await _prefs.setInt("userCartCount", user.list.userCartCount);
+    await _prefs.setInt("unreadNotifications", user.list.unreadNotifications);
+  }
+
+  static Future saveCurrentLocation(Position currentLocation) async {
+    await _prefs.setDouble("latitude", currentLocation.latitude);
+    await _prefs.setDouble("longitude", currentLocation.longitude);
+  }
+ static double  getLatitude()   {
+    return _prefs.getDouble("latitude")??0;
+
+  }static double  getLongitude()   {
+
+    return _prefs.getDouble("longitude")??0;
   }
 
   static Future clearLoginData() async {

@@ -9,7 +9,7 @@ class PostAddFAVSDataEvent extends FAVSEvents {
   PostAddFAVSDataEvent({required this.id});
 }
 class PostRemoveFAVSDataEvent extends FAVSEvents {
-  final int id;
+  final int id,index;
 
-  PostRemoveFAVSDataEvent({required this.id});
+  PostRemoveFAVSDataEvent({required this.id,required this.index});
 }

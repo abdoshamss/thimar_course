@@ -17,7 +17,7 @@ class CartDataBloc extends Bloc<CartDataEvents, CartDataStates> {
     on<CartUpdateEvent>(_updateData);
     on<ApplyCouponEvent>(_applyCoupon);
   }
-  List<Data> cartData = [];
+  List<CartModel> cartData = [];
   bool loading = true;
   Future<void> _getData(
       GetCartDataEvent event, Emitter<CartDataStates> emit) async {
@@ -27,7 +27,7 @@ class CartDataBloc extends Bloc<CartDataEvents, CartDataStates> {
     final response = await dioHelper.get("client/cart");
     if (response.isSuccess) {
       final list = CartData.fromJson(response.response!.data);
-      cartData = CartData.fromJson(response.response!.data).data;
+      cartData = CartData.fromJson(response.response!.data).list;
       loading = false;
       emit(CartDataSuccessState(list: list));
     } else {
@@ -39,7 +39,9 @@ class CartDataBloc extends Bloc<CartDataEvents, CartDataStates> {
       DeleteFromCartDataEvent event, Emitter<CartDataStates> emit) async {
     // emit(DeleteFromCartLoadingState());
     final response =
-        await dioHelper.delete("client/cart/delete_item/${event.id}");
+        await dioHelper.post("client/cart/delete_item/${event.id}",data: {
+          "_method":"DELETE"
+        });
     if (response.isSuccess) {
       cartData.removeAt(event.index);
       add(GetCartDataEvent());
@@ -62,7 +64,8 @@ class CartDataBloc extends Bloc<CartDataEvents, CartDataStates> {
       emit(UpdateFromCartErrorState());
     }
   }
-  final couponController=TextEditingController();
+
+  final couponController = TextEditingController();
   Future<void> _applyCoupon(
       ApplyCouponEvent event, Emitter<CartDataStates> emit) async {
     final data = {
@@ -70,7 +73,7 @@ class CartDataBloc extends Bloc<CartDataEvents, CartDataStates> {
     };
     emit(ApplyCouponLoadingState());
     final response =
-    await dioHelper.post("client/cart/apply_coupon", data: data);
+        await dioHelper.post("client/cart/apply_coupon", data: data);
     if (response.isSuccess) {
       emit(ApplyCouponSuccessState(message: response.message));
       add(GetCartDataEvent());

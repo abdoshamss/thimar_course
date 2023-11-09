@@ -93,16 +93,16 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                     childAspectRatio: 160 / 215,
                     crossAxisSpacing: 16.h,
                   ),
-                  itemCount: state.list.data.length,
+                  itemCount: state.list.list.length,
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                     onTap: () {
                       navigateTo(ProductDetailsScreen(
 
-                        id: state.list.data[index].id,
-                        price: state.list.data[index].price,
-                        isFavorite: state.list.data[index].isFavorite,
-                        amount: state.list.data[index].amount,
+                        id: state.list.list[index].id,
+                        price: state.list.list[index].price,
+                        isFavorite: state.list.list[index].isFavorite,
+                        amount: state.list.list[index].amount, index: null,
                       ));
                     },
                     child: Container(
@@ -127,7 +127,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                 alignment: AlignmentDirectional.topEnd,
                                 children: [
                                   Image.network(
-                                    state.list.data[index].mainImage,
+                                    state.list.list[index].mainImage,
                                     fit: BoxFit.fill,
                                   ),
                                   Container(
@@ -143,7 +143,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                                   Radius.circular(11.r)),
                                     ),
                                     child: Text(
-                                      "${state.list.data[index].discount * 100}%",
+                                      "${state.list.list[index].discount * 100}%",
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         color: Colors.white,
@@ -160,7 +160,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                             child: Row(
                               children: [
                                 Text(
-                                  state.list.data[index].title,
+                                  state.list.list[index].title,
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
@@ -188,7 +188,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                   TextSpan(children: [
                                     TextSpan(
                                       text:
-                                          "${state.list.data[index].price} ر.س",
+                                          "${state.list.list[index].price} ر.س",
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w700,
@@ -196,7 +196,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                     ),
                                     TextSpan(
                                       text:
-                                          " ${state.list.data[index].priceBeforeDiscount} ر.س",
+                                          " ${state.list.list[index].priceBeforeDiscount} ر.س",
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w400,

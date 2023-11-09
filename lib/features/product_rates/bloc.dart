@@ -18,7 +18,7 @@ class ProductRatesBloc extends Bloc<ProductRatesEvents, ProductRatesStates> {
     emit(ProductRatesLoadingState());
     final response = await dioHelper.get("products/2/rates");
     if (response.isSuccess) {
-      final list = ProductRatesData.fromJson(response.response!.data).data;
+      final list = ProductRatesData.fromJson(response.response!.data).list;
       emit(ProductRatesSuccessState(list: list));
     } else {
       emit(ProductRatesErrorState());

@@ -16,7 +16,7 @@ class ProductsDataBloc extends Bloc<ProductsDataEvents, GetProductsDataStates> {
     emit(GetProductsDataLoadingState());
     final response = await dioHelper.get("products");
     if (response.isSuccess) {
-      final list = ProductsData.fromJson(response.response!.data).data;
+      final list = ProductsData.fromJson(response.response!.data).list;
       emit(GetProductsDataSuccessState(list: list));
     } else {
       emit(GetProductsDataErrorState());

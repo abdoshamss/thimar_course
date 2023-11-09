@@ -3,7 +3,7 @@ class SliderData {
   late final List<SliderModel> list;
 
   SliderData.fromJson(Map<String, dynamic> json) {
-    list = List.from(json['data']).map((e) => SliderModel.fromJson(e)).toList();
+    list = List.from(json['data']??[]).map((e) => SliderModel.fromJson(e)).toList();
   }
 }
 

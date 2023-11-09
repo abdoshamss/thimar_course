@@ -5,7 +5,7 @@ class CategoryProductStates {}
 class CategoryProductLoadingState extends CategoryProductStates {}
 
 class CategoryProductSuccessState extends CategoryProductStates {
-  final CategoryProductModel list;
+  final CategoryProductData list;
 
   CategoryProductSuccessState({required this.list});
 }

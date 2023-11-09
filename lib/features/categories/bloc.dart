@@ -15,8 +15,8 @@ class CategoriesBloc extends Bloc<CategoriesEvents, CategoriesStates> {
       CategoriesEvents events, Emitter<CategoriesStates> emitter) async {
     emit(CategoriesLoadingState());
     final response = await dioHelper.get("categories");
-    CategoriesModels.fromJson(response.response!.data);
-    final list = CategoriesModels.fromJson(response.response!.data);
+    CategoriesData.fromJson(response.response!.data);
+    final list = CategoriesData.fromJson(response.response!.data);
 
     if (response.isSuccess) {
       emit(CategoriesSuccessState(list: list));

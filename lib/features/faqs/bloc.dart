@@ -13,7 +13,7 @@ class FAQSBloc extends Bloc<FAQSEvents,FAQSStates> {
 Future<void> _getData(FAQSEvents events,Emitter<FAQSStates> emitter)async{
   emit(FAQSLoadingState());
   final response =await dioHelper.get("faqs");
- final list=FAQSData.fromJson(response.response!.data).data;
+ final list=FAQSData.fromJson(response.response!.data).list;
   if (response.isSuccess){
   emit(  FAQSSuccessState(list: list));
   }

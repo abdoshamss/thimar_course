@@ -1,22 +1,20 @@
 part of 'bloc.dart';
 
 class SearchCategoriesData {
-  late final String status;
-  late final String message;
-  late final Data data;
+
+  late final SearchCategoriesModel list;
 
   SearchCategoriesData.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['message'];
-    data = Data.fromJson(json['data']);
+
+    list = SearchCategoriesModel.fromJson(json['data']??[]);
   }
 }
 
-class Data {
+class SearchCategoriesModel {
   late final List<SearchResult> searchResult;
 
-  Data.fromJson(Map<String, dynamic> json) {
-    searchResult = List.from(json['search_result'])
+  SearchCategoriesModel.fromJson(Map<String, dynamic> json) {
+    searchResult = List.from(json['search_result']??[])
         .map((e) => SearchResult.fromJson(e))
         .toList();
   }
@@ -28,11 +26,11 @@ class SearchResult {
   late final String title;
   late final String description;
   late final String code;
-  late final int priceBeforeDiscount;
+  late final double priceBeforeDiscount;
   late final double price;
   late final double discount;
   late final double amount;
-  late final int isActive;
+  late final bool isActive;
   late final bool isFavorite;
   late final Unit unit;
   late final List<dynamic> images;
@@ -40,21 +38,21 @@ class SearchResult {
   late final String createdAt;
 
   SearchResult.fromJson(Map<String, dynamic> json) {
-    categoryId = json['category_id'];
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    code = json['code'];
-    priceBeforeDiscount = json['price_before_discount'];
-    price = double.parse(json['price'].toString());
-    discount = json['discount'];
-    amount = double.parse(json['amount'].toString());
-    isActive = json['is_active'];
-    isFavorite = json['is_favorite'];
+    categoryId = json['category_id']??0;
+    id = json['id']??0;
+    title = json['title']??"";
+    description = json['description']??"";
+    code = json['code']??"";
+    priceBeforeDiscount = double.parse(json['price_before_discount'].toString())??0;
+    price = double.parse(json['price'].toString())??0;
+    discount = double.parse(json['discount'].toString())??0;
+    amount = double.parse(json['amount'].toString())??0;
+    isActive = json['is_active']==1;
+    isFavorite = json['is_favorite']??false;
     unit = Unit.fromJson(json['unit']);
-    images = List.castFrom<dynamic, dynamic>(json['images']);
-    mainImage = json['main_image'];
-    createdAt = json['created_at'];
+    images = List.castFrom<dynamic, dynamic>(json['images']??[]);
+    mainImage = json['main_image']??"";
+    createdAt = json['created_at']??"";
   }
 }
 
@@ -66,10 +64,10 @@ class Unit {
   late final String updatedAt;
 
   Unit.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    type = json['type'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    id = json['id']??0;
+    name = json['name']??"";
+    type = json['type']??"";
+    createdAt = json['created_at']??"";
+    updatedAt = json['updated_at']??"";
   }
 }

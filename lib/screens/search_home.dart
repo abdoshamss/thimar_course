@@ -127,7 +127,7 @@ Timer? timer;
                               price: double.parse(
                                   searchBloc.list[index].price.toString()),
                               isFavorite: searchBloc.list[index].isFavorite,
-                              amount: searchBloc.list[index].amount,
+                              amount: searchBloc.list[index].amount, index: null,
                             ));
                           },
                           child: Container(

@@ -71,11 +71,11 @@ class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
 
                 ),
                 scrollDirection: Axis.vertical,
-                itemCount: state.list.data.length,
+                itemCount: state.list.list.length,
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     navigateTo(CategoryProductsScreen(
-                      title: state.list.data[index].name, id: state.list.data[index].id,
+                      title: state.list.list[index].name, id: state.list.list[index].id,
                     ));
                   },
                   child: Column(
@@ -88,7 +88,7 @@ class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
                           clipBehavior: Clip.antiAlias,
                           padding: const EdgeInsets.all(16),
                           child: Image.network(
-                            state.list.data[index].media,
+                            state.list.list[index].media,
                             fit: BoxFit.fill,
                             width: 102,
                             height: 105.h,
@@ -99,7 +99,7 @@ class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
                         height: 4.h,
                       ),
                       Text(
-                        state.list.data[index].name,
+                        state.list.list[index].name,
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,

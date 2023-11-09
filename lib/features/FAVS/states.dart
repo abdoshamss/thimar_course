@@ -4,11 +4,11 @@ class FAVSStates {}
 class FAVSLoadingState extends FAVSStates {}
 class FAVSSuccessState extends FAVSStates {
   final String message;
-  final FAVSData list;
+  // final FAVSData list;
 
   FAVSSuccessState({
    required this.message,
-   required this.list,
+   // required this.list,
   }){
     showMessage(message);
   }

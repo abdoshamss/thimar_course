@@ -140,7 +140,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 bloc: bloc,
                 listener: (context, state) {
                   if (state is CheckCodeSuccessState) {
-                    return navigateTo(ResetPasswordScreen(
+                     navigateTo(ResetPasswordScreen(
                         phone: widget.phone, code: bloc.codeController.text));
                   }
                 },

@@ -48,7 +48,7 @@ class _FAVSPageState extends State<FAVSPage> {
             builder: (BuildContext context, state) {
               if (state is FAVSLoadingState) {
                 loadingWidget();
-              } else if (state is FAVSSuccessState) {
+              } else if (favBloc.favsData.isNotEmpty) {
                 return GridView.builder(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -60,16 +60,22 @@ class _FAVSPageState extends State<FAVSPage> {
                       childAspectRatio: 160 / 215,
                       crossAxisSpacing: 16.h,
                       mainAxisSpacing: 16.w),
-                  itemCount: state.list.data.length,
+                  itemCount: favBloc.favsData.length,
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                     onTap: () {
                       navigateTo(ProductDetailsScreen(
-                        id: state.list.data[index].id,
-                        price:double.parse( state.list.data[index].price.toString()),
-                        isFavorite: state.list.data[index].isFavorite,
-                        amount: state.list.data[index].amount,
-                      ));
+                        index: index,
+                        id: favBloc.favsData[index].id,
+                        price:double.parse( favBloc.favsData[index].price.toString()),
+                        isFavorite: favBloc.favsData[index].isFavorite,
+                        amount:  favBloc.favsData[index].amount,
+                      )).then((value) {
+                        if(value??false)
+                          {
+                            favBloc.add(GetFAVSDataEvent());
+                          }
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -93,7 +99,7 @@ class _FAVSPageState extends State<FAVSPage> {
                                 alignment: AlignmentDirectional.topEnd,
                                 children: [
                                   Image.network(
-                                    state.list.data[index].mainImage,
+                                    favBloc.favsData[index].mainImage,
                                     fit: BoxFit.fill,
                                   ),
                                   Container(
@@ -109,7 +115,7 @@ class _FAVSPageState extends State<FAVSPage> {
                                                   Radius.circular(11.r)),
                                     ),
                                     child: Text(
-                                      "${state.list.data[index].discount * 100}%",
+                                      "${favBloc.favsData[index].discount * 100}%",
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         color: Colors.white,
@@ -126,7 +132,7 @@ class _FAVSPageState extends State<FAVSPage> {
                             child: Row(
                               children: [
                                 Text(
-                                  state.list.data[index].title,
+                                  favBloc.favsData[index].title,
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
@@ -154,7 +160,7 @@ class _FAVSPageState extends State<FAVSPage> {
                                   TextSpan(children: [
                                     TextSpan(
                                       text:
-                                          "${state.list.data[index].price} ر.س",
+                                          "${favBloc.favsData[index].price} ر.س",
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w700,
@@ -162,7 +168,7 @@ class _FAVSPageState extends State<FAVSPage> {
                                     ),
                                     TextSpan(
                                       text:
-                                          " ${state.list.data[index].priceBeforeDiscount} ر.س",
+                                          " ${favBloc.favsData[index].priceBeforeDiscount} ر.س",
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w400,
@@ -191,3 +197,146 @@ class _FAVSPageState extends State<FAVSPage> {
     );
   }
 }
+// BlocBuilder(
+// bloc: favBloc,
+// builder: (BuildContext context, state) {
+// if (state is FAVSLoadingState) {
+// loadingWidget();
+// } else if (state is FAVSSuccessState) {
+// return GridView.builder(
+// padding: EdgeInsets.symmetric(
+// horizontal: 16.w,
+// ),
+// shrinkWrap: true,
+// physics: const NeverScrollableScrollPhysics(),
+// gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+// crossAxisCount: 2,
+// childAspectRatio: 160 / 215,
+// crossAxisSpacing: 16.h,
+// mainAxisSpacing: 16.w),
+// itemCount: state.list.data.length,
+// itemBuilder: (BuildContext context, int index) =>
+// GestureDetector(
+// onTap: () {
+// navigateTo(ProductDetailsScreen(
+// id: state.list.data[index].id,
+// price:double.parse( state.list.data[index].price.toString()),
+// isFavorite: state.list.data[index].isFavorite,
+// amount: state.list.data[index].amount,
+// ));
+// },
+// child: Container(
+// decoration: BoxDecoration(
+// color: Colors.white,
+// borderRadius: BorderRadius.circular(16.r),
+// boxShadow: [
+// BoxShadow(
+// color: Colors.black.withOpacity(.02),
+// offset: const Offset(0, 2),
+// blurRadius: 11.r,
+// ),
+// ],
+// ),
+// child: Padding(
+// padding: const EdgeInsets.only(bottom: 16),
+// child: Column(children: [
+// Expanded(
+// child: ClipRRect(
+// borderRadius: BorderRadius.circular(11.r),
+// child: Stack(
+// alignment: AlignmentDirectional.topEnd,
+// children: [
+// Image.network(
+// state.list.data[index].mainImage,
+// fit: BoxFit.fill,
+// ),
+// Container(
+// padding: EdgeInsets.symmetric(
+// horizontal: 10.w,
+// vertical: 4.h,
+// ),
+// decoration: BoxDecoration(
+// color: Theme.of(context).primaryColor,
+// borderRadius:
+// BorderRadiusDirectional.only(
+// bottomStart:
+// Radius.circular(11.r)),
+// ),
+// child: Text(
+// "${state.list.data[index].discount * 100}%",
+// style: TextStyle(
+// fontSize: 14.sp,
+// color: Colors.white,
+// fontWeight: FontWeight.bold,
+// ),
+// ),
+// ),
+// ],
+// ),
+// ),
+// ),
+// Padding(
+// padding: EdgeInsets.symmetric(vertical: 4.h),
+// child: Row(
+// children: [
+// Text(
+// state.list.data[index].title,
+// style: TextStyle(
+// fontSize: 16.sp,
+// fontWeight: FontWeight.bold,
+// color: Theme.of(context).primaryColor),
+// ),
+// ],
+// ),
+// ),
+// Row(
+// children: [
+// Text(
+// "السعر / كجم",
+// style: TextStyle(
+// fontSize: 12.sp,
+// fontWeight: FontWeight.bold,
+// color: Theme.of(context).hintColor),
+// ),
+// ],
+// ),
+// Padding(
+// padding: EdgeInsets.symmetric(vertical: 4.h),
+// child: Row(
+// children: [
+// Text.rich(
+// TextSpan(children: [
+// TextSpan(
+// text:
+// "${state.list.data[index].price} ر.س",
+// style: TextStyle(
+// fontSize: 16.sp,
+// fontWeight: FontWeight.w700,
+// ),
+// ),
+// TextSpan(
+// text:
+// " ${state.list.data[index].priceBeforeDiscount} ر.س",
+// style: TextStyle(
+// fontSize: 13.sp,
+// fontWeight: FontWeight.w400,
+// decoration: TextDecoration.lineThrough,
+// ),
+// ),
+// ]),
+// style: TextStyle(
+// color: Theme.of(context).primaryColor,
+// ),
+// ),
+// ],
+// ),
+// ),
+// ]),
+// ),
+// ),
+// ),
+// );
+// }
+// return const SizedBox.shrink();
+// },
+// ),

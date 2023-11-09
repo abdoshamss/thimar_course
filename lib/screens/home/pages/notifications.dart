@@ -46,17 +46,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
           if (state is NotificationsLoadingState) {
             loadingWidget();
           } else if (state is NotificationsSuccessState) {
-            if (state.list.isEmpty) {
-              Center(
-                child: Text(
-                  state.message,
-                  style: const TextStyle(color: Colors.black, fontSize: 20),
-                ),
-              );
-            } else {
+           
               return ListView.separated(
                   padding: EdgeInsets.all(16.r),
-                  itemCount: state.list.length,
+                  itemCount:   state.list.list.notifications.length,
                   separatorBuilder: (context, index) => SizedBox(
                         height: 20.h,
                       ),
@@ -96,7 +89,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                     child: Padding(
                                       padding: EdgeInsets.all(6.0.r),
                                       child: Image.network(
-                                        state.list[index].image,
+                                         state.list.list.notifications[index].image,
                                         width: 25.w,
                                         height: 25.h,
                                         errorBuilder:
@@ -113,7 +106,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.list[index].title,
+                                         state.list.list.notifications[index].title,
                                         style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
@@ -123,7 +116,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         height: 4.h,
                                       ),
                                       Text(
-                                        state.list[index].body,
+                                        state.list.list.notifications[index].body,
                                         style: TextStyle(
                                             fontSize: 10.sp,
                                             color: const Color(0xff989898)),
@@ -132,7 +125,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                         height: 6.h,
                                       ),
                                       Text(
-                                        state.list[index].createdAt,
+                                        state.list.list.notifications[index].createdAt,
                                         style: TextStyle(fontSize: 10.sp),
                                       ),
                                     ],
@@ -146,7 +139,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                     );
                     return null;
                   });
-            }
+       
           }
           return const SizedBox.shrink();
         },

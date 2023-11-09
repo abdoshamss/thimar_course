@@ -92,7 +92,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "طلب #${state.list.data.id}",
+                                  "طلب #${state.list.list.id}",
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 17.sp,
@@ -102,7 +102,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 Padding(
                                   padding: EdgeInsets.only(top: 8.0.r),
                                   child: Text(
-                                    state.list.data.date,
+                                    state.list.list.date,
                                     style: TextStyle(
                                       color: const Color(0xff9C9C9C),
                                       fontSize: 17.sp,
@@ -124,7 +124,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 8.w),
                                       child: Text(
-                                        state.list.data.status,
+                                        state.list.list.status,
                                         style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontSize: 11.sp,
@@ -139,7 +139,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     top: 8.r,
                                   ),
                                   child: Text(
-                                    "${state.list.data.orderPrice}ر.س",
+                                    "${state.list.list.orderPrice}ر.س",
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         color: Theme.of(context).primaryColor,
@@ -162,14 +162,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             children: [
                               Row(
                                 children: List.generate(
-                                  state.list.data.products.length,
+                                  state.list.list.products.length,
                                   (indexImages) => Container(
                                     width: 25.w,
                                     height: 25.h,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: NetworkImage(
-                                      state.list.data.products[indexImages].url,
+                                      state.list.list.products[indexImages].url,
                                     ))),
                                   ),
                                 ),
@@ -245,21 +245,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              state.list.data.address.type,
+                              state.list.list.address.type,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              state.list.data.address.location,
+                              state.list.list.address.location,
                               style: TextStyle(
                                   color: const Color(0xff999797),
                                   fontWeight: FontWeight.w300,
                                   fontSize: 12.sp),
                             ),
                             Text(
-                              state.list.data.address.description,
+                              state.list.list.address.description,
                               style: TextStyle(
                                   fontWeight: FontWeight.w300, fontSize: 12.sp),
                             ),
@@ -274,8 +274,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           width: 75.w,
                           height: 65.h,
                           child: MapItem(
-                            lat: state.list.data.address.lat,
-                            lng: state.list.data.address.lng,
+                            lat: state.list.list.address.lat,
+                            lng: state.list.list.address.lng,
                             lightMode: true,
                           ),
                         ),
@@ -317,7 +317,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.data.orderPrice}ر.س",
+                              "${state.list.list.orderPrice}ر.س",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -339,7 +339,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.data.discount}ر.س",
+                              "${state.list.list.discount}ر.س",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -365,7 +365,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.data.totalPrice}.س",
+                              "${state.list.list.totalPrice}.س",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,

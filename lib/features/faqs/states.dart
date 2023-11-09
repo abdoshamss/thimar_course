@@ -5,7 +5,7 @@ class FAQSStates {}
 class FAQSLoadingState extends FAQSStates {}
 
 class FAQSSuccessState extends FAQSStates {
-  List<Data> list;
+  List<FAQSModel> list;
 
   FAQSSuccessState({required this.list});
 }

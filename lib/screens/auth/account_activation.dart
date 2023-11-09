@@ -142,7 +142,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                 bloc: bloc,
                 listener: (context, state) {
                   if (state is ActivationAccountSuccessState) {
-                     return navigateTo(const LoginScreen());
+                      navigateTo(const LoginScreen());
                   }
                 },
                 builder: (BuildContext context, state) {

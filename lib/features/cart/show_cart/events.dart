@@ -12,7 +12,8 @@ class DeleteFromCartDataEvent extends CartDataEvents {
 
 }
 class CartUpdateEvent extends CartDataEvents {
-  final int amount ,id;
+  final int  id;
+  final double amount ;
 
   CartUpdateEvent({required this.amount, required this.id});
 }

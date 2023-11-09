@@ -4,6 +4,8 @@ import 'package:thimar_course/features/auth/resend_code/bloc.dart';
 import 'package:thimar_course/features/cart/show_cart/bloc.dart';
 import 'package:thimar_course/features/categories/bloc.dart';
 import 'package:thimar_course/features/category_product/bloc.dart';
+import 'package:thimar_course/features/compelete_order/bloc.dart';
+import 'package:thimar_course/features/current_location/bloc.dart';
 import 'package:thimar_course/features/edit_profile/cubit.dart';
 import 'package:thimar_course/features/my_orders/current/bloc.dart';
 import 'package:thimar_course/features/my_orders/finished/bloc.dart';
@@ -16,6 +18,7 @@ import 'package:thimar_course/features/product_details/bloc.dart';
 import 'package:thimar_course/features/search/search_categories/bloc.dart';
 import 'package:thimar_course/features/slider/bloc.dart';
 import '../../features/FAVS/bloc.dart';
+import '../../features/Wallet/show_wallet/bloc.dart';
 import '../../features/adresss/get_adresses/bloc.dart';
 import '../../features/auth/activation/bloc.dart';
 import '../../features/auth/check_code/bloc.dart';
@@ -68,4 +71,7 @@ void initKiwi() {
       .registerFactory((c) => MyFinishedOrdersBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => MyOrdersDetailsBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => CartDataBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => WalletBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => CompleteOrderBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => CurrentLocationBloc(c.resolve<DioHelper>()));
 }

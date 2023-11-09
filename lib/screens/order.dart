@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 
@@ -142,7 +143,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.list.data.length,
+                          itemCount: state.list.list.length,
                           separatorBuilder: (context, index) => SizedBox(
                             height: 16.h,
                           ),
@@ -150,8 +151,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                             return GestureDetector(
                               onTap: () {
                                 navigateTo(OrderDetailsScreen(
-                                  id: state.list.data[index].id,
-                                  typeButton: false,
+                                  id: state.list.list[index].id,
+                                  typeButton: true,
                                 ));
                               },
                               child: Container(
@@ -176,7 +177,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "طلب #${state.list.data[index].id}",
+                                              "طلب #${state.list.list[index].id}",
                                               style: TextStyle(
                                                 color: Theme.of(context)
                                                     .primaryColor,
@@ -185,7 +186,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                               ),
                                             ),
                                             Text(
-                                              state.list.data[index].date,
+                                              state.list.list[index].date,
                                               style: TextStyle(
                                                 color: const Color(0xff9C9C9C),
                                                 fontSize: 17.sp,
@@ -209,7 +210,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                   padding: EdgeInsets.symmetric(
                                                       horizontal: 8.w),
                                                   child: Text(
-                                                    state.list.data[index]
+                                                    state.list.list[index]
                                                         .status,
                                                     style: TextStyle(
                                                       color: Theme.of(context)
@@ -253,12 +254,12 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                         const NeverScrollableScrollPhysics(),
                                                     itemCount: state
                                                                 .list
-                                                                .data[index]
+                                                                .list[index]
                                                                 .products
                                                                 .length >=
                                                             4
                                                         ? 4
-                                                        : state.list.data[index]
+                                                        : state.list.list[index]
                                                             .products.length,
                                                     separatorBuilder:
                                                         (context, index) =>
@@ -268,19 +269,24 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                     itemBuilder: (context,
                                                             indexImages) =>
                                                         Container(
+                                                      clipBehavior: Clip
+                                                          .antiAliasWithSaveLayer,
                                                       width: 25.w,
                                                       height: 25.h,
                                                       decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(7.r),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      7.r),
                                                           image: DecorationImage(
                                                               image: NetworkImage(
-                                                        state
-                                                            .list
-                                                            .data[index]
-                                                            .products[
-                                                                indexImages]
-                                                            .url,
-                                                      ))),
+                                                            state
+                                                                .list
+                                                                .list[index]
+                                                                .products[
+                                                                    indexImages]
+                                                                .url,
+                                                          ))),
                                                     ),
                                                   ),
                                                 ),
@@ -309,7 +315,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                               SizedBox(
                                                 width: 4.w,
                                               ),
-                                              if (state.list.data[index]
+                                              if (state.list.list[index]
                                                       .products.length >
                                                   4)
                                                 Container(
@@ -326,11 +332,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                     child: Text(
                                                       state
                                                                   .list
-                                                                  .data[index]
+                                                                  .list[index]
                                                                   .products
                                                                   .length >
                                                               4
-                                                          ? "${state.list.data[index].products.length - 4}+"
+                                                          ? "${state.list.list[index].products.length - 4}+"
                                                           : "0+",
                                                       style: TextStyle(
                                                         fontSize: 11.sp,
@@ -344,7 +350,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                 ),
                                             ]),
                                         Text(
-                                          "${state.list.data[index].orderPrice}ر.س",
+                                          "${state.list.list[index].orderPrice}ر.س",
                                           style: TextStyle(
                                               fontSize: 15.sp,
                                               color: Theme.of(context)
@@ -372,7 +378,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                       return ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.list.data.length,
+                        itemCount: state.list.list.length,
                         separatorBuilder: (context, index) => SizedBox(
                           height: 16.h,
                         ),
@@ -380,8 +386,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           return GestureDetector(
                             onTap: () {
                               navigateTo(OrderDetailsScreen(
-                                id: state.list.data[index].id,
-                                typeButton: true,
+                                id: state.list.list[index].id,
+                                typeButton: false,
                               ));
                             },
                             child: Container(
@@ -406,7 +412,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "طلب #${state.list.data[index].id}",
+                                            "طلب #${state.list.list[index].id}",
                                             style: TextStyle(
                                               color: Theme.of(context)
                                                   .primaryColor,
@@ -415,7 +421,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                             ),
                                           ),
                                           Text(
-                                            "${state.list.data[index].time},",
+                                            "${state.list.list[index].time},",
                                             style: TextStyle(
                                               color: const Color(0xff9C9C9C),
                                               fontSize: 17.sp,
@@ -437,7 +443,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 8.w),
                                                 child: Text(
-                                                  state.list.data[index].status,
+                                                  state.list.list[index].status,
                                                   style: TextStyle(
                                                     color:
                                                         const Color(0xffA1A1A1),
@@ -468,33 +474,55 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: List.generate(
-                                                state.list.data[index].products
-                                                            .length >=
-                                                        4
-                                                    ? 4
-                                                    : state.list.data[index]
-                                                        .products.length,
-                                                (indexImages) => Container(
-                                                  width: 25.w,
-                                                  height: 25.h,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                    state
-                                                        .list
-                                                        .data[index]
-                                                        .products[indexImages]
-                                                        .url,
-                                                  ))),
+                                            Row(children: [
+                                              SizedBox(
+                                                width: 116.w,
+                                                height: 25.h,
+                                                child: ListView.separated(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  itemCount: state
+                                                              .list
+                                                              .list[index]
+                                                              .products
+                                                              .length >=
+                                                          4
+                                                      ? 4
+                                                      : state.list.list[index]
+                                                          .products.length,
+                                                  separatorBuilder:
+                                                      (context, index) =>
+                                                          SizedBox(
+                                                    width: 4.w,
+                                                  ),
+                                                  itemBuilder:
+                                                      (context, indexImages) =>
+                                                          Container(
+                                                    width: 25.w,
+                                                    height: 25.h,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(7.r),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                          state
+                                                              .list
+                                                              .list[index]
+                                                              .products[
+                                                                  indexImages]
+                                                              .url,
+                                                        ))),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ]),
                                             SizedBox(
                                               width: 4.w,
                                             ),
-                                            if (state.list.data[index].products
+                                            if (state.list.list[index].products
                                                     .length >
                                                 4)
                                               Container(
@@ -511,11 +539,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                   child: Text(
                                                     state
                                                                 .list
-                                                                .data[index]
+                                                                .list[index]
                                                                 .products
                                                                 .length >
                                                             4
-                                                        ? "${state.list.data[index].products.length - 4}+"
+                                                        ? "${state.list.list[index].products.length - 4}+"
                                                         : "0+",
                                                     style: TextStyle(
                                                       fontSize: 11.sp,
@@ -529,7 +557,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                               ),
                                           ]),
                                       Text(
-                                        "${state.list.data[index].totalPrice}ر.س",
+                                        "${state.list.list[index].totalPrice}ر.س",
                                         style: TextStyle(
                                             fontSize: 15.sp,
                                             color:

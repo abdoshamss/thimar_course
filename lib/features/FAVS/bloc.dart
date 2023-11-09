@@ -14,14 +14,17 @@ class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
     on<PostAddFAVSDataEvent>(_addFAVS);
     on<PostRemoveFAVSDataEvent>(_removeFAVS);
   }
-
+  List<FAVSModel> favsData = [];
   Future<void> _getData(
       GetFAVSDataEvent event, Emitter<FAVSStates> emit) async {
     emit(FAVSLoadingState());
     final response = await dioHelper.get("client/products/favorites");
     if (response.isSuccess) {
       final list = FAVSData.fromJson(response.response!.data);
-      emit(FAVSSuccessState(list: list, message: response.message));
+      favsData = FAVSData.fromJson(response.response!.data).list;
+
+      // emit(FAVSSuccessState(list: list, message: response.message));
+      emit(FAVSSuccessState(message: response.message));
     } else {
       emit(FAVSErrorState(
         message: response.message,
@@ -32,14 +35,22 @@ class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
 
   Future<void> _addFAVS(
       PostAddFAVSDataEvent event, Emitter<FAVSStates> emit) async {
-    final response = await dioHelper.post("client/products/${event.id}/add_to_favorite");
+    final response =
+        await dioHelper.post("client/products/${event.id}/add_to_favorite");
+
     emit(AddToFAVSState(message: response.message));
   }
 
   Future<void> _removeFAVS(
       PostRemoveFAVSDataEvent event, Emitter<FAVSStates> emit) async {
-    final response =
-        await dioHelper.post("client/products/${event.id}/remove_from_favorite");
-    emit(RemoveFromFAVSState(message: response.message,statusCode: response.response!.statusCode??200));
+    final response = await dioHelper
+        .post("client/products/${event.id}/remove_from_favorite");
+
+    emit(RemoveFromFAVSState(
+        message: response.message,
+        statusCode: response.response!.statusCode ?? 200));
+    print("event.index.toString()" * 8);
+    print(event.index);
+    favsData.removeAt(event.index);
   }
 }

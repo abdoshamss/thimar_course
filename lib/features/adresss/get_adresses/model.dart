@@ -1,18 +1,14 @@
 part of 'bloc.dart';
 
 class GetAddressesData {
-  late final List<Data> data;
-  late final String status;
-  late final String message;
+  late final List<AddressModel> list;
 
   GetAddressesData.fromJson(Map<String, dynamic> json) {
-    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
-    status = json['status'] ?? "";
-    message = json['message'] ?? "";
+    list = List.from(json['data']??[]).map((e) => AddressModel.fromJson(e)).toList();
   }
 }
 
-class Data {
+class AddressModel {
   late final int id;
   late final String type;
   late final double lat;
@@ -22,14 +18,14 @@ class Data {
   late final bool isDefault;
   late final String phone;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AddressModel.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? 0;
     type = json['type'] ?? "";
     lat = double.tryParse(json['lat'].toString()) ?? 0.0;
     lng = double.tryParse(json['lng'].toString()) ?? 0.0;
     location = json['location'] ?? "";
     description = json['description'] ?? "";
-    isDefault = json['is_default'] ?? false;
-    phone = json['phone'] ?? 0;
+    isDefault = json['is_default'] ??false;
+    phone = json['phone'] ?? "";
   }
 }

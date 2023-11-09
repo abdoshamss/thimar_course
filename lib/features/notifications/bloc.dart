@@ -21,7 +21,7 @@ class NotificationsBloc extends Bloc<NotificationsEvents, NotificationsStates> {
 
     if (response.isSuccess) {
       final list =
-          NotificationData.fromJson(response.response!.data).list.notifications;
+          NotificationData.fromJson(response.response!.data);
       debugPrint(response.message);
 
       emit(NotificationsSuccessState(list: list, message: response.message));

@@ -5,7 +5,7 @@ class GetAddressesStates {}
 class GetAddressesLoadingState extends GetAddressesStates {}
 
 class GetAddressesSuccessState extends GetAddressesStates {
-  final List<Data> list;
+  final List<AddressModel> list;
 
   GetAddressesSuccessState({required this.list});
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 
@@ -15,13 +16,15 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
     on<RemoveAddressesDataEvent>(_removeAddresses);
     on<AddAddressesDataEvent>(_addAddresses);
   }
-  List<Data> addressesList = [];
-  Future<void> _getAddresses(
+  late int index;
+  final noteController=TextEditingController();
+  List<AddressModel> addressesList = [];
+   Future<void> _getAddresses(
       GetAddressesEvents event, Emitter<GetAddressesStates> emit) async {
     emit(GetAddressesLoadingState());
     final response = await dioHelper.get("client/addresses");
     if (response.isSuccess) {
-      addressesList = GetAddressesData.fromJson(response.response!.data).data;
+      addressesList = GetAddressesData.fromJson(response.response!.data).list;
       emit(GetAddressesSuccessState(list: addressesList));
     } else {
       emit(GetAddressesErrorState());
@@ -32,10 +35,11 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
       EditAddressesDataEvent event, Emitter<GetAddressesStates> emit) async {
     emit(EditAddressesLoadingState());
     final map = {
+      "_method": "PUT",
       "type": event.type,
     };
     final response =
-        await dioHelper.put("client/addresses/${event.id}", data: map);
+        await dioHelper.post("client/addresses/${event.id}", data: map);
     if (response.isSuccess) {
       emit(EditAddressesSuccessState(message: response.message));
     } else {
@@ -45,17 +49,15 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
     }
   }
 
-  Future<void> _removeAddresses(
-      RemoveAddressesDataEvent event, Emitter<GetAddressesStates> emit) async {
+  Future<void> _removeAddresses(RemoveAddressesDataEvent event, Emitter<GetAddressesStates> emit) async {
     emit(RemoveAddressesLoadingState());
-    final map = {
-      "type": event.type,
-    };
-    final response =
-        await dioHelper.delete("client/addresses/${event.id}", data: map);
+    final response = await dioHelper.post("client/addresses/${event.id}", data: {
+          "type": event.type,
+          "_method":"DELETE"
+        });
     if (response.isSuccess) {
-      emit(RemoveAddressesSuccessState(message: response.message));
       addressesList.removeAt(event.index);
+      emit(RemoveAddressesSuccessState(message: response.message));
     } else {
       emit(RemoveAddressesErrorState(
           message: response.message,
@@ -78,6 +80,7 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
     final response = await dioHelper.post("client/addresses", data: map);
     if (response.isSuccess) {
       emit(AddAddressesSuccessState(message: response.message));
+
     } else {
       emit(AddAddressesErrorState(
           message: response.message,

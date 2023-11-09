@@ -19,7 +19,7 @@ class CategoryProductBloc
     emit(CategoryProductLoadingState());
     final response = await dioHelper.get("categories/${event.id}");
 
-    final list = CategoryProductModel.fromJson(response.response!.data);
+    final list = CategoryProductData.fromJson(response.response!.data);
 
     if (response.isSuccess) {
       emit(CategoryProductSuccessState(list: list));

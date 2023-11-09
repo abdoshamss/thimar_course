@@ -18,12 +18,13 @@ class ProductDetailsScreen extends StatefulWidget {
   final double price;
   bool isFavorite;
   final double amount;
+  final int? index;
   ProductDetailsScreen(
       {Key? key,
       required this.id,
       required this.price,
       required this.isFavorite,
-      required this.amount})
+      required this.amount, required this.index})
       : super(key: key);
 
   @override
@@ -91,7 +92,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
             GestureDetector(
                 onTap: () {
+
                   Navigator.pop(context);
+
                 },
                 child: Image.asset(
                   Assets.icons.backHome.path,
@@ -104,7 +107,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            child: BlocBuilder(
+            child: BlocConsumer(
+              listener:  (context, state) {
+                if(state is RemoveFromFAVSState)
+                  {
+                    Navigator.pop(context,true);
+                  }
+              },
               bloc: favsBloc,
               builder: (BuildContext context, state) {
                 return GestureDetector(
@@ -112,9 +121,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     if (widget.isFavorite == false) {
                       favsBloc.add(PostAddFAVSDataEvent(id: widget.id));
                       widget.isFavorite = !widget.isFavorite;
+
                     } else {
-                      favsBloc.add(PostRemoveFAVSDataEvent(id: widget.id));
+                      favsBloc.add(PostRemoveFAVSDataEvent(id: widget.id, index: widget.index!));
                       widget.isFavorite = !widget.isFavorite;
+
                     }
                   },
                   child: Container(
@@ -208,8 +219,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     controller: pageController,
                                     physics: const ClampingScrollPhysics(),
                                     children: List.generate(
-                                      state.list.data.images.isNotEmpty
-                                          ? state.list.data.images.length
+                                      state.list.list.images.isNotEmpty
+                                          ? state.list.list.images.length
                                           : 1,
                                       (index) => Container(
                                         clipBehavior:
@@ -223,24 +234,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               )),
                                         ),
                                         child: Image.network(
-                                          state.list.data.images.isNotEmpty
+                                          state.list.list.images.isNotEmpty
                                               ? state
-                                                  .list.data.images[index].url
-                                              : state.list.data.mainImage,
+                                                  .list.list.images[index].url
+                                              : state.list.list.mainImage,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                if (state.list.data.images.length > 1)
+                                if (state.list.list.images.length > 1)
                                   Padding(
                                     padding: EdgeInsets.all(8.0.r),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: List.generate(
-                                        state.list.data.images.length,
+                                        state.list.list.images.length,
                                         (index) => Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 2.r),
@@ -266,7 +277,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        state.list.data.title,
+                                        state.list.list.title,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 22.sp,
@@ -281,7 +292,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           children: <TextSpan>[
                                             TextSpan(
                                               text:
-                                                  '${state.list.data.discount * 100}% ',
+                                                  '${state.list.list.discount * 100}% ',
                                               style: TextStyle(
                                                 fontSize: 13.sp,
                                                 color: Colors.red,
@@ -290,7 +301,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  '${state.list.data.price}ر.س',
+                                                  '${state.list.list.price}ر.س',
                                               style: TextStyle(
                                                 fontSize: 17.sp,
                                                 color: Theme.of(context)
@@ -300,7 +311,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             ),
                                             TextSpan(
                                               text:
-                                                  '  ${state.list.data.priceBeforeDiscount}ر.س ',
+                                                  '  ${state.list.list.priceBeforeDiscount}ر.س ',
                                               style: TextStyle(
                                                 fontSize: 13.sp,
                                                 color: Theme.of(context)
@@ -323,108 +334,116 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "السعر / ${state.list.data.unit.name}",
+                                        "السعر / ${state.list.list.unit.name}",
                                         style: TextStyle(
                                             fontSize: 19.sp,
                                             color: Theme.of(context).hintColor,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      Container(
-                                        width: 110.w,
-                                        height: 35.h,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .primaryColor
-                                              .withOpacity(.11),
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                counter++;
+                                      StatefulBuilder(builder: (context, setState2) {
+                                        return   Container(
+                                          width: 110.w,
+                                          height: 35.h,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .primaryColor
+                                                .withOpacity(.11),
+                                            borderRadius:
+                                            BorderRadius.circular(10.r),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  counter++;
+setState2(() {
 
-                                                bloc.add(ProductUpdateEvent(
-                                                    id: state.list.data.id,
-                                                    amount: counter));
-                                              },
-                                              child: Container(
-                                                height: 30.h,
-                                                width: 30.w,
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(.02),
-                                                      blurStyle:
-                                                          BlurStyle.inner,
-                                                      offset:
-                                                          const Offset(0, 3),
-                                                    )
-                                                  ],
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.r),
+});
+                                                  // bloc.add(ProductUpdateEvent(
+                                                  //     id: state.list.data.id,
+                                                  //     amount: counter));
+                                                },
+                                                child: Container(
+                                                  height: 30.h,
+                                                  width: 30.w,
+                                                  decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(.02),
+                                                        blurStyle:
+                                                        BlurStyle.inner,
+                                                        offset:
+                                                        const Offset(0, 3),
+                                                      )
+                                                    ],
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        8.r),
+                                                  ),
+                                                  child: Image.asset(
+                                                      Assets.icons.add.path),
                                                 ),
-                                                child: Image.asset(
-                                                    Assets.icons.add.path),
                                               ),
-                                            ),
-                                            BlocBuilder(
-                                                bloc: bloc,
-                                                builder: (context, state) {
-                                                  return Text(
-                                                    counter.toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 15.sp,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  );
-                                                }),
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (counter > 1) {
-                                                  counter--;
-                                                  bloc.add(ProductUpdateEvent(
-                                                      id: state.list.data.id,
-                                                      amount: counter));
-                                                }
-                                              },
-                                              child: Container(
-                                                height: 30.h,
-                                                width: 30.w,
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(.02),
-                                                      blurStyle:
-                                                          BlurStyle.inner,
-                                                      offset:
-                                                          const Offset(0, 3),
-                                                    )
-                                                  ],
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.r),
+                                              BlocBuilder(
+                                                  bloc: bloc,
+                                                  builder: (context, state) {
+                                                    return Text(
+                                                      counter.toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 15.sp,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        fontWeight:
+                                                        FontWeight.w500,
+                                                      ),
+                                                    );
+                                                  }),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  if (counter > 1) {
+                                                    counter--;
+                                                    setState2(() {
+
+                                                    });
+                                                    // bloc.add(ProductUpdateEvent(
+                                                    //     id: state.list.data.id,
+                                                    //     amount: counter));
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 30.h,
+                                                  width: 30.w,
+                                                  decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(.02),
+                                                        blurStyle:
+                                                        BlurStyle.inner,
+                                                        offset:
+                                                        const Offset(0, 3),
+                                                      )
+                                                    ],
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        8.r),
+                                                  ),
+                                                  child: Image.asset(
+                                                      Assets.icons.minus.path),
                                                 ),
-                                                child: Image.asset(
-                                                    Assets.icons.minus.path),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                            ],
+                                          ),
+                                        );
+                                      },)
+
                                     ],
                                   ),
                                   SizedBox(
@@ -453,7 +472,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           width: 12.w,
                                         ),
                                         Text(
-                                          state.list.data.code,
+                                          state.list.list.code,
                                           style: TextStyle(
                                             fontSize: 19.sp,
                                             fontWeight: FontWeight.w300,
@@ -488,7 +507,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     height: 10.h,
                                   ),
                                   Text(
-                                    state.list.data.description,
+                                    state.list.list.description,
                                     style: TextStyle(
                                       color: Theme.of(context).hintColor,
                                       fontWeight: FontWeight.w300,
@@ -681,7 +700,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   id: state.list[index].id,
                                   price: state.list[index].price,
                                   isFavorite: state.list[index].isFavorite,
-                                  amount: state.list[index].amount,
+                                  amount: state.list[index].amount, index: null,
                                 ));
                               },
                               child: Container(

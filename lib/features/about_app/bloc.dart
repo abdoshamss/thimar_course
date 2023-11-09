@@ -14,7 +14,7 @@ class AboutAppBloc extends Bloc<AboutDataEvents, AboutAppStates> {
   var data;
 
   Future<void> _getAboutData(
-      GetAboutDataEvent event, Emitter<AboutAppStates> emitter) async {
+      GetAboutDataEvent event, Emitter<AboutAppStates> emit) async {
     emit(GetAboutDetailsLoadingState());
     final response = await dioHelper.get("about");
 

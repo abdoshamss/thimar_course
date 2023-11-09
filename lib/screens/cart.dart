@@ -403,11 +403,21 @@ class _CartScreenState extends State<CartScreen> {
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(16.0.r),
-        child: AppButton(
-            text: "الانتقال لإتمام الطلب",
-            onPress: () {
-              navigateTo(const CompleteOrderScreen());
-            }),
+        child: BlocBuilder(
+          bloc: cardDataBLoc,
+          buildWhen: (previous, current) => current is CartDataSuccessState,
+          builder: (BuildContext context, state) {
+            if (state is CartDataSuccessState){
+              return AppButton(
+                  text: "الانتقال لإتمام الطلب",
+                  onPress: () {
+                    navigateTo(  CompleteOrderScreen(coupon: cardDataBLoc.couponController.text, discount: state.list.totalDiscount, totalPrice: state.list.totalPriceWithVat,));
+                  });
+            }
+            return SizedBox.shrink();
+          },
+
+        ),
       ),
     );
   }
