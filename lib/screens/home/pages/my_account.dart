@@ -25,24 +25,25 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-    final logoutBloc = KiwiContainer().resolve<LogOutBLoc>();
+  final logoutBloc = KiwiContainer().resolve<LogOutBLoc>();
 
-    @override
+  @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     logoutBloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.zero,
       children: [
         Container(
           height: 220.h,
           width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40.r),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(40.r),
+                bottomRight: Radius.circular(40.r)),
             image: DecorationImage(
                 image: AssetImage(
                   Assets.images.drawerBackground.path,
@@ -88,174 +89,132 @@ class _MyAccountPageState extends State<MyAccountPage> {
             ],
           ),
         ),
-        if (CacheHelper.getToken()!=null)
-        Padding(
-          padding: EdgeInsets.all(16.0.r),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(17.r),
-              border: Border.all(color: const Color(0xffF6F6F6)),
-            ),
-            child: Column(
-              children: [
-
-                GestureDetector(
-                  onTap: () {
-                    navigateTo(const EditProfileDetailsScreen());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0.r),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          Assets.icons.user.path,
-                          width: 18.w,
-                          height: 18.h,
-
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Text(
-                          "البيانات الشخصية",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+        if (CacheHelper.getToken() != null)
+          Padding(
+            padding: EdgeInsets.all(16.0.r),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(17.r),
+                border: Border.all(color: const Color(0xffF6F6F6)),
+              ),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      navigateTo(const EditProfileDetailsScreen());
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0.r),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            Assets.icons.userHome.path,
+                            width: 18.w,
+                            height: 18.h,
                           ),
-                        ),
-                        const Spacer(),
-                        Image.asset(
-                          Assets.icons.back.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          Text(
+                            "البيانات الشخصية",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          Image.asset(
+                            Assets.icons.back.path,
+                            width: 18.w,
+                            height: 18.h,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Divider(
-                  height: .3.h,
-                  color: const Color(0xffF6F6F6),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    navigateTo(const WalletScreen());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0.r),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          Assets.icons.wallet.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Text(
-                          "المحفظة",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                  Divider(
+                    height: .3.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigateTo(const WalletScreen());
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0.r),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            Assets.icons.wallet.path,
+                            width: 18.w,
+                            height: 18.h,
                           ),
-                        ),
-                        const Spacer(),
-                        Image.asset(
-                          Assets.icons.back.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          Text(
+                            "المحفظة",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Spacer(),
+                          Image.asset(
+                            Assets.icons.back.path,
+                            width: 18.w,
+                            height: 18.h,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Divider(
-                  height: .3.h,
-                  color: const Color(0xffF6F6F6),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    navigateTo(const AddressesScreen());
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0.r),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          Assets.icons.address.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Text(
-                         "العناوين",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
+                  Divider(
+                    height: .3.h,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigateTo(const AddressesScreen());
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0.r),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            Assets.icons.address.path,
+                            width: 18.w,
+                            height: 18.h,
                           ),
-                        ),
-                        // Spacer(),
-                        const Spacer(),
-                        Image.asset(
-                          Assets.icons.back.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                      ],
+                          SizedBox(
+                            width: 8.w,
+                          ),
+                          Text(
+                            "العناوين",
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // Spacer(),
+                          const Spacer(),
+                          Image.asset(
+                            Assets.icons.back.path,
+                            width: 18.w,
+                            height: 18.h,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Divider(
-                  height: .3.h,
-                  color: const Color(0xffF6F6F6),
-                ),
-                GestureDetector(
-                  onTap: () {
-
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0.r),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          Assets.icons.dollar.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Text(
-                          "الدفع",
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Spacer(),
-                        Image.asset(
-                          Assets.icons.back.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                      ],
-                    ),
+                  Divider(
+                    height: .3.h,
                   ),
-                ),
-
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-
-
         Padding(
           padding: EdgeInsets.all(16.0.r),
           child: Container(
@@ -265,7 +224,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
             ),
             child: Column(
               children: [
-
                 GestureDetector(
                   onTap: () {
                     navigateTo(const FAQSScreen());
@@ -302,7 +260,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -340,7 +297,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -379,7 +335,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -417,7 +372,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
                 ),
                 Padding(
                   padding: EdgeInsets.all(16.0.r),
@@ -499,9 +453,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
                 ),
-
                 Padding(
                   padding: EdgeInsets.all(16.0.r),
                   child: Row(
@@ -534,8 +486,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
-                ),       Padding(
+                ),
+                Padding(
                   padding: EdgeInsets.all(16.0.r),
                   child: Row(
                     children: [
@@ -565,7 +517,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Divider(
                   height: .3.h,
-                  color: const Color(0xffF6F6F6),
                 ),
                 Padding(
                   padding: EdgeInsets.all(16.0.r),
@@ -614,11 +565,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
           },
           builder: (BuildContext context, state) => GestureDetector(
             onTap: () {
-              if (CacheHelper.getToken()==null){
+              if (CacheHelper.getToken() == null) {
                 navigateTo(const LoginScreen());
-              }else{
-
-              logoutBloc.add(PostLogOutDataEvent());
+              } else {
+                logoutBloc.add(PostLogOutDataEvent());
               }
             },
             child: Padding(
@@ -633,7 +583,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   child: Row(
                     children: [
                       Text(
-                       CacheHelper.getToken()==null?"تسجيل الدخول": "تسجيل الخروج",
+                        CacheHelper.getToken() == null
+                            ? "تسجيل الدخول"
+                            : "تسجيل الخروج",
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: Theme.of(context).primaryColor,

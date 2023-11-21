@@ -35,7 +35,9 @@ class ChargeNowScreen extends StatelessWidget {
                 height: 16.h,
               ),
               Input(
-                validator: (value) {},
+                validator: (value) {
+                  return null;
+                },
                 inputType: InputType.normal,
                 labelText: "المبلغ الخاص بك",
               ),
@@ -53,23 +55,42 @@ class ChargeNowScreen extends StatelessWidget {
                 height: 16.h,
               ),
               Input(
-                validator: (value) {},
+                validator: (value) {
+                  return null;
+                },
                 inputType: InputType.normal,
                 labelText: "الاسم",
               ),
               Input(
-                validator: (value) {},
+                validator: (value) {
+                  return null;
+                },
                 inputType: InputType.normal,
                 labelText: "رقم البطاقة الائتمانية",
               ),
-
-              TextFormField(
-                validator: (value){},
-                decoration: InputDecoration(
-                  labelText: "تاريخ الانتهاء",
-
-                ),
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 160.w,
+                    child: Input(
+                      validator: (value) {
+                        return null;
+                      },
+                      labelText: "تاريخ الانتهاء",
+                    ),
+                  ),
+                  SizedBox(
+                    width: 160.w,
+                    child: Input(
+                      validator: (value) {
+                        return null;
+                      },
+                      labelText: "الرقم المتسلسل",
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

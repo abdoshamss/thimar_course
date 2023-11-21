@@ -21,8 +21,7 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
     final bloc = KiwiContainer().resolve<GiveAdviceBloc>();
     @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+     super.dispose();
     bloc.close();
 
     }

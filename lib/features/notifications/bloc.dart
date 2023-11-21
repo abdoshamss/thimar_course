@@ -26,7 +26,7 @@ class NotificationsBloc extends Bloc<NotificationsEvents, NotificationsStates> {
 
       emit(NotificationsSuccessState(list: list, message: response.message));
     } else {
-      emit(NotificationsErrorState());
+      emit(NotificationsErrorState(message: response.message));
     }
   }
 }

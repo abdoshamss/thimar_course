@@ -20,8 +20,8 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     title = json['title']??"";
     image = json['image']??"";
-    amount = double.parse(json['amount'].toString())??0;
-    deliveryCost =double.parse( json['delivery_cost'].toString())??0;
-    price = double .parse(json['price'].toString())??0;
+    amount = double.tryParse(json['amount'].toString())??0;
+    deliveryCost =double.tryParse( json['delivery_cost'].toString())??0;
+    price = double .tryParse(json['price'].toString())??0;
   }
 }

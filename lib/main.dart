@@ -17,7 +17,7 @@ import 'screens/charge_now.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance.getToken().then((value) {
     debugPrint("My FCM tooooooooooooken");
     debugPrint(value.toString());
@@ -26,7 +26,9 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: getMaterialColor(primaryColor.value),
   ));
-
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   await CacheHelper.init();
   await EasyLocalization.ensureInitialized();
   runApp(
@@ -62,22 +64,18 @@ class MyApp extends StatelessWidget {
             Directionality(textDirection: mat.TextDirection.rtl, child: child!),
         // Directionality(textDirection:mat. TextDirection.rtl, child: child!),
         theme: ThemeData(
-          // elevatedButtonTheme: ElevatedButtonThemeData(
-          //   style: ElevatedButton.styleFrom(
-          //     textStyle: TextStyle(
-          //       color: Colors.white
-          //     )
-          //   )
-          // ),
           androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: getMaterialColor(primaryColor.value),
           unselectedWidgetColor: const Color(0xffF3F3F3),
           hintColor: const Color(0xff808080),
           fontFamily: "Tajawal",
+          dividerColor: const Color(0xffF6F6F6),
           appBarTheme: const AppBarTheme(
               elevation: 0,
               color: Colors.white,
+              centerTitle: true,
               titleTextStyle: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -98,17 +96,10 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          // snackBarTheme: const SnackBarThemeData(
-          //     actionTextColor: Colors.red,
-          //     backgroundColor: Colors.black,
-          //     contentTextStyle: TextStyle(color: Colors.white),
-          //     elevation: 20
-          // ),
         ),
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
         // home: const BeVipScreen(),
-
       ),
     );
   }
@@ -143,7 +134,6 @@ class MyApp extends StatelessWidget {
 //           name == other.name &&
 //           id == other.id;
 // }
-
 
 ///flutter build apk --no-tree-shake-icons
 /// flutter build apk --debug

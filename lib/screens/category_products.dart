@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/features/categories/bloc.dart';
 import 'package:thimar_course/screens/product_details.dart';
 
 import '../core/design/widgets/input.dart';
@@ -11,10 +12,9 @@ import '../gen/assets.gen.dart';
 import 'search_categories.dart';
 
 class CategoryProductsScreen extends StatefulWidget {
-  final String title;
-  final int id;
-  const CategoryProductsScreen(
-      {Key? key, required this.title, required this.id})
+  CategoriesData model;
+  final int index;
+  CategoryProductsScreen({Key? key, required this.model, required this.index})
       : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   @override
   void initState() {
     super.initState();
-    bloc.add(GetCategoryProductEvent(id: widget.id));
+    bloc.add(GetCategoryProductEvent(id: widget.model.list[widget.index].id));
   }
 
   @override
@@ -47,7 +47,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         centerTitle: true,
         elevation: 0.0,
         title: Text(
-          widget.title,
+          widget.model.list[widget.index].name,
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
@@ -60,8 +60,9 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           Input(
             enable: () {
               navigateTo(SearchCategoriesScreen(
-                id: widget.id, minPrice: 1,
-                maxPrice:999 ,
+                id: widget.model.list[widget.index].id,
+                minPrice: 1,
+                maxPrice: 999,
               ));
             },
             isEnabled: false,
@@ -93,16 +94,12 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                     childAspectRatio: 160 / 215,
                     crossAxisSpacing: 16.h,
                   ),
-                  itemCount: state.list.list.length,
+                  itemCount: state.list.length,
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                     onTap: () {
                       navigateTo(ProductDetailsScreen(
-
-                        id: state.list.list[index].id,
-                        price: state.list.list[index].price,
-                        isFavorite: state.list.list[index].isFavorite,
-                        amount: state.list.list[index].amount, index: null,
+                        model: state.list[index],
                       ));
                     },
                     child: Container(
@@ -127,7 +124,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                 alignment: AlignmentDirectional.topEnd,
                                 children: [
                                   Image.network(
-                                    state.list.list[index].mainImage,
+                                    state.list[index].mainImage,
                                     fit: BoxFit.fill,
                                   ),
                                   Container(
@@ -143,7 +140,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                                   Radius.circular(11.r)),
                                     ),
                                     child: Text(
-                                      "${state.list.list[index].discount * 100}%",
+                                      "${state.list[index].discount * 100}%",
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         color: Colors.white,
@@ -160,7 +157,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                             child: Row(
                               children: [
                                 Text(
-                                  state.list.list[index].title,
+                                  state.list[index].title,
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
@@ -187,8 +184,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                 Text.rich(
                                   TextSpan(children: [
                                     TextSpan(
-                                      text:
-                                          "${state.list.list[index].price} ر.س",
+                                      text: "${state.list[index].price} ر.س",
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w700,
@@ -196,7 +192,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                     ),
                                     TextSpan(
                                       text:
-                                          " ${state.list.list[index].priceBeforeDiscount} ر.س",
+                                          " ${state.list[index].priceBeforeDiscount} ر.س",
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w400,

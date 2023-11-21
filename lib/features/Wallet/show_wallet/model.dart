@@ -8,7 +8,7 @@ class WalletData {
   WalletData.fromJson(Map<String, dynamic> json) {
     list = List.from(json['data']??[]).map((e) => WalletModel.fromJson(e)).toList();
 
-    wallet = double.parse(json['wallet'].toString())??0;
+    wallet = double.tryParse(json['wallet'].toString())??0;
   }
 }
 
@@ -28,9 +28,9 @@ class WalletModel {
 
   WalletModel.fromJson(Map<String, dynamic> json) {
     id = json['id']??0;
-    amount = double.parse(json['amount'].toString())??0;
-    beforeCharge = double.parse(json['before_charge'].toString())??0;
-    afterCharge = double.parse(json['after_charge'].toString())??0;
+    amount = double.tryParse(json['amount'].toString())??0;
+    beforeCharge = double.tryParse(json['before_charge'].toString())??0;
+    afterCharge = double.tryParse(json['after_charge'].toString())??0;
     date = json['date']??"";
     statusTrans = json['status_trans']??"";
     status = json['status']??"";

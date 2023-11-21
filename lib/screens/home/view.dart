@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
-import 'package:thimar_course/screens/order.dart';
+import 'package:thimar_course/screens/home/pages/order.dart';
 
 import 'pages/favs.dart';
 import 'pages/home.dart';

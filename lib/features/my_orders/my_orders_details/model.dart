@@ -38,9 +38,9 @@ class MyOrdersDetailsModel {
     status = json['status']??"";
     date = json['date']??"";
     time = json['time']??"";
-    orderPrice = double.parse(json['order_price'].toString())??0;
-    deliveryPrice = double.parse(json['delivery_price'].toString())??0;
-    totalPrice = double.parse(json['total_price'].toString())??0;
+    orderPrice = double.tryParse(json['order_price'].toString())??0;
+    deliveryPrice = double.tryParse(json['delivery_price'].toString())??0;
+    totalPrice = double.tryParse(json['total_price'].toString())??0;
     clientName = json['client_name']??"";
     phone = json['phone']??"";
     address = Address.fromJson(json['address']??{});
@@ -49,9 +49,9 @@ class MyOrdersDetailsModel {
     note = json['note']??"";
     deliveryPayer = json['delivery_payer']??"";
     isVip = json['is_vip']==1;
-    vipDiscount = double.parse(json['vip_discount'].toString())??0.0;
-    priceBeforeDiscount = double.parse(json['price_before_discount'].toString())??0;
-    discount =double.parse( json['discount'].toString())??0;
+    vipDiscount = double.tryParse(json['vip_discount'].toString())??0.0;
+    priceBeforeDiscount = double.tryParse(json['price_before_discount'].toString())??0;
+    discount =double.tryParse( json['discount'].toString())??0;
   }
 
 
@@ -71,8 +71,8 @@ class Address {
   Address.fromJson(Map<String, dynamic> json){
     id = json['id']??0;
     type = json['type']??"";
-    lat = double.parse(json['lat'].toString())??0;
-    lng = double.parse(json['lng'].toString())??0;
+    lat = double.tryParse(json['lat'].toString())??0;
+    lng = double.tryParse(json['lng'].toString())??0;
     location = json['location']??"";
     description = json['description']??"";
     isDefault = json['is_default']??false;

@@ -7,7 +7,7 @@ import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/screens/auth/login.dart';
-import 'package:thimar_course/screens/home/home_nav.dart';
+import 'package:thimar_course/screens/home/view.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

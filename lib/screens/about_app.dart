@@ -21,8 +21,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
     ..add(GetAboutDataEvent());
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+     super.dispose();
     bloc.close();
   }
 

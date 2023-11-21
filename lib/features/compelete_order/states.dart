@@ -115,4 +115,12 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
   }
 }
 
-class CompleteOrderErrorState extends CompleteOrderStates {}
+class CompleteOrderErrorState extends CompleteOrderStates {
+  final int? statusCode;
+  final String message;
+
+  CompleteOrderErrorState({required this.statusCode, required this.message}){
+    showMessage(message,messageType: MessageType.error);
+  }
+
+}

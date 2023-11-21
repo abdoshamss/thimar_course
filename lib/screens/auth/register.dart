@@ -28,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final citiesBloc = KiwiContainer().resolve<GetCitiesScreenBLoc>()..add(GetCitiesScreenDataEvent());
     @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     bloc.close();
     citiesBloc.close();

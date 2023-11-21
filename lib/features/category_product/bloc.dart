@@ -2,10 +2,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/logic/dio_helper.dart';
+import '../products/bloc.dart';
 
 part 'states.dart';
-part 'model.dart';
-part 'events.dart';
+ part 'events.dart';
 
 class CategoryProductBloc
     extends Bloc<CategoryProductEvents, CategoryProductStates> {
@@ -19,7 +19,7 @@ class CategoryProductBloc
     emit(CategoryProductLoadingState());
     final response = await dioHelper.get("categories/${event.id}");
 
-    final list = CategoryProductData.fromJson(response.response!.data);
+    final list = ProductsData.fromJson(response.response!.data).list;
 
     if (response.isSuccess) {
       emit(CategoryProductSuccessState(list: list));

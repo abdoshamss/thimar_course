@@ -12,7 +12,7 @@ import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/screens/auth/forget_password.dart';
 import 'package:thimar_course/screens/auth/register.dart';
 import '../../features/auth/login/bloc.dart';
-import '../home/home_nav.dart';
+import '../home/view.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

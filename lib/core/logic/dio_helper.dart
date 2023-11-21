@@ -7,8 +7,7 @@ class DioHelper {
     headers: {
       "Accept": "application/json",
       "Accept-Language": "ar",
-      // "Authorization": "Bearer ${CacheHelper.getToken()}",
-    },
+     },
   ));
 
   Future<CustomResponse> post(String endPoint,

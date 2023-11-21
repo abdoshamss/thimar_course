@@ -30,9 +30,9 @@ class MyFinishedOrdersModel {
     status = json['status'] ?? "";
     date = json['date'] ?? "";
     time = json['time'] ?? "";
-    orderPrice = double.parse(json['order_price'].toString()) ?? 0;
-    deliveryPrice = double.parse(json['delivery_price'].toString()) ?? 0;
-    totalPrice = double.parse(json['total_price'].toString()) ?? 0;
+    orderPrice = double.tryParse(json['order_price'].toString()) ?? 0;
+    deliveryPrice = double.tryParse(json['delivery_price'].toString()) ?? 0;
+    totalPrice = double.tryParse(json['total_price'].toString()) ?? 0;
     clientName = json['client_name'] ?? "";
 
     deliveryPayer = json['delivery_payer'] ?? "";
@@ -43,7 +43,7 @@ class MyFinishedOrdersModel {
 
     isVip = json['is_vip'] == 1;
     vipDiscountPercentage =
-        double.parse(json['vip_discount_percentage'].toString());
+        double.tryParse(json['vip_discount_percentage'].toString())??0;
   }
 }
 

@@ -32,7 +32,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
   final resendCodeBloc = KiwiContainer().resolve<ResendCodeBloc>();
 @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     bloc.close();
     resendCodeBloc.close();

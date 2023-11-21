@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import '../../core/logic/dio_helper.dart';
+import '../products/bloc.dart';
 
 part 'states.dart';
-part 'model.dart';
 part 'events.dart';
 
 class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
@@ -14,14 +14,14 @@ class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
     on<PostAddFAVSDataEvent>(_addFAVS);
     on<PostRemoveFAVSDataEvent>(_removeFAVS);
   }
-  List<FAVSModel> favsData = [];
+  List<ProductItemModel> favsData = [];
   Future<void> _getData(
       GetFAVSDataEvent event, Emitter<FAVSStates> emit) async {
     emit(FAVSLoadingState());
     final response = await dioHelper.get("client/products/favorites");
     if (response.isSuccess) {
-      final list = FAVSData.fromJson(response.response!.data);
-      favsData = FAVSData.fromJson(response.response!.data).list;
+      final list = ProductsData.fromJson(response.response!.data);
+      favsData = ProductsData.fromJson(response.response!.data).list;
 
       // emit(FAVSSuccessState(list: list, message: response.message));
       emit(FAVSSuccessState(message: response.message));
@@ -50,7 +50,7 @@ class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
         message: response.message,
         statusCode: response.response!.statusCode ?? 200));
     print("event.index.toString()" * 8);
-    print(event.index);
-    favsData.removeAt(event.index);
+
+
   }
 }

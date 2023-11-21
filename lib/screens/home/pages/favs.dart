@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/screens/product_details.dart';
 
 import '../../../core/logic/helper_methods.dart';
 import '../../../features/FAVS/bloc.dart';
-import '../../product_details.dart';
 
 class FAVSPage extends StatefulWidget {
   const FAVSPage({Key? key}) : super(key: key);
@@ -16,6 +16,7 @@ class FAVSPage extends StatefulWidget {
 
 class _FAVSPageState extends State<FAVSPage> {
   final favBloc = KiwiContainer().resolve<FavsBloc>();
+
   @override
   void initState() {
     super.initState();
@@ -41,302 +42,142 @@ class _FAVSPageState extends State<FAVSPage> {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          BlocBuilder(
-            bloc: favBloc,
-            builder: (BuildContext context, state) {
-              if (state is FAVSLoadingState) {
-                loadingWidget();
-              } else if (favBloc.favsData.isNotEmpty) {
-                return GridView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                  ),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 160 / 215,
-                      crossAxisSpacing: 16.h,
-                      mainAxisSpacing: 16.w),
-                  itemCount: favBloc.favsData.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      GestureDetector(
-                    onTap: () {
-                      navigateTo(ProductDetailsScreen(
-                        index: index,
-                        id: favBloc.favsData[index].id,
-                        price:double.parse( favBloc.favsData[index].price.toString()),
-                        isFavorite: favBloc.favsData[index].isFavorite,
-                        amount:  favBloc.favsData[index].amount,
-                      )).then((value) {
-                        if(value??false)
-                          {
-                            favBloc.add(GetFAVSDataEvent());
-                          }
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(.02),
-                            offset: const Offset(0, 2),
-                            blurRadius: 11.r,
-                          ),
-                        ],
+      body: BlocBuilder(
+        bloc: favBloc,
+        builder: (BuildContext context, state) {
+          if (state is FAVSLoadingState) {
+            loadingWidget();
+          } else if (favBloc.favsData.isNotEmpty) {
+            return GridView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 160 / 215,
+                  crossAxisSpacing: 16.h,
+                  mainAxisSpacing: 16.w),
+              itemCount: favBloc.favsData.length,
+              itemBuilder: (BuildContext context, int index) => GestureDetector(
+                onTap: () {
+                  navigateTo(ProductDetailsScreen(
+                    model: favBloc.favsData[index],
+                  )).then((value) {
+                    if (value ?? false) {
+                      favBloc.add(GetFAVSDataEvent());
+                    }
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.02),
+                        offset: const Offset(0, 2),
+                        blurRadius: 11.r,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Column(children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(11.r),
-                              child: Stack(
-                                alignment: AlignmentDirectional.topEnd,
-                                children: [
-                                  Image.network(
-                                    favBloc.favsData[index].mainImage,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w,
-                                      vertical: 4.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
-                                      borderRadius:
-                                          BorderRadiusDirectional.only(
-                                              bottomStart:
-                                                  Radius.circular(11.r)),
-                                    ),
-                                    child: Text(
-                                      "${favBloc.favsData[index].discount * 100}%",
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4.h),
-                            child: Row(
-                              children: [
-                                Text(
-                                  favBloc.favsData[index].title,
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Column(children: [
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(11.r),
+                          child: Stack(
+                            alignment: AlignmentDirectional.topEnd,
                             children: [
-                              Text(
-                                "السعر / كجم",
-                                style: TextStyle(
-                                    fontSize: 12.sp,
+                              Image.network(
+                                favBloc.favsData[index].mainImage,
+                                fit: BoxFit.fill,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                  vertical: 4.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  borderRadius: BorderRadiusDirectional.only(
+                                      bottomStart: Radius.circular(11.r)),
+                                ),
+                                child: Text(
+                                  "${favBloc.favsData[index].discount}%",
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).hintColor),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 4.h),
-                            child: Row(
-                              children: [
-                                Text.rich(
-                                  TextSpan(children: [
-                                    TextSpan(
-                                      text:
-                                          "${favBloc.favsData[index].price} ر.س",
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                          " ${favBloc.favsData[index].priceBeforeDiscount} ر.س",
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w400,
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                    ),
-                                  ]),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: Row(
+                          children: [
+                            Text(
+                              favBloc.favsData[index].title,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "السعر / كجم",
+                            style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).hintColor),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4.h),
+                        child: Row(
+                          children: [
+                            Text.rich(
+                              TextSpan(children: [
+                                TextSpan(
+                                  text: "${favBloc.favsData[index].price} ر.س",
                                   style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
-                              ],
+                                TextSpan(
+                                  text:
+                                      " ${favBloc.favsData[index].priceBeforeDiscount} ر.س",
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w400,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ]),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
                             ),
-                          ),
-                        ]),
+                          ],
+                        ),
                       ),
-                    ),
+                    ]),
                   ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
+                ),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        },
       ),
     );
   }
 }
-// BlocBuilder(
-// bloc: favBloc,
-// builder: (BuildContext context, state) {
-// if (state is FAVSLoadingState) {
-// loadingWidget();
-// } else if (state is FAVSSuccessState) {
-// return GridView.builder(
-// padding: EdgeInsets.symmetric(
-// horizontal: 16.w,
-// ),
-// shrinkWrap: true,
-// physics: const NeverScrollableScrollPhysics(),
-// gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-// crossAxisCount: 2,
-// childAspectRatio: 160 / 215,
-// crossAxisSpacing: 16.h,
-// mainAxisSpacing: 16.w),
-// itemCount: state.list.data.length,
-// itemBuilder: (BuildContext context, int index) =>
-// GestureDetector(
-// onTap: () {
-// navigateTo(ProductDetailsScreen(
-// id: state.list.data[index].id,
-// price:double.parse( state.list.data[index].price.toString()),
-// isFavorite: state.list.data[index].isFavorite,
-// amount: state.list.data[index].amount,
-// ));
-// },
-// child: Container(
-// decoration: BoxDecoration(
-// color: Colors.white,
-// borderRadius: BorderRadius.circular(16.r),
-// boxShadow: [
-// BoxShadow(
-// color: Colors.black.withOpacity(.02),
-// offset: const Offset(0, 2),
-// blurRadius: 11.r,
-// ),
-// ],
-// ),
-// child: Padding(
-// padding: const EdgeInsets.only(bottom: 16),
-// child: Column(children: [
-// Expanded(
-// child: ClipRRect(
-// borderRadius: BorderRadius.circular(11.r),
-// child: Stack(
-// alignment: AlignmentDirectional.topEnd,
-// children: [
-// Image.network(
-// state.list.data[index].mainImage,
-// fit: BoxFit.fill,
-// ),
-// Container(
-// padding: EdgeInsets.symmetric(
-// horizontal: 10.w,
-// vertical: 4.h,
-// ),
-// decoration: BoxDecoration(
-// color: Theme.of(context).primaryColor,
-// borderRadius:
-// BorderRadiusDirectional.only(
-// bottomStart:
-// Radius.circular(11.r)),
-// ),
-// child: Text(
-// "${state.list.data[index].discount * 100}%",
-// style: TextStyle(
-// fontSize: 14.sp,
-// color: Colors.white,
-// fontWeight: FontWeight.bold,
-// ),
-// ),
-// ),
-// ],
-// ),
-// ),
-// ),
-// Padding(
-// padding: EdgeInsets.symmetric(vertical: 4.h),
-// child: Row(
-// children: [
-// Text(
-// state.list.data[index].title,
-// style: TextStyle(
-// fontSize: 16.sp,
-// fontWeight: FontWeight.bold,
-// color: Theme.of(context).primaryColor),
-// ),
-// ],
-// ),
-// ),
-// Row(
-// children: [
-// Text(
-// "السعر / كجم",
-// style: TextStyle(
-// fontSize: 12.sp,
-// fontWeight: FontWeight.bold,
-// color: Theme.of(context).hintColor),
-// ),
-// ],
-// ),
-// Padding(
-// padding: EdgeInsets.symmetric(vertical: 4.h),
-// child: Row(
-// children: [
-// Text.rich(
-// TextSpan(children: [
-// TextSpan(
-// text:
-// "${state.list.data[index].price} ر.س",
-// style: TextStyle(
-// fontSize: 16.sp,
-// fontWeight: FontWeight.w700,
-// ),
-// ),
-// TextSpan(
-// text:
-// " ${state.list.data[index].priceBeforeDiscount} ر.س",
-// style: TextStyle(
-// fontSize: 13.sp,
-// fontWeight: FontWeight.w400,
-// decoration: TextDecoration.lineThrough,
-// ),
-// ),
-// ]),
-// style: TextStyle(
-// color: Theme.of(context).primaryColor,
-// ),
-// ),
-// ],
-// ),
-// ),
-// ]),
-// ),
-// ),
-// ),
-// );
-// }
-// return const SizedBox.shrink();
-// },
-// ),

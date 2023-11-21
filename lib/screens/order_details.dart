@@ -5,10 +5,12 @@ import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/map.dart';
+import 'package:thimar_course/features/my_orders/cancel_order/bloc.dart';
 import 'package:thimar_course/features/my_orders/my_orders_details/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 
 import '../core/design/widgets/icon_with_bg.dart';
+import 'rate_products.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final int id;
@@ -23,6 +25,7 @@ class OrderDetailsScreen extends StatefulWidget {
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   final bloc = KiwiContainer().resolve<MyOrdersDetailsBloc>();
+  final cancelOrderBloc = KiwiContainer().resolve<CancelOrderBloc>();
   @override
   void initState() {
     super.initState();
@@ -153,47 +156,82 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 8.h),
                           child: Divider(
-                            color: const Color(0xffF3F3F3),
                             height: .2.h,
                           ),
                         ),
                         Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: List.generate(
-                                  state.list.list.products.length,
-                                  (indexImages) => Container(
-                                    width: 25.w,
-                                    height: 25.h,
-                                    decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                      state.list.list.products[indexImages].url,
-                                    ))),
+                              Row(children: [
+
+
+                                SizedBox(
+                                  width: 116.w,
+                                  height: 25.h,
+                                  child: ListView.separated(
+                                    scrollDirection:
+                                    Axis.horizontal,
+                                    physics:
+                                    const NeverScrollableScrollPhysics(),
+                                    itemCount: state.list.list.products.length >=
+                                        4
+                                        ? 4
+                                        : state.list.list.products.length,
+                                    separatorBuilder:
+                                        (context, index) =>
+                                        SizedBox(
+                                          width: 4.w,
+                                        ),
+                                    itemBuilder:
+                                        (context, indexImages) =>
+                                        Container(
+                                          width: 25.w,
+                                          height: 25.h,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(7.r),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                    state.list.list.products[
+                                                    indexImages]
+                                                        .url,
+                                                  ))),
+                                        ),
                                   ),
                                 ),
-                              ),
-                              // Container(
-                              //   height: 25.h,
-                              //   width: 25.w,
-                              //   decoration: BoxDecoration(
-                              //     color: const Color(0xffEDF5E6),
-                              //     borderRadius:
-                              //     BorderRadius.circular(7.r),
-                              //   ),
-                              //   child: Center(
-                              //     child: Text(
-                              //       "+2",
-                              //       style: TextStyle(
-                              //         fontSize: 11.sp,
-                              //         fontWeight: FontWeight.bold,
-                              //         color: Theme.of(context)
-                              //             .primaryColor,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                                SizedBox(
+                                  width: 4.w,
+                                ),
+                                if  (state.list.list.products.length>
+                                    4)
+                                  Container(
+                                    height: 25.h,
+                                    width: 25.w,
+                                    decoration: BoxDecoration(
+                                      color:
+                                      const Color(0xffEDF5E6),
+                                      borderRadius:
+                                      BorderRadius.circular(
+                                          7.r),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        state.list.list.products.length>
+                                            4
+                                            ? "${state.list.list.products.length - 4}+"
+                                            : "0+",
+                                        style: TextStyle(
+                                          fontSize: 11.sp,
+                                          fontWeight:
+                                          FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ]),
                               const Spacer(),
                               Container(
                                 padding: EdgeInsets.all(6.r),
@@ -402,14 +440,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                   const Spacer(),
                   if (widget.typeButton)
-                    AppButton(
-                        text: "إلغاء الطلب",
-                        onPress: () {},
-                        type: BtnType.cancel),
+                    BlocConsumer(
+                      bloc: cancelOrderBloc,
+                      listener: (context, state) {
+                        if (state is CancelOrderSuccessState) {
+                          Navigator.pop(context, true);
+                        }
+                      },
+                      builder: (context, state) {
+                        return Center(
+                          child: AppButton(
+                              isLoading: state is CancelOrderLoadingState,
+                              text: "إلغاء الطلب",
+                              onPress: () {
+                                cancelOrderBloc.add(
+                                    PostCancelOrderDataEvent(id: widget.id));
+                              },
+                              type: BtnType.cancel),
+                        );
+                      },
+                    ),
                   if (!widget.typeButton)
                     AppButton(
                       text: "تقييم المنتجات",
-                      onPress: () {},
+                      onPress: () {
+                        navigateTo(const RateProductsScreen());
+                      },
                     ),
                 ],
               );

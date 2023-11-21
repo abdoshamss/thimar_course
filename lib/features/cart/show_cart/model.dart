@@ -15,15 +15,15 @@ class CartData {
 
   CartData.fromJson(Map<String, dynamic> json) {
     list = List.from(json['data'] ?? []).map((e) => CartModel.fromJson(e)).toList();
-    totalPriceBeforeDiscount = double.parse(json['total_price_before_discount'].toString());
-    totalDiscount = double.parse(json['total_discount'].toString());
-    totalPriceWithVat = double.parse(json['total_price_with_vat'].toString());
-    deliveryCost = double.parse(json['delivery_cost'].toString());
-    freeDeliveryPrice = double.parse(json['free_delivery_price'].toString());
-    vat = double.parse(json['vat'].toString());
+    totalPriceBeforeDiscount = double.tryParse(json['total_price_before_discount'].toString())??0;
+    totalDiscount = double.tryParse(json['total_discount'].toString())??0;
+    totalPriceWithVat = double.tryParse(json['total_price_with_vat'].toString())??0;
+    deliveryCost = double.tryParse(json['delivery_cost'].toString())??0;
+    freeDeliveryPrice = double.tryParse(json['free_delivery_price'].toString())??0;
+    vat = double.tryParse(json['vat'].toString())??0;
     isVip = json['is_vip'] == 1;
-    vipDiscountPercentage = double.parse(json['vip_discount_percentage'].toString());
-    minVipPrice = double.parse(json['min_vip_price'].toString());
+    vipDiscountPercentage = double.tryParse(json['vip_discount_percentage'].toString())??0;
+    minVipPrice = double.tryParse(json['min_vip_price'].toString())??0;
     vipMessage = json['vip_message'] ?? "";
   }
 }
@@ -42,11 +42,11 @@ class CartModel {
     id = json['id'] ?? 0;
     title = json['title'] ?? "";
     image = json['image'] ?? "";
-    amount = double.parse(json['amount'].toString());
+    amount = double.tryParse(json['amount'].toString())??0;
     priceBeforeDiscount =
-        double.parse(json['price_before_discount'].toString());
-    discount = double.parse(json['discount'].toString());
-    price = double.parse(json['price'].toString());
-    remainingAmount = double.parse(json['remaining_amount'].toString());
+        double.tryParse(json['price_before_discount'].toString())??0;
+    discount = double.tryParse(json['discount'].toString())??0;
+    price = double.tryParse(json['price'].toString())??0;
+    remainingAmount = double.tryParse(json['remaining_amount'].toString())??0;
   }
 }

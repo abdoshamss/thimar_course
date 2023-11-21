@@ -22,7 +22,8 @@ class LoginBLoc extends Bloc<LoginEvents, LoginStates> {
 
   //   96655001122334455
   //   123456789
-  Future<void> _postData(LoginEvents events,Emitter<LoginStates>emitter) async {
+  Future<void> _postData(
+      PostLoginDataEvent event, Emitter<LoginStates> emit) async {
     emit(LoginLoadingState());
     final response = await dioHelper.post(
       "login",
@@ -36,7 +37,7 @@ class LoginBLoc extends Bloc<LoginEvents, LoginStates> {
     );
     if (response.isSuccess) {
       final model = UserData.fromJson(response.response!.data);
-     await CacheHelper.saveLoginData(model);
+      await CacheHelper.saveLoginData(model);
       debugPrint("*******${CacheHelper.getToken()}*******");
 
       emit(LoginSuccessState(message: response.message));

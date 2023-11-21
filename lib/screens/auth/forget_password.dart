@@ -22,7 +22,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final bloc = KiwiContainer().resolve<ForgetPasswordBloc>();
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     bloc.close();
   }

@@ -29,7 +29,7 @@ class _State extends State<MapItem> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     if (widget.lng != 0.0) {
       goToMyLocation(location: LatLng(widget.lat, widget.lng));

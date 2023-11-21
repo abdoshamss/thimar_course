@@ -10,4 +10,8 @@ class NotificationsSuccessState extends NotificationsStates {
   NotificationsSuccessState( {required this.message,required this.list});
 }
 
-class NotificationsErrorState extends NotificationsStates {}
+class NotificationsErrorState extends NotificationsStates {
+  final String message;
+
+  NotificationsErrorState({required this.message});
+}

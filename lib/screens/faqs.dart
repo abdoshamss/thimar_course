@@ -19,7 +19,7 @@ class _FAQSScreenState extends State<FAQSScreen> {
     final bloc = KiwiContainer().resolve<FAQSBloc>()..add(GetFAQSDataEvent());
     @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     bloc.close();
 

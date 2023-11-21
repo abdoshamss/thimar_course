@@ -9,7 +9,7 @@ part 'events.dart';
 class GiveAdviceBloc extends Bloc<GiveAdviceEvents,GiveAdviceStates> {
   final DioHelper dioHelper;
   GiveAdviceBloc(this.dioHelper) : super(GiveAdviceStates()){
-    on<PostGiveAdviceDataEvent>(postData);
+    on<PostGiveAdviceDataEvent>(_postData);
   }
   final nameController = TextEditingController();
 
@@ -18,7 +18,7 @@ class GiveAdviceBloc extends Bloc<GiveAdviceEvents,GiveAdviceStates> {
   final titleController = TextEditingController();
 
   final contentController = TextEditingController();
-  Future<void> postData(GiveAdviceEvents events,Emitter<GiveAdviceStates> emitter) async {
+  Future<void> _postData(GiveAdviceEvents event,Emitter<GiveAdviceStates> emit) async {
     emit(GiveAdviceLoadingState());
 
     final response = await dioHelper.post("contact", data: {

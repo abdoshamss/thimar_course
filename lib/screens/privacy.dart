@@ -21,8 +21,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+     super.dispose();
     bloc.close();
   }
 

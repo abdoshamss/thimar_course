@@ -32,7 +32,7 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
 
   var cityController = TextEditingController(text: CacheHelper.getCity());
 
-  var passwordController = TextEditingController(text: "HAHAHAH");
+  var passwordController = TextEditingController();
 
   int cityId = CacheHelper.getCityId();
 
@@ -42,7 +42,7 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
   final bloc = KiwiContainer().resolve<EditProfileCubit>();
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     bloc.close();
 

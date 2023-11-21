@@ -8,7 +8,7 @@ import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/core/widgets/selectable_item.dart';
 
 import '../core/design/widgets/icon_with_bg.dart';
-import '../features/adresss/get_adresses/bloc.dart';
+import '../features/get_adresses/bloc.dart';
 
 class AddAddressesScreen extends StatefulWidget {
   final int id;

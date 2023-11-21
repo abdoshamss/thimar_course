@@ -12,8 +12,8 @@ import 'package:thimar_course/screens/add_address.dart';
 
 import '../core/logic/helper_methods.dart';
 import '../core/widgets/custom_appbar.dart';
-import '../features/adresss/get_adresses/bloc.dart';
-import '../features/compelete_order/bloc.dart';
+ import '../features/compelete_order/bloc.dart';
+import '../features/get_adresses/bloc.dart';
 
 class CompleteOrderScreen extends StatefulWidget {
   final String? coupon;
@@ -36,8 +36,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
   final bloc = KiwiContainer().resolve<CompleteOrderBloc>();
 
   AddressModel? selectedAddress;
-  TimeOfDay? time;
-  DateTime? date;
+  String? time, date;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -414,14 +413,18 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  date = await showDatePicker(
+                  showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
-                    lastDate: DateTime(2024),
-                  );
+                    lastDate: DateTime(DateTime.now().year + 1),
+                  ).then((value) {
+                    date = DateFormat('yyyy-MM-dd').format(value!).toString();
+                    setState(() {});
 
-                  debugPrint(date.toString());
+                    // print( '-==---==- val is ${DateFormat('dd-MM-yyyy', 'en').parse(value)}');
+                    //  print( '-==---==- val is ${DateFormat('dd-MM-yyyy', 'en').parse(value.toString())}');
+                  });
                 },
                 child: Container(
                   width: 165.w,
@@ -450,10 +453,17 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
               ),
               GestureDetector(
                 onTap: () async {
-                  time = await showTimePicker(
+                  showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
-                  );
+                  ).then((value) {
+                    //  time =  "${value?.hour}:${value?.minute}";
+                    time =
+                        '${value?.hour.toString().padLeft(2, '0')}:${value?.minute.toString().padLeft(2, '0')}';
+
+                    setState(() {});
+                    print('-=-=-= $time');
+                  });
                 },
                 child: Container(
                   width: 165.w,
@@ -660,8 +670,8 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                       text: "إنهاء الطلب",
                       onPress: () {
                         bloc.add(PostCompleteOrderDataEvent(
-                          time: time!,
-                          date: date!,
+                          time: time,
+                          date: date,
                           addressId: selectedAddress?.id,
                           coupon: widget.coupon,
                         ));

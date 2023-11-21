@@ -16,34 +16,26 @@ class SeeMoreHomeScreen extends StatefulWidget {
 }
 
 class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
-  final bloc = KiwiContainer().resolve<CategoriesBloc>();
+  final bloc = KiwiContainer().resolve<CategoriesBloc>()
+    ..add(GetCategoriesDataEvent());
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    bloc.add(GetCategoriesDataEvent());
-  }
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     bloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
-    return   Scaffold(
+    return Scaffold(
       appBar: AppBar(
-
-        title: Text(
+        title: const Text(
           "الأقسام",
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-          ),
         ),
-         centerTitle: true,leadingWidth: 70.w,
+        centerTitle: true,
+        leadingWidth: 70.w,
         leading: Padding(
-          padding: const EdgeInsets.symmetric( horizontal: 16,vertical: 4 ),
+          padding:   EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
           child: IconWithBg(
             icon: Icons.arrow_back_ios_outlined,
             color: Theme.of(context).primaryColor,
@@ -53,7 +45,7 @@ class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
           ),
         ),
       ),
-      body:   BlocBuilder(
+      body: BlocBuilder(
         bloc: bloc,
         builder: (BuildContext context, state) {
           if (state is CategoriesLoadingState) {
@@ -64,18 +56,17 @@ class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
             );
           } else if (state is CategoriesSuccessState) {
             return SizedBox(
-
-              child:  GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-                crossAxisSpacing: 16.w,
-
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.w,
                 ),
                 scrollDirection: Axis.vertical,
                 itemCount: state.list.list.length,
                 itemBuilder: (context, index) => GestureDetector(
                   onTap: () {
                     navigateTo(CategoryProductsScreen(
-                      title: state.list.list[index].name, id: state.list.list[index].id,
+                      model:state.list, index: index ,
                     ));
                   },
                   child: Column(
@@ -108,7 +99,6 @@ class _SeeMoreHomeStateScreen extends State<SeeMoreHomeScreen> {
                     ],
                   ),
                 ),
-
               ),
             );
           } else {

@@ -14,12 +14,12 @@ class ActivationBloc
     extends Bloc<ActivationAccountEvents, ActivationAccountStates> {
   final DioHelper dioHelper;
   ActivationBloc(this.dioHelper) : super(ActivationAccountStates()) {
-    on<PostActivationAccountDataEvent>(_postdata);
+    on<PostActivationAccountDataEvent>(_postData);
   }
   var phone;
   final codeController = TextEditingController();
-  Future<void> _postdata(ActivationAccountEvents events,
-      Emitter<ActivationAccountStates> emitter) async {
+  Future<void> _postData(PostActivationAccountDataEvent event,
+      Emitter<ActivationAccountStates> emit) async {
     final map = {
       "phone": phone,
       "code": codeController.text,

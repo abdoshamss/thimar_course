@@ -64,6 +64,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/clock.png
   AssetGenImage get clock => const AssetGenImage('assets/icons/clock.png');
 
+  /// File path: assets/icons/crat_home.png
+  AssetGenImage get cratHome =>
+      const AssetGenImage('assets/icons/crat_home.png');
+
   /// File path: assets/icons/dollar.png
   AssetGenImage get dollar => const AssetGenImage('assets/icons/dollar.png');
 
@@ -150,6 +154,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/user.png
   AssetGenImage get user => const AssetGenImage('assets/icons/user.png');
 
+  /// File path: assets/icons/user_home.png
+  AssetGenImage get userHome =>
+      const AssetGenImage('assets/icons/user_home.png');
+
   /// File path: assets/icons/visa_pay.png
   AssetGenImage get visaPay => const AssetGenImage('assets/icons/visa_pay.png');
 
@@ -173,6 +181,7 @@ class $AssetsIconsGen {
         check,
         checkVip,
         clock,
+        cratHome,
         dollar,
         edit,
         editAddress,
@@ -199,6 +208,7 @@ class $AssetsIconsGen {
         star,
         tickSquare,
         user,
+        userHome,
         visaPay,
         wallet
       ];

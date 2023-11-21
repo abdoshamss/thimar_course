@@ -19,15 +19,13 @@ class _SeeMoreRatesStateScreen extends State<SeeMoreRatesScreen> {
   final bloc = KiwiContainer().resolve<ProductRatesBloc>();
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+     super.initState();
     bloc.add(GetProductRatesEvent());
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+     super.dispose();
     bloc.close();
   }
 

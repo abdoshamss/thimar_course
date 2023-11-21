@@ -6,11 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:range_slider_flutter/range_slider_flutter.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
-import 'package:thimar_course/screens/product_details.dart';
 
 import '../core/design/widgets/input.dart';
 import '../core/logic/helper_methods.dart';
-import '../features/search/search_categories/bloc.dart';
+ import '../features/products/bloc.dart';
 import '../gen/assets.gen.dart';
 
 class SearchCategoriesScreen extends StatefulWidget {
@@ -28,14 +27,14 @@ class SearchCategoriesScreen extends StatefulWidget {
 }
 
 class _SearchCategoriesStateScreen extends State<SearchCategoriesScreen> {
-  final searchBloc = KiwiContainer().resolve<SearchCategoriesBloc>();
+  final searchBloc = KiwiContainer().resolve<ProductsDataBloc>();
 Timer? timer;
   double _lowerValue = 1;
   double _upperValue = 200;
   static String filter = "asc";
   static String? value;
   void _getData(String value) {
-    searchBloc.add(GetSearchCategoriesDataEvent(
+    searchBloc.add(GetProductsDataEvent(
       id: widget.id,
       value: value,
       minPrice: widget.minPrice,
@@ -258,7 +257,7 @@ Timer? timer;
                               AppButton(
                                   text: "تطبيق",
                                   onPress: () {
-                                    searchBloc.add(GetSearchCategoriesDataEvent(
+                                    searchBloc.add(GetProductsDataEvent(
                                         id: widget.id,
                                         minPrice: widget.minPrice,
                                         maxPrice: widget.maxPrice,
@@ -278,7 +277,7 @@ Timer? timer;
               }
               timer = Timer(const Duration(seconds: 1), () {
                 _getData(value);
-                value=value;
+
               });
 
             },
@@ -296,9 +295,9 @@ Timer? timer;
           BlocBuilder(
             bloc: searchBloc,
             builder: (BuildContext context, state) {
-              if (state is SearchCategoriesLoadingState) {
+              if (state is GetProductsDataLoadingState) {
                 loadingWidget();
-              } else if (state is SearchCategoriesSuccessState) {
+              } else if (state is GetProductsDataSuccessState) {
                 return GridView.builder(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.w,
@@ -310,16 +309,13 @@ Timer? timer;
                     childAspectRatio: 160 / 215,
                     crossAxisSpacing: 16.h,
                   ),
-                  itemCount: searchBloc.list.length,
+                  itemCount: state.list.length,
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                     onTap: () {
-                      navigateTo(ProductDetailsScreen(
-                        id: searchBloc.list[index].id,
-                        price: searchBloc.list[index].price,
-                        isFavorite: searchBloc.list[index].isFavorite,
-                        amount: searchBloc.list[index].amount, index: null,
-                      ));
+                      // navigateTo(const ProductDetailsScreen(
+                      //   model: ,
+                      // ));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -343,7 +339,7 @@ Timer? timer;
                                 alignment: AlignmentDirectional.topEnd,
                                 children: [
                                   Image.network(
-                                    searchBloc.list[index].mainImage,
+                                     state.list[index].mainImage,
                                     fit: BoxFit.fill,
                                   ),
                                   Container(
@@ -359,7 +355,7 @@ Timer? timer;
                                                   Radius.circular(11.r)),
                                     ),
                                     child: Text(
-                                      "${searchBloc.list[index].discount * 100}%",
+                                      "${ state.list[index].discount * 100}%",
                                       style: TextStyle(
                                           fontSize: 14.sp,
                                           color: Colors.white,
@@ -375,7 +371,7 @@ Timer? timer;
                             child: Row(
                               children: [
                                 Text(
-                                  searchBloc.list[index].title,
+                                   state.list[index].title,
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
@@ -403,7 +399,7 @@ Timer? timer;
                                   TextSpan(children: [
                                     TextSpan(
                                       text:
-                                          "${searchBloc.list[index].price} ر.س",
+                                          "${ state.list[index].price} ر.س",
                                       style: TextStyle(
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w700,
@@ -411,7 +407,7 @@ Timer? timer;
                                     ),
                                     TextSpan(
                                       text:
-                                          " ${searchBloc.list[index].priceBeforeDiscount} ر.س",
+                                          " ${ state.list[index].priceBeforeDiscount} ر.س",
                                       style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w400,

@@ -25,7 +25,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final bloc = KiwiContainer().resolve<ResetPasswordBloc>();
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     bloc.close();
   }

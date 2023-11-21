@@ -3,9 +3,9 @@ class ProductDetailsEvents{}
 class GetProductDetailsEvent extends ProductDetailsEvents{
 
 final int id;
-final double price;
 
-  GetProductDetailsEvent({required this.id, required this.price});
+
+  GetProductDetailsEvent({required this.id });
 
 }
 class ProductUpdateEvent extends ProductDetailsEvents{

@@ -7,6 +7,7 @@ import 'package:thimar_course/features/category_product/bloc.dart';
 import 'package:thimar_course/features/compelete_order/bloc.dart';
 import 'package:thimar_course/features/current_location/bloc.dart';
 import 'package:thimar_course/features/edit_profile/cubit.dart';
+import 'package:thimar_course/features/my_orders/cancel_order/bloc.dart';
 import 'package:thimar_course/features/my_orders/current/bloc.dart';
 import 'package:thimar_course/features/my_orders/finished/bloc.dart';
 import 'package:thimar_course/features/my_orders/my_orders_details/bloc.dart';
@@ -15,11 +16,9 @@ import 'package:thimar_course/features/privacy/bloc.dart';
 import 'package:thimar_course/features/about_app/bloc.dart';
 import 'package:thimar_course/features/give_advices/bloc.dart';
 import 'package:thimar_course/features/product_details/bloc.dart';
-import 'package:thimar_course/features/search/search_categories/bloc.dart';
 import 'package:thimar_course/features/slider/bloc.dart';
 import '../../features/FAVS/bloc.dart';
 import '../../features/Wallet/show_wallet/bloc.dart';
-import '../../features/adresss/get_adresses/bloc.dart';
 import '../../features/auth/activation/bloc.dart';
 import '../../features/auth/check_code/bloc.dart';
 import '../../features/auth/forget_password/bloc.dart';
@@ -30,9 +29,9 @@ import '../../features/auth/register/bloc.dart';
 import '../../features/auth/reset_password/bloc.dart';
 import '../../features/cart/add_to_cart/bloc.dart';
 import '../../features/faqs/bloc.dart';
+import '../../features/get_adresses/bloc.dart';
 import '../../features/product_rates/bloc.dart';
 import '../../features/products/bloc.dart';
-import '../../features/search/search_home/bloc.dart';
 
 void initKiwi() {
   KiwiContainer container = KiwiContainer();
@@ -64,9 +63,7 @@ void initKiwi() {
   container.registerFactory((c) => ProductsDataBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => GetAddressesBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => AddToCartBloc(c.resolve<DioHelper>()));
-  container
-      .registerFactory((c) => SearchCategoriesBloc(c.resolve<DioHelper>()));
-  container.registerFactory((c) => SearchHomeBloc(c.resolve<DioHelper>()));
+
   container
       .registerFactory((c) => MyFinishedOrdersBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => MyOrdersDetailsBloc(c.resolve<DioHelper>()));
@@ -74,4 +71,6 @@ void initKiwi() {
   container.registerFactory((c) => WalletBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => CompleteOrderBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => CurrentLocationBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => CancelOrderBloc(c.resolve<DioHelper>()));
+
 }

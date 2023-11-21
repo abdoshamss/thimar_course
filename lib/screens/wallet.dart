@@ -6,6 +6,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/features/Wallet/show_wallet/bloc.dart';
 import 'package:thimar_course/screens/charge_now.dart';
+import 'package:thimar_course/screens/see_more_walletScreen.dart';
 
 import '../core/widgets/custom_appbar.dart';
 import '../gen/assets.gen.dart';
@@ -18,30 +19,28 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
-  final bloc=KiwiContainer().resolve<WalletBloc>();
+  final bloc = KiwiContainer().resolve<WalletBloc>()..add(GetWalletDataEvent());
+
+
   @override
-  void initState() {
-     super.initState();
-    bloc.add(GetWalletDataEvent());
-  }@override
   void dispose() {
-     super.dispose();
+    super.dispose();
     bloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarScreen(
           text: "المحفظة", image: Assets.icons.backHome.path),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0.r),
-          child: BlocBuilder(
+      body: Padding(
+        padding: EdgeInsets.all(16.0.r),
+        child: BlocBuilder(
             bloc: bloc,
-            builder: (context,state) {
-              if (state is GetWalletDataLoadingState){
-
-              }else if (state is GetWalletDataSuccessState){
+            builder: (context, state) {
+              if (state is GetWalletDataLoadingState) {
+                loadingWidget();
+              } else if (state is GetWalletDataSuccessState) {
                 return Column(children: [
                   SizedBox(
                     height: 48.h,
@@ -71,8 +70,8 @@ class _WalletScreenState extends State<WalletScreen> {
                     height: 75.h,
                   ),
                   GestureDetector(
-                    onTap: (){
-                      navigateTo(ChargeNowScreen());
+                    onTap: () {
+                      navigateTo(const ChargeNowScreen());
                     },
                     child: DottedBorder(
                       borderType: BorderType.RRect,
@@ -114,7 +113,9 @@ class _WalletScreenState extends State<WalletScreen> {
                             color: Theme.of(context).primaryColor),
                       ),
                       GestureDetector(
-                        onTap: (){},
+                        onTap: () {
+                          navigateTo(const SeeMoreWalletScreen());
+                        },
                         child: Text(
                           "عرض الكل",
                           style: TextStyle(
@@ -128,20 +129,68 @@ class _WalletScreenState extends State<WalletScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 2,
-                      separatorBuilder: (BuildContext context, int index) => SizedBox(
+                  // ListView.separated(
+                  //     shrinkWrap: true,
+                  //     physics: const NeverScrollableScrollPhysics(),
+                  //     itemCount: 2,
+                  //     separatorBuilder: (BuildContext context, int index) => SizedBox(
+                  //       height: 16.h,
+                  //     ),
+                  //     itemBuilder: (context, index) => Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         if(state.list.list[index].images==[])
+                  //         Row(
+                  //           children: [
+                  //             Image.asset(Assets.icons.arrowTan.path),
+                  //             SizedBox(
+                  //               width: 8.w,
+                  //             ),
+                  //             Text(
+                  //               state.list.list[index].statusTrans,
+                  //               style: TextStyle(
+                  //                   color: Theme.of(context).primaryColor,
+                  //                   fontWeight: FontWeight.bold,
+                  //                   fontSize: 15.sp),
+                  //             ),
+                  //             const Spacer(),
+                  //             const Text(
+                  //               "يونيو,2021,",
+                  //               style: TextStyle(
+                  //                   fontWeight: FontWeight.w300,
+                  //                   color: Color(0xff9C9C9C)),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         SizedBox(
+                  //           height: 16.h,
+                  //         ),
+                  //         Padding(
+                  //           padding: EdgeInsets.only(right: 24.r),
+                  //           child: Text(
+                  //             "255 ر.س",
+                  //             style: TextStyle(
+                  //                 fontWeight: FontWeight.bold,
+                  //                 fontSize: 24.sp,
+                  //                 color: Theme.of(context).primaryColor),
+                  //           ),
+                  //         )
+                  //       ],
+                  //     )),
+                  const Spacer(),
+                  SizedBox(
+                    height: 340.h,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
                         height: 16.h,
                       ),
+                      itemCount: state.list.list.length,
                       itemBuilder: (context, index) => Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if(state.list.list[index].images==[])
                           Row(
                             children: [
-                              Image.asset(Assets.icons.arrowTan.path),
+                              Image.asset(Assets.icons.arrowVarRed.path),
                               SizedBox(
                                 width: 8.w,
                               ),
@@ -153,136 +202,111 @@ class _WalletScreenState extends State<WalletScreen> {
                                     fontSize: 15.sp),
                               ),
                               const Spacer(),
-                              const Text(
-                                "يونيو,2021,",
-                                style: TextStyle(
+                              Text(
+                                state.list.list[index].date,
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w300,
                                     color: Color(0xff9C9C9C)),
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 16.h,
+                            height: 24.h,
                           ),
                           Padding(
                             padding: EdgeInsets.only(right: 24.r),
                             child: Text(
-                              "255 ر.س",
+                              "طلب #${state.list.list[index].id}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 24.sp,
+                                  fontSize: 13.sp,
                                   color: Theme.of(context).primaryColor),
                             ),
-                          )
-                        ],
-                      )),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      Row(
-                        children: [
-
-                          Image.asset(Assets.icons.arrowVarRed.path),
+                          ),
                           SizedBox(
-                            width: 8.w,
+                            height: 8.h,
                           ),
-                          Text(
-                            "دفعت مقابل هذا الطلب",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15.sp),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            "يونيو,2021,",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                color: Color(0xff9C9C9C)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 24.h,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 24.r),
-                        child: Text(
-                          "طلب #4587",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13.sp,
-                              color: Theme.of(context).primaryColor),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: 116.w,
-                                height: 25.h,
-                                child: ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: 4,
-                                  separatorBuilder: (context, index) => SizedBox(
-                                    width: 4.w,
-                                  ),
-                                  itemBuilder: (context, index) => Container(
-                                    width: 25.w,
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 116.w,
                                     height: 25.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(7.r),
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                Assets.images.fruitSmall.path))),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 25.w,
-                                height: 25.h,
-                                decoration: BoxDecoration(
-                                  color: Color(0xffEDF5E6),
-                                  borderRadius: BorderRadius.circular(7.r),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "+2",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11.sp,
-                                      color: Theme.of(context).primaryColor,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: state.list.list[index].images
+                                                  .length >=
+                                              4
+                                          ? 4
+                                          : state
+                                              .list.list[index].images.length,
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(
+                                        width: 4.w,
+                                      ),
+                                      itemBuilder: (context, imagesIndex) =>
+                                          Container(
+                                        width: 25.w,
+                                        height: 25.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(7.r),
+                                            image: DecorationImage(
+                                                image: NetworkImage(state
+                                                    .list
+                                                    .list[index]
+                                                    .images[imagesIndex]
+                                                    .url))),
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  if (state.list.list[index].images.length > 4)
+                                    Container(
+                                      width: 25.w,
+                                      height: 25.h,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xffEDF5E6),
+                                        borderRadius:
+                                            BorderRadius.circular(7.r),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          state.list.list[index].images.length >
+                                                  4
+                                              ? "${state.list.list[index].images.length - 4}+"
+                                              : "0+",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 11.sp,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              Text(
+                                "${state.list.list[index].afterCharge} ر.س",
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w900),
                               ),
                             ],
                           ),
-                          Text(
-                            "180 ر.س",
-                            style: TextStyle(
-                                fontSize: 13.sp,
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w900),
-                          ),
                         ],
                       ),
-                    ],
+                    ),
                   )
                 ]);
               }
-          return SizedBox.shrink();
-            }
-          ),
-        ),
+              return const SizedBox.shrink();
+            }),
       ),
     );
   }

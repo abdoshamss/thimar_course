@@ -21,7 +21,7 @@ class ProductModel {
   late final double discount;
   late final double amount;
   late final bool isActive;
-  late final bool isFavorite;
+  late   bool isFavorite;
   late final Unit unit;
   late final List<ImageModel> images;
   late final String mainImage;
@@ -33,10 +33,10 @@ class ProductModel {
     title = json['title'] ?? "";
     description = json['description'] ?? "";
     code = json['code'] ?? "";
-    priceBeforeDiscount = double.parse(json['price_before_discount'].toString()) ?? 0;
-    price = double.parse(json['price'].toString())??0;
-    discount = double.parse(json['discount'].toString()) ?? 0.0;
-    amount = double.parse(json['amount'].toString())??0;
+    priceBeforeDiscount = double.tryParse(json['price_before_discount'].toString()) ?? 0;
+    price = double.tryParse(json['price'].toString())??0;
+    discount = double.tryParse(json['discount'].toString()) ?? 0.0;
+    amount = double.tryParse(json['amount'].toString())??0;
     isActive = json['is_active'] ==1;
     isFavorite = json['is_favorite'] ?? false;
     unit = Unit.fromJson(json['unit']);

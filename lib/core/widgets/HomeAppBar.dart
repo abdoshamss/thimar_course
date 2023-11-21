@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +9,8 @@ import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/screens/cart.dart';
 
-import '../../features/adresss/get_adresses/bloc.dart';
+import '../../features/cart/show_cart/bloc.dart';
+import '../../features/get_adresses/bloc.dart';
 import '../../screens/add_address.dart';
 
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -26,21 +25,16 @@ class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _HomeAppBarState extends State<HomeAppBar> {
   final bloc = KiwiContainer().resolve<GetAddressesBloc>();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-  }
+  final cardDataBLoc = KiwiContainer().resolve<CartDataBloc>()
+    ..add(GetCartDataEvent());
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     bloc.close();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
@@ -75,7 +69,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
                       bloc: bloc,
                       builder: (BuildContext context, state) {
                         if (bloc.addressesList.isNotEmpty) {
-
                           return Column(
                             children: [
                               ListView.builder(
@@ -84,7 +77,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                   itemCount: bloc.addressesList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-
                                     return Padding(
                                       padding: EdgeInsets.only(bottom: 16.r),
                                       child: Container(
@@ -190,10 +182,10 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                                       Navigator.pop(context);
                                                       navigateTo(
                                                           AddAddressesScreen(
-                                                            id: bloc
-                                                                .addressesList[
-                                                            index]
-                                                                .id,
+                                                        id: bloc
+                                                            .addressesList[
+                                                                index]
+                                                            .id,
                                                         phone: bloc
                                                             .addressesList[
                                                                 index]
@@ -236,7 +228,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
                                       ),
                                     );
                                   }),
-
                             ],
                           );
                         } else if (state is GetAddressesLoadingState) {
@@ -244,7 +235,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                         }
                         return const SizedBox.shrink();
                       },
-                    ),   GestureDetector(
+                    ),
+                    GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
 
@@ -252,7 +244,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                           phone: '',
                           describe: '',
                           lng: 0,
-                          lat: 0, id: 0,
+                          lat: 0,
+                          id: 0,
                         ));
                       },
                       child: DottedBorder(
@@ -318,104 +311,38 @@ class _HomeAppBarState extends State<HomeAppBar> {
         ],
       ),
       actions: [
-        GestureDetector(
-          onTap: () {
-            navigateTo(const CartScreen());
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8.h,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 8.h,
+              ),
+              child: Badge(
+                backgroundColor: Theme.of(context).primaryColor,
+                smallSize: 8.w,
+                alignment: AlignmentDirectional.topStart,
+                label: BlocBuilder(
+
+                  bloc: cardDataBLoc,
+                  builder:    (context, state)  {
+                    return   Text(cardDataBLoc.cartData.length.toString());
+                  }
                 ),
-                child: Badge(
-                  smallSize: 8.w,
-                  alignment: AlignmentDirectional.topStart,
-                  label: const Text("3"),
-                  child: IconWithBg(
-                    icon: Icons.lock,
-                    iconPadding: 5.r,
-                    onPress: () {
-                      navigateTo(const CartScreen());
-                    },
-                    color: Theme.of(context).primaryColor,
-                  ),
+                child: IconWithBg(
+                  icon: Icons.lock,
+                  iconPadding: 5.r,
+                  onPress: () {
+                    navigateTo(const CartScreen());
+                  },
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         SizedBox(width: 16.w),
       ],
     );
-
-    // return SafeArea(
-    //   child: Padding(
-    //     padding: EdgeInsets.symmetric(horizontal: 16.w),
-    //     child: Row(
-    //       children: [
-    //         GestureDetector(
-    //           onTap: () {
-    //             if (Navigator.canPop(context)) {
-    //               Navigator.pop(context);
-    //             }
-    //           },
-    //           child: Image.asset(
-    //             Assets.images.logo.path,
-    //             width: 20.w,
-    //             height: 20.h,
-    //           ),
-    //         ),
-    //         SizedBox(
-    //           width: 3.w,
-    //         ),
-    //         Text(
-    //           "سلة ثمار",
-    //           style: TextStyle(
-    //             color: Theme.of(context).primaryColor,
-    //             fontSize: 14.sp,
-    //             fontWeight: FontWeight.w600,
-    //           ),
-    //         ),
-    //         Expanded(
-    //           flex: 4,
-    //           child: Column(
-    //             mainAxisSize: MainAxisSize.min,
-    //             children: [
-    //               Text(
-    //                 "التوصيل الي",
-    //                 style: TextStyle(
-    //                   color: Theme.of(context).primaryColor,
-    //                   fontSize: 12,
-    //                 ),
-    //               ),
-    //               Text(
-    //                 CacheHelper.getCityName(),
-    //                 style: TextStyle(
-    //                   color: Theme.of(context).primaryColor,
-    //                   fontSize: 14,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         Badge(
-    //           backgroundColor: Theme.of(context).primaryColor,
-    //           smallSize: 8.w,
-    //           alignment: AlignmentDirectional.topStart,
-    //           label: const Text("3"),
-    //           child: IconWithBg(
-    //             icon: Icons.lock,
-    //             iconPadding: 12.r,
-    //             onPress: () {},
-    //             color: Theme.of(context).primaryColor,
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
-    //
   }
 }
