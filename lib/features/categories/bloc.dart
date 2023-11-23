@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/logic/dio_helper.dart';
@@ -21,7 +23,7 @@ class CategoriesBloc extends Bloc<CategoriesEvents, CategoriesStates> {
     if (response.isSuccess) {
       emit(CategoriesSuccessState(list: list));
     } else {
-      emit(CategoriesErrorState());
+      emit(CategoriesErrorState(text: response.message));
     }
   }
 }

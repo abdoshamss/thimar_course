@@ -12,7 +12,7 @@ class DioHelper {
 
   Future<CustomResponse> post(String endPoint,
       {Map<String, dynamic>? data}) async {
-    print(data);
+    print(data );
     try {
       final response = await _dio.post(endPoint,
           data: FormData.fromMap(data ?? {}),
@@ -22,15 +22,15 @@ class DioHelper {
               "Authorization": "Bearer ${CacheHelper.getToken()}",
             },
           ));
-      print(response.data);
+     print(response.data);
       return CustomResponse(
         message: response.data["message"],
         isSuccess: true,
         response: response,
       );
     } on DioError catch (e) {
-      print(e.response);
-      print(e.toString());
+      print(e.response );
+      print(e );
       return CustomResponse(
           message: e.response?.data["message"] ?? "Failed",
           isSuccess: false,
@@ -58,7 +58,7 @@ class DioHelper {
   //     );
   //   } on DioError catch (e) {
   //     print(e.response);
-  //     print(e.toString());
+  //     print(e );
   //     return CustomResponse(
   //         message: e.response?.data["message"] ?? "Failed",
   //         isSuccess: false,
@@ -86,7 +86,7 @@ class DioHelper {
   //     );
   //   } on DioError catch (e) {
   //     print(e.response);
-  //     print(e.toString());
+  //     print(e );
   //     return CustomResponse(
   //         message: e.response?.data["message"] ?? "Failed",
   //         isSuccess: false,
@@ -96,7 +96,7 @@ class DioHelper {
 
   Future<CustomResponse> get(String endPoint,
       {Map<String, dynamic>? params}) async {
-    print(params);
+    print(params );
     try {
       print('-=--=-=-here}');
       print('-=--=-=-${CacheHelper.getToken()}');
@@ -115,7 +115,7 @@ class DioHelper {
         response: response,
       );
     } on DioError catch (e) {
-      print(e.toString());
+      print(e );
       if (e.response!.statusCode == 404) {
         return CustomResponse(
             message: "Check Your EndPoint Page Not Founded",

@@ -146,19 +146,12 @@ class _ItemProductState extends State<ItemProduct> {
                 isBig: false,
               ),
             if (widget.model.amount == 0)
-              AppButton(text: "تم نفاذ الكمية",type: BtnType.cancel,isBig: false, onPress: () {  },)
-              // SizedBox(
-              //   height: 30.h,
-              //   child: Center(
-              //     child: const Text(
-              //       "تم نفاذ الكمية",
-              //       style: TextStyle(
-              //         color: Colors.red,
-              //         fontWeight: FontWeight.bold,
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              AppButton(
+                text: "تم نفاذ الكمية",
+                type: BtnType.cancel,
+                isBig: false,
+                onPress: () {},
+              )
           ]),
         ),
       ),

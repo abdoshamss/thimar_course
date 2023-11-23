@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
-Future navigateTo(Widget page, {bool removeHistory = false}) async{
+Future navigateTo(Widget page, {bool removeHistory = false}) async {
   return Navigator.pushAndRemoveUntil(
     navigatorKey.currentContext!,
     MaterialPageRoute(
@@ -30,7 +30,7 @@ void showMessage(String message,
 
     ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(SnackBar(
         backgroundColor: bgColor,
-      shape: const StadiumBorder(),
+        shape: const StadiumBorder(),
         behavior: SnackBarBehavior.floating,
         width: 250,
         content: Center(
@@ -39,7 +39,6 @@ void showMessage(String message,
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w500,
-
           ),
         ))));
   }
@@ -47,6 +46,9 @@ void showMessage(String message,
 
 void loadingWidget() => const Center(
       child: CircularProgressIndicator(),
+    );
+void noInternet() => const Center(
+      child: Text("لا يوجد انترنت"),
     );
 
 ///  Platform  Firebase App Id

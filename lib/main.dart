@@ -11,9 +11,7 @@ import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/logic/kiwi.dart';
 import 'package:thimar_course/firebase_options.dart';
 import 'package:thimar_course/screens/auth/splash.dart';
-import 'package:thimar_course/screens/be_vip.dart';
 import 'generated/codegen_loader.g.dart';
-import 'screens/charge_now.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,8 +62,8 @@ class MyApp extends StatelessWidget {
             Directionality(textDirection: mat.TextDirection.rtl, child: child!),
         // Directionality(textDirection:mat. TextDirection.rtl, child: child!),
         theme: ThemeData(
-          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+          // androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: getMaterialColor(primaryColor.value),
           unselectedWidgetColor: const Color(0xffF3F3F3),

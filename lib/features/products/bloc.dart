@@ -26,7 +26,7 @@ class ProductsDataBloc extends Bloc<ProductsDataEvents, GetProductsDataStates> {
       final list = ProductsData.fromJson(response.response!.data).list;
       emit(GetProductsDataSuccessState(list: list));
     } else {
-      emit(GetProductsDataErrorState());
+      emit(GetProductsDataErrorState(text: response.message));
     }
   }
 }

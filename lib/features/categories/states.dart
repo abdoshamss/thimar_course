@@ -1,9 +1,17 @@
 part of 'bloc.dart';
 class CategoriesStates {}
-class CategoriesLoadingState extends CategoriesStates {}
+class CategoriesLoadingState extends CategoriesStates {
+
+
+
+}
 class CategoriesSuccessState extends CategoriesStates {
  CategoriesData list;
 
   CategoriesSuccessState({required this.list});
 }
-class CategoriesErrorState extends CategoriesStates {}
+class CategoriesErrorState extends CategoriesStates {
+ final String ?text;
+
+  CategoriesErrorState({required this.text});
+}
