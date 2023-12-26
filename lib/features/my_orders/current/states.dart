@@ -10,4 +10,8 @@ class MyCurrentOrdersSuccessState extends MyCurrentOrdersStates {
 
 }
 
-class MyCurrentOrdersErrorState extends MyCurrentOrdersStates {}
+class MyCurrentOrdersErrorState extends MyCurrentOrdersStates {
+  final String? text;
+
+  MyCurrentOrdersErrorState({required this.text});
+}

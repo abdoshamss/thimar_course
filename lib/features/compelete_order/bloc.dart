@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
+import 'package:thimar_course/screens/home/view.dart';
 
 import '../../core/logic/dio_helper.dart';
 import '../../core/logic/helper_methods.dart';

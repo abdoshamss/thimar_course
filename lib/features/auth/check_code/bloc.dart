@@ -22,7 +22,7 @@ class CheckCodeBloc extends Bloc<CheckCodeEvents,CheckCodeStates> {
     };
     final response = await dioHelper.post("check_code", data: map);
     if (response.isSuccess) {
-      emit(CheckCodeSuccessState(message: response.message));
+      emit(CheckCodeSuccessState(message: "تم بنجاح"));
     } else {
       emit(CheckCodeErrorState(
           message: response.message,

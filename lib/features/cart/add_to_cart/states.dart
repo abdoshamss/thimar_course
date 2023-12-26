@@ -5,11 +5,11 @@ class AddToCartStates {}
 class AddToCartLoadingState extends AddToCartStates {}
 
 class AddToCartSuccessState extends AddToCartStates {
-  final String message;
-  AddToCarData list;
 
-  AddToCartSuccessState({required this.message, required this.list}) {
-    //showMessage(message);
+  AddToCarData list;
+final int? counter;
+  AddToCartSuccessState( {required this.list,this.counter}) {
+
     showModalBottomSheet(
         context: navigatorKey.currentContext!,
         shape: RoundedRectangleBorder(
@@ -76,7 +76,7 @@ class AddToCartSuccessState extends AddToCartStates {
                             height: 4.h,
                           ),
                           Text(
-                            "الكمية : ${list.data.amount}",
+                            "الكمية : ${counter??1}",
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 12.sp,

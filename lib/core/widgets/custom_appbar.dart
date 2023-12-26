@@ -5,7 +5,8 @@ class CustomAppBarScreen extends StatelessWidget
     implements PreferredSizeWidget {
   final String text;
   final String image;
-  const CustomAppBarScreen({Key? key, required this.text, required this.image})
+     bool value;
+     CustomAppBarScreen({Key? key, required this.text, required this.image,  this.value=false} )
       : super(key: key);
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -13,6 +14,7 @@ class CustomAppBarScreen extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       title: Text(
         text,
         style: TextStyle(
@@ -28,7 +30,7 @@ class CustomAppBarScreen extends StatelessWidget
           ),
           GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context,value);
               },
               child: Image.asset(
                 image,

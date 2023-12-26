@@ -9,12 +9,11 @@ class BeVipScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> vipText=[
-"تسوق من المتجر ودفع التكاليف شهريا",
+    List<String> vipText = [
+      "تسوق من المتجر ودفع التكاليف شهريا",
       "خصومات وكوبونات مخصصه لك",
       "دعم فني 24/7",
       "تسوق من المتجر ودفع التكاليف شهريا",
-
     ];
     return Scaffold(
       appBar: CustomAppBarScreen(
@@ -27,7 +26,11 @@ class BeVipScreen extends StatelessWidget {
             SizedBox(
               height: 16.h,
             ),
-            Image.asset(Assets.images.vip.path,width: 80.w,height: 100.h,),
+            Image.asset(
+              Assets.images.vip.path,
+              width: 80.w,
+              height: 100.h,
+            ),
             SizedBox(
               height: 16.h,
             ),
@@ -61,32 +64,34 @@ class BeVipScreen extends StatelessWidget {
             SizedBox(
               height: 24.h,
             ),
-           Column(
-             children: List.generate(4, (index) =>  Padding(
-               padding:   EdgeInsets.only(
-                bottom:   16.0.r),
-               child: Row(
-                 children: [
-                   Image.asset(Assets.icons.checkVip.path),
-                   SizedBox(
-                     width: 8.w,
-                   ),
-                   Text(
-                    vipText[index],
-                     style: TextStyle(
-                         fontSize: 15.sp,
-                         fontWeight: FontWeight.w500,
-                         color: Theme.of(context).primaryColor),
-                   ),
-                 ],
-               ),
-             ),),
-           ),
+            Column(
+              children: List.generate(
+                4,
+                (index) => Padding(
+                  padding: EdgeInsets.only(bottom: 16.0.r),
+                  child: Row(
+                    children: [
+                      Image.asset(Assets.icons.checkVip.path),
+                      SizedBox(
+                        width: 8.w,
+                      ),
+                      Text(
+                        vipText[index],
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
       bottomNavigationBar: Padding(
-        padding:   EdgeInsets.all(16.0.r),
+        padding: EdgeInsets.all(16.0.r),
         child: AppButton(text: 'طلب تحويل', onPress: () {}),
       ),
     );

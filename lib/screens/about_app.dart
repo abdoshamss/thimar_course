@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 
-import '../core/design/widgets/icon_with_bg.dart';
 import '../features/about_app/bloc.dart';
 
 class AboutAppScreen extends StatefulWidget {
@@ -28,27 +29,9 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "عن التطبيق",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leadingWidth: 60.w,
-        leading: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.r),
-          child: IconWithBg(
-            icon: Icons.arrow_back_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+      appBar: CustomAppBarScreen(
+        image: Assets.icons.backHome.path,
+        text: "عن التطبيق",
       ),
       body: SafeArea(
         child: ListView(
@@ -63,14 +46,7 @@ class _AboutAppScreenState extends State<AboutAppScreen> {
                 bloc: bloc,
                 builder: (context, state) {
                   if (state is GetAboutDetailsLoadingState) {
-                    return Padding(
-                      padding: EdgeInsets.only(top: 32.r),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    );
+                  return loadingWidget();
                   } else if (state is GetAboutDetailsErrorState) {
                     return const Center(
                       child: Text("Failed"),

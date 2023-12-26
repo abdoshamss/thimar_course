@@ -8,15 +8,17 @@ import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/features/my_orders/cancel_order/bloc.dart';
 import 'package:thimar_course/features/my_orders/my_orders_details/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
-
-import '../core/design/widgets/icon_with_bg.dart';
-import 'rate_products.dart';
+import '../core/widgets/custom_appbar.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final int id;
-  final bool typeButton;
+  final bool isCancel;
+  final String status;
   const OrderDetailsScreen(
-      {Key? key, required this.id, required this.typeButton})
+      {Key? key,
+      required this.id,
+      required this.isCancel,
+      required this.status})
       : super(key: key);
 
   @override
@@ -36,32 +38,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   void dispose() {
     super.dispose();
     bloc.close();
+    cancelOrderBloc.close();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "تفاصيل الطلب",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leadingWidth: 60.w,
-        leading: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.w),
-          child: IconWithBg(
-            icon: Icons.arrow_back_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+      appBar: CustomAppBarScreen(
+        image: Assets.icons.backHome.path,
+        text: "تفاصيل الطلب",
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0.r),
@@ -69,8 +54,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           bloc: bloc,
           builder: (BuildContext context, state) {
             if (state is MyOrdersDetailsLoadingState) {
-              loadingWidget();
+              return loadingWidget();
             } else if (state is MyOrdersDetailsSuccessState) {
+              Color color = const Color(0xffEDF5E6);
+              Color statusColor = Theme.of(context).primaryColor;
+              String status = widget.status;
+
+              switch (status) {
+                case "in_way":
+                case "في الطريق":
+                  color = const Color(0xffEDF5E6);
+                  statusColor = Theme.of(context).primaryColor;
+                  status = "في الطريق";
+                  break;
+                case "canceled":
+                case "طلب ملغي":
+                  color = const Color(0xffFFE4E4);
+                  statusColor = Colors.red;
+                  status = "طلب ملغي";
+                  break;
+                case "pending":
+                case "بإنتظار الموافقة":
+                  color = const Color(0xffEDF5E6);
+                  statusColor = Theme.of(context).primaryColor;
+                  status = "بإنتظار الموافقة";
+                  break;
+              }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -120,16 +129,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 Container(
                                   height: 25.h,
                                   decoration: BoxDecoration(
-                                      color: const Color(0xffEDF5E6),
+                                      color: color,
                                       borderRadius: BorderRadius.circular(8.r)),
                                   child: Center(
                                     child: Padding(
                                       padding:
                                           EdgeInsets.symmetric(horizontal: 8.w),
                                       child: Text(
-                                        state.list.list.status,
+                                        status,
                                         style: TextStyle(
-                                          color: Theme.of(context).primaryColor,
+                                          color: statusColor,
                                           fontSize: 11.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -142,7 +151,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     top: 8.r,
                                   ),
                                   child: Text(
-                                    "${state.list.list.orderPrice}ر.س",
+                                    "${state.list.list.stringTotalPrice}ر.س",
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         color: Theme.of(context).primaryColor,
@@ -163,89 +172,62 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(children: [
-
-
                                 SizedBox(
-                                  width: 116.w,
+                                  width: 85.w,
                                   height: 25.h,
                                   child: ListView.separated(
-                                    scrollDirection:
-                                    Axis.horizontal,
+                                    scrollDirection: Axis.horizontal,
                                     physics:
-                                    const NeverScrollableScrollPhysics(),
-                                    itemCount: state.list.list.products.length >=
-                                        4
-                                        ? 4
-                                        : state.list.list.products.length,
-                                    separatorBuilder:
-                                        (context, index) =>
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount:
+                                        state.list.list.products.length >= 3
+                                            ? 3
+                                            : state.list.list.products.length,
+                                    separatorBuilder: (context, index) =>
                                         SizedBox(
-                                          width: 4.w,
-                                        ),
-                                    itemBuilder:
-                                        (context, indexImages) =>
+                                      width: 4.w,
+                                    ),
+                                    itemBuilder: (context, indexImages) =>
                                         Container(
-                                          width: 25.w,
-                                          height: 25.h,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(7.r),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                    state.list.list.products[
-                                                    indexImages]
-                                                        .url,
-                                                  ))),
-                                        ),
+                                      width: 25.w,
+                                      height: 25.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7.r),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                state.list.list
+                                                    .products[indexImages].url,
+                                              ),
+                                              fit: BoxFit.fill)),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 4.w,
                                 ),
-                                if  (state.list.list.products.length>
-                                    4)
+                                if (state.list.list.products.length > 3)
                                   Container(
                                     height: 25.h,
                                     width: 25.w,
                                     decoration: BoxDecoration(
-                                      color:
-                                      const Color(0xffEDF5E6),
-                                      borderRadius:
-                                      BorderRadius.circular(
-                                          7.r),
+                                      color: const Color(0xffEDF5E6),
+                                      borderRadius: BorderRadius.circular(7.r),
                                     ),
                                     child: Center(
                                       child: Text(
-                                        state.list.list.products.length>
-                                            4
-                                            ? "${state.list.list.products.length - 4}+"
+                                        state.list.list.products.length > 3
+                                            ? "${state.list.list.products.length - 3}+"
                                             : "0+",
                                         style: TextStyle(
                                           fontSize: 11.sp,
-                                          fontWeight:
-                                          FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .primaryColor,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                       ),
                                     ),
                                   ),
                               ]),
-                              const Spacer(),
-                              Container(
-                                padding: EdgeInsets.all(6.r),
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(.13),
-                                    borderRadius: BorderRadius.circular(9.r)),
-                                child: Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  color: Theme.of(context).primaryColor,
-                                  size: 20,
-                                ),
-                              ),
                             ]),
                       ],
                     ),
@@ -253,73 +235,80 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Text(
-                    "عنوان التوصيل",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 17.sp,
-                      fontWeight: FontWeight.bold,
+                  if (state.list.list.address.lat != 0.0 &&
+                      state.list.list.address.lng != 0.0)
+                    Text(
+                      "عنوان التوصيل",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.r),
-                    width: 345.w,
-                    height: 85.h,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15.r),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(.02),
-                              offset: const Offset(0, 6))
-                        ]),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              state.list.list.address.type,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.sp),
-                            ),
-                            Text(
-                              state.list.list.address.location,
-                              style: TextStyle(
-                                  color: const Color(0xff999797),
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 12.sp),
-                            ),
-                            Text(
-                              state.list.list.address.description,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 12.sp),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Container(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          width: 75.w,
-                          height: 65.h,
-                          child: MapItem(
-                            lat: state.list.list.address.lat,
-                            lng: state.list.list.address.lng,
-                            lightMode: true,
-                          ),
-                        ),
-                      ],
+                  if (state.list.list.address.lat != 0.0 &&
+                      state.list.list.address.lng != 0.0)
+                    SizedBox(
+                      height: 16.h,
                     ),
-                  ),
+                  if (state.list.list.address.lat != 0.0 &&
+                      state.list.list.address.lng != 0.0)
+                    Container(
+                      padding: EdgeInsets.all(8.r),
+                      width: 345.w,
+                      height: 85.h,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.r),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(.02),
+                                offset: const Offset(0, 6))
+                          ]),
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                state.list.list.address.type,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15.sp),
+                              ),
+                              Text(
+                                state.list.list.address.location,
+                                style: TextStyle(
+                                    color: const Color(0xff999797),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 12.sp),
+                              ),
+                              Text(
+                                state.list.list.address.description,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 12.sp),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Container(
+                            width: 75.w,
+                            height: 65.h,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15.r),
+                            ),
+                            child: MapItem(
+                              lat: state.list.list.address.lat,
+                              lng: state.list.list.address.lng,
+                              lightMode: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   SizedBox(
                     height: 16.h,
                   ),
@@ -336,7 +325,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                   Container(
                     padding: EdgeInsets.all(8.r),
-                    height: 150.h,
                     width: 345.w,
                     decoration: BoxDecoration(
                       color: const Color(0xffF3F8EE),
@@ -355,7 +343,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.orderPrice}ر.س",
+                              "${state.list.list.stringPriceBeforeDiscount}ر.س",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -364,7 +352,53 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           ],
                         ),
                         SizedBox(
-                          height: 16.h,
+                          height: 8.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "الخصم",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                            Text(
+                              "${state.list.list.stringDiscount}ر.س",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(4.0.r),
+                          child: const Divider(
+                            thickness: 2,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "الاجمالي بعد خصم المنتجات",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                            Text(
+                              "${state.list.list.stringOrderPrice}ر.س",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                          ],
+                        ),SizedBox(
+                          height: 8.h,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -377,19 +411,39 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.discount}ر.س",
+                              "${state.list.list.stringDeliveryPrice}ر.س",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                           ],
+                        ),SizedBox(
+                          height: 8.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "خصم عميل مميز",
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                            Text(
+                              "-${state.list.list.stringVipDiscount}ر.س",
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                          ],
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.h),
-                          child: Divider(
-                            color: const Color(0xffF3F3F3),
-                            height: .2.h,
+                          padding: EdgeInsets.all(4.0.r),
+                          child: const Divider(
+                            thickness: 2,
                           ),
                         ),
                         Row(
@@ -403,7 +457,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.totalPrice}.س",
+                              "${state.list.list.stringTotalPrice}.س",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -412,10 +466,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.h),
-                          child: Divider(
-                            color: const Color(0xffF3F3F3),
-                            height: .2.h,
+                          padding: EdgeInsets.all(4.0.r),
+                          child: const Divider(
+                            thickness: 2,
                           ),
                         ),
                         Row(
@@ -428,10 +481,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
+
                             Image.asset(
-                              Assets.images.visa.path,
-                              width: 50.w,
-                              height: 15.h,
+                            state.list.list.payType=="cash"?  Assets.icons.money.path:  Assets.images.visa.path,
+                              width: state.list.list.payType=="cash"?70.w:50.w,
+                              height:state.list.list.payType=="cash"? 30.h:15.h,
                             ),
                           ],
                         ),
@@ -439,7 +493,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ),
                   ),
                   const Spacer(),
-                  if (widget.typeButton)
+                  if (widget.isCancel)
                     BlocConsumer(
                       bloc: cancelOrderBloc,
                       listener: (context, state) {
@@ -460,12 +514,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         );
                       },
                     ),
-                  if (!widget.typeButton)
+                  if (!widget.isCancel)
                     AppButton(
                       text: "تقييم المنتجات",
-                      onPress: () {
-                        navigateTo(const RateProductsScreen());
-                      },
+                      onPress: () {},
                     ),
                 ],
               );

@@ -5,7 +5,7 @@ class AddToCartEvents{
 class PostAddToCartDataEvent extends AddToCartEvents{
   final double amount;
   final int id;
-
-  PostAddToCartDataEvent({required this.id, required this.amount});
+  final int? counter;
+  PostAddToCartDataEvent( {this.counter,required this.id, required this.amount});
 
 }

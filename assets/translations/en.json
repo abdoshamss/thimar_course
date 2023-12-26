@@ -1,3 +1,92 @@
 {
-  "hello": "Hello"
+  "lang":"en",
+  "login_first": "Login first",
+"cancel": "Cancel",
+  "no_internet": "Internet not found",
+  "log_in": {
+    "hello_again": "Hello again",
+    "you_can_login_now": "You can log in now",
+    "please_enter_your_mobile_number": "Please enter your mobile number",
+    "please_enter_your_password_again": "Please enter your password again",
+    "please_enter_nine_number": "Please enter 9 numbers",
+    "please_enter_six_letters_at_min": "Please enter 6 letters at min",
+    "phone_number": "Phone Number",
+    "password": "Password",
+    "forget_password": "Forget Password ?",
+    "login_as_visitor": "Log in as a visitor",
+    "dont_have_an_account": "Don't have an account?",
+    "register_now": "  Register Now  "
+  },
+  "forget_password":{
+  "forget_password": "Forget Password",
+    "enter_your_phone_number": "Enter the mobile number associated with your account",
+    "confirm_phone_number": "Confirm phone number",
+"you_have_an_account": "You have an account ?"
+  },
+  "my_account": {
+    "my_account": "My Account",
+    "user_name": "User Name",
+    "personal_data": "Personal data",
+    "wallet": "Wallet",
+    "addresses": "Addresses",
+    "faqs": "FAQS",
+    "policy": "Policy",
+    "call_us": "Call us",
+    "complaints": "Complaints and suggestions",
+    "share_app": "Share app",
+    "about_app": "About App",
+    "terms": "Terms",
+    "change_language":"Change Language",
+    "rate_app":"Rate App",
+    "log_out":"Log Out",
+    "log_in":"Login"
+
+  },
+  "check_code": {
+"enter_the_code_4digits":"Enter the 4-digit code sent to your mobile number",
+    "change_phone_number": "Change phone number",
+    "enter_the_code": "Enter the code",
+    "confirm_the_code":"Confirm the code",
+    "didnt_receive_code":"Didn't receive the code?",
+    "you_can_receive_code_after":"You can resend the code after",
+    "resend":"Resend"
+  },
+  "reset_password":{
+    "enter_new_password": "Enter new password",
+    "please_enter_new_password_in_6_letters_at_min": "Please enter a new password of 6 characters",
+    "new_password": "New password",
+    "please_enter_new_password_again": "Please enter the new password again",
+    "confirm_new_password": "Confirm new password",
+    "change_password": "Change password"
+  },
+  "register": {
+    "hello_again":"Hello again",
+    "you_can_register_new_account_now":"You can register a new account now",
+    "please_enter_full_name":"Please enter your full name",
+    "user_name":"User name",
+    "city":"City",
+    "choose_your_city":"Choose your city",
+    "please_enter_your_city":"Please enter your city",
+    "register":"Register",
+    "confirm_password":"Confirm password",
+    "something_wrong":"حدث خطأ"
+  },
+  "account_activation": {
+    "activate_account": "Activate the account"
+
+  },
+  "home": {
+    "write_search_word": "Enter a word to search",
+    "search_about_you_want": "Search about you want?",
+    "data_not_found": "Data not found",
+    "categories": "Categories",
+    "items": "Items",
+    "your_city": "Your city",
+    "thamara_basket": "Thimar Basket",
+    "delivery_to": "Delivery to",
+    "addresses": "Addresses",
+    "address": "Address",
+    "add_addresses": "Add Addresses"
+
+  }
 }

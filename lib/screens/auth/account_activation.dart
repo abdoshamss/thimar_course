@@ -1,4 +1,5 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/auth/register.dart';
 
 import '../../core/design/res/colors.dart';
@@ -32,6 +34,8 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
   bool isTimerRunning = true;
   final bloc = KiwiContainer().resolve<ActivationBloc>();
   final resendCodeBloc = KiwiContainer().resolve<ResendCodeBloc>();
+  final timerController = CountDownController()..start();
+  final formKey = GlobalKey<FormState>();
   @override
   void dispose() {
 
@@ -45,8 +49,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
 
     bloc.phone = widget.phone;
     resendCodeBloc.phone = widget.phone;
-    final timerController = CountDownController()..start();
-    final formKey = GlobalKey<FormState>();
+
 
     return Scaffold(
 
@@ -63,7 +66,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
               Text(
-                'تفعيل الحساب',
+              LocaleKeys.account_activation_activate_account.tr(),
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 16.sp,
@@ -73,7 +76,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                 height: 12.h,
               ),
               Text(
-                'أدخل الكودالمكون من 4 أرقام المرسل علي رقم الجوال',
+                LocaleKeys.check_code_enter_the_code_4digits.tr(),
                 style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,
@@ -96,7 +99,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => navigateTo(const RegisterScreen()),
-                      text: '  تغيير رقم الجوال ',
+                      text:  LocaleKeys.check_code_change_phone_number.tr(),
                       style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline),
@@ -112,7 +115,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                 child: PinCodeTextField(
                   validator: (value) {
                     if (value!.isEmpty || value.length < 4) {
-                      return "ادخل الكود";
+                      return  LocaleKeys.check_code_enter_the_code.tr();
                     }
                     return null;
                   },
@@ -150,7 +153,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                     child: AppButton(
                         isLoading:
                             state is ActivationAccountLoadingState  ,
-                        text: 'تأكيد الكود',
+                        text:  LocaleKeys.check_code_confirm_the_code.tr(),
                         onPress: () {
                           if (formKey.currentState!.validate()) {
                             bloc.add(PostActivationAccountDataEvent());
@@ -167,13 +170,13 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'لم تستلم الكود ؟',
+                        LocaleKeys.check_code_didnt_receive_code.tr(),
                         textAlign: TextAlign.center,
                         style:
                             TextStyle(fontSize: 16.sp, color: secondaryColorText),
                       ),
                       Text(
-                        'يمكنك اعادة ارسال الكود بعد',
+                        LocaleKeys.check_code_you_can_receive_code_after.tr(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: secondaryColorText,
@@ -232,7 +235,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
               if (!isTimerRunning)
                 Center(
                   child: AppButton(
-                    text: 'أعادة الارسال',
+                    text: LocaleKeys.check_code_resend.tr(),
                     onPress: () {
                       resendCodeBloc.add(PostResendCodeDataEvent());
                       isTimerRunning = true;
@@ -252,7 +255,8 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'لديك حساب بالفعل ؟',
+                      text: LocaleKeys.forget_password_you_have_an_account
+                          .tr(),
                       style: TextStyle(
                         fontSize: 15.sp,
                         color: Theme.of(context).primaryColor,
@@ -261,8 +265,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => navigateTo(const LoginScreen()),
-                      text: '  تسجيل الدخول ',
-                      style: const TextStyle(
+                      text: LocaleKeys.my_account_log_in.tr(),                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),

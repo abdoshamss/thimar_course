@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/core/logic/cache_helper.dart';
 
 import '../../../core/design/widgets/btn.dart';
 import '../../../core/logic/helper_methods.dart';
@@ -56,8 +58,8 @@ class _ItemProductState extends State<ItemProduct> {
                     Image.network(
                       widget.model.mainImage,
                       fit: BoxFit.fill,
-                      width: 145.w,
-                      height: 120.h,
+                      width: 150,
+                      height: 100.h,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
@@ -70,7 +72,7 @@ class _ItemProductState extends State<ItemProduct> {
                             bottomStart: Radius.circular(11.r)),
                       ),
                       child: Text(
-                        "${widget.model.discount.toString()}%",
+                        "${widget.model.stringDiscount}%",
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.white,
@@ -83,75 +85,93 @@ class _ItemProductState extends State<ItemProduct> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.h),
-              child: Row(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: Column(
                 children: [
-                  Text(
-                    widget.model.title,
-                    style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Text(
-                  "السعر / ${widget.model.unit.name}",
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).hintColor),
-                ),
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 4.h),
-              child: Row(
-                children: [
-                  Text.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                        text: "${widget.model.price} ر.س",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.model.title,
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor),
                         ),
-                      ),
-                      TextSpan(
-                        text: " ${widget.model.priceBeforeDiscount} ر.س",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ]),
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      ],
                     ),
                   ),
+                  Row(
+                    children: [
+                      Text(
+                        "السعر / ${widget.model.unit.name}",
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).hintColor),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                    child: Row(
+                      children: [
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(
+                              text: "${widget.model.stringPrice} ر.س ",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            TextSpan(
+                              text:
+                                  " ${widget.model.stringPriceBeforeDiscount} ر.س",
+                              style: TextStyle(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                          ]),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (widget.model.amount != 0)
+                    BlocBuilder(
+                      bloc: addToCartBloc,
+                      builder: (BuildContext context, state) {
+                        return AppButton(
+                          isLoading: state is AddToCartLoadingState,
+                          text: "أضف للسلة",
+                          onPress: () {
+                            if (CacheHelper.getToken()!.isNotEmpty) {
+                              addToCartBloc.add(PostAddToCartDataEvent(
+                                  id: widget.model.id, amount: 1));
+                            } else {
+                              dialog();
+                            }
+                          },
+                          isBig: false,
+                        );
+                      },
+                    ),
+                  if (widget.model.amount == 0)
+                    const AppButton(
+                      text: "تم نفاذ الكمية",
+                      type: BtnType.cancel,
+                      isBig: false,
+                      onPress: null,
+                    )
                 ],
               ),
-            ),
-            if (widget.model.amount != 0)
-              AppButton(
-                text: "أضف للسلة",
-                onPress: () {
-                  addToCartBloc.add(
-                      PostAddToCartDataEvent(id: widget.model.id, amount: 1));
-                },
-                isBig: false,
-              ),
-            if (widget.model.amount == 0)
-              AppButton(
-                text: "تم نفاذ الكمية",
-                type: BtnType.cancel,
-                isBig: false,
-                onPress: () {},
-              )
+            )
           ]),
         ),
       ),

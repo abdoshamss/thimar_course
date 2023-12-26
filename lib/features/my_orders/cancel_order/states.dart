@@ -12,4 +12,11 @@ class CancelOrderSuccessState extends CancelOrderStates {
   }
 }
 
-class CancelOrderErrorState extends CancelOrderStates {}
+class CancelOrderErrorState extends CancelOrderStates {
+
+  final String message;
+final int statusCode;
+  CancelOrderErrorState( {required this.statusCode, required this.message}){
+    showMessage(message);
+  }
+}

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/privacy/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
@@ -38,10 +39,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
               bloc: bloc,
               builder: (BuildContext context, state) {
                 if (state is PrivacyLoadingState || bloc.data == null) {
-                  return Center(
-                      child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor,
-                  ));
+                  return loadingWidget();
                 }
                 return Html(data: bloc.data);
               },

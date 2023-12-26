@@ -23,7 +23,7 @@ class SliderDataBloc extends Bloc<SliderEvents, SliderDataStates> {
       final list = SliderData.fromJson(response.response!.data).list;
       emit(SliderDataSuccessState(list: list));
     } else {
-      emit(SliderDataErrorState());
+      emit(SliderDataErrorState(text:response.message));
     }
   }
 }

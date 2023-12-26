@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/features/auth/log_out/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/about_app.dart';
 import 'package:thimar_course/screens/auth/login.dart';
 import 'package:thimar_course/screens/contact_us.dart';
@@ -13,8 +15,10 @@ import 'package:thimar_course/screens/faqs.dart';
 import 'package:thimar_course/screens/give_advices.dart';
 import 'package:thimar_course/screens/privacy.dart';
 import 'package:thimar_course/screens/profile.dart';
+import 'package:thimar_course/screens/terms.dart';
 import 'package:thimar_course/screens/wallet.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+import '../../../features/get_profile/bloc.dart';
 import '../../addrsses.dart';
 
 class MyAccountPage extends StatefulWidget {
@@ -26,11 +30,13 @@ class MyAccountPage extends StatefulWidget {
 
 class _MyAccountPageState extends State<MyAccountPage> {
   final logoutBloc = KiwiContainer().resolve<LogOutBLoc>();
-
+  final bloc = KiwiContainer().resolve<GetProfileDataBloc>()
+    ..add(GetProfileDataEvent());
   @override
   void dispose() {
     super.dispose();
     logoutBloc.close();
+    bloc.close();
   }
 
   @override
@@ -54,7 +60,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "حسابي",
+                LocaleKeys.my_account_my_account.tr(),
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
@@ -62,34 +68,75 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
               ),
               SizedBox(
-                height: 16.h,
+                height: 8.h,
               ),
-              Container(
-                clipBehavior: Clip.antiAlias,
-                height: 75.h,
-                width: 75.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.r),
-                    image: const DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80"))),
+              BlocBuilder(
+                bloc: bloc,
+                builder: (context,state) {
+                  if(state is GetProfileDataSuccessState) {
+                    return Container(
+                    clipBehavior: Clip.antiAlias,
+                    height: 75.h,
+                    width: 75.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.r),
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(state.list.data.image))),
+                  );
+                  }
+                  return Container(
+                    clipBehavior: Clip.antiAlias,
+                    height: 75.h,
+                    width: 75.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.r),
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(CacheHelper.getImage()))),
+                  );
+
+                }
               ),
               SizedBox(
                 height: 16.h,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    CacheHelper.getFullName().isEmpty
+                        ? LocaleKeys.my_account_user_name.tr()
+                        : CacheHelper.getFullName(),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  if(CacheHelper.getIsVip()==1)
+                  Image.asset(
+                    Assets.icons.vip.path,
+                    width: 30.w,
+                    height: 30.h,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
               Text(
-                "اسم المستخدم",
+                CacheHelper.getPhone().isNotEmpty ? "${CacheHelper.getPhone()}+" : "",
                 style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                    color: Colors.white.withOpacity(.7), fontSize: 16.sp),
               ),
             ],
           ),
         ),
-        if (CacheHelper.getToken() != null)
+        if (CacheHelper.getToken()!.isNotEmpty)
           Padding(
             padding: EdgeInsets.all(16.0.r),
             child: Container(
@@ -101,7 +148,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      navigateTo(const EditProfileDetailsScreen());
+                      navigateTo(const EditProfileDetailsScreen(
+
+                      )).then((value) {
+                        if(value??false){
+                          bloc.add(GetProfileDataEvent());
+                        }
+                      });
                     },
                     child: Padding(
                       padding: EdgeInsets.all(16.0.r),
@@ -116,7 +169,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             width: 8.w,
                           ),
                           Text(
-                            "البيانات الشخصية",
+                            LocaleKeys.my_account_personal_data.tr(),
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: Theme.of(context).primaryColor,
@@ -153,7 +206,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             width: 8.w,
                           ),
                           Text(
-                            "المحفظة",
+                            LocaleKeys.my_account_wallet.tr(),
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: Theme.of(context).primaryColor,
@@ -190,7 +243,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             width: 8.w,
                           ),
                           Text(
-                            "العناوين",
+                            LocaleKeys.my_account_addresses.tr(),
                             style: TextStyle(
                               fontSize: 13.sp,
                               color: Theme.of(context).primaryColor,
@@ -241,7 +294,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           width: 8.w,
                         ),
                         Text(
-                          "أسئلة متكررة",
+                          LocaleKeys.my_account_faqs.tr(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: Theme.of(context).primaryColor,
@@ -278,7 +331,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           width: 8.w,
                         ),
                         Text(
-                          "سياسة الخصوصية",
+                          LocaleKeys.my_account_policy.tr(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: Theme.of(context).primaryColor,
@@ -315,7 +368,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           width: 8.w,
                         ),
                         Text(
-                          "تواصل معنا",
+                          LocaleKeys.my_account_call_us.tr(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: Theme.of(context).primaryColor,
@@ -353,7 +406,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           width: 8.w,
                         ),
                         Text(
-                          "الشكاوي والاقتراحات",
+                          LocaleKeys.my_account_complaints.tr(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: Theme.of(context).primaryColor,
@@ -373,34 +426,40 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 Divider(
                   height: .3.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(16.0.r),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        Assets.icons.share.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        "مشاركة التطبيق",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    _launchUrl(Uri.parse(
+                        "https://play.google.com/store/apps/details?id=com.alalmiya.thamra"));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0.r),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          Assets.icons.share.path,
+                          width: 18.w,
+                          height: 18.h,
                         ),
-                      ),
-                      // Spacer(),
-                      const Spacer(),
-                      Image.asset(
-                        Assets.icons.back.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                    ],
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Text(
+                          LocaleKeys.my_account_share_app.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Spacer(),
+                        const Spacer(),
+                        Image.asset(
+                          Assets.icons.back.path,
+                          width: 18.w,
+                          height: 18.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -420,6 +479,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   padding: EdgeInsets.all(16.0.r),
                   child: GestureDetector(
                     onTap: () {
+                      // navigateTo(const AboutAppScreen());
                       navigateTo(const AboutAppScreen());
                     },
                     child: Row(
@@ -433,7 +493,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           width: 8.w,
                         ),
                         Text(
-                          "عن التطبيق",
+                          LocaleKeys.my_account_about_app.tr(),
                           style: TextStyle(
                             fontSize: 13.sp,
                             color: Theme.of(context).primaryColor,
@@ -456,96 +516,116 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 ),
                 Padding(
                   padding: EdgeInsets.all(16.0.r),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        Assets.icons.note.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        "الشروط والاحكام",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
+                  child: GestureDetector(
+                    onTap: () {
+                      navigateTo(const TermsScreen());
+                    },
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          Assets.icons.note.path,
+                          width: 18.w,
+                          height: 18.h,
                         ),
-                      ),
-                      // Spacer(),
-                      const Spacer(),
-                      Image.asset(
-                        Assets.icons.back.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                    ],
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Text(
+                          LocaleKeys.my_account_faqs.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Spacer(),
+                        const Spacer(),
+                        Image.asset(
+                          Assets.icons.back.path,
+                          width: 18.w,
+                          height: 18.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Divider(
                   height: .3.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(16.0.r),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.language,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        "تغيير اللغة",
-                        style: TextStyle(
-                          fontSize: 13.sp,
+                GestureDetector(
+                  onTap: () {
+                    String code =
+                        context.locale.languageCode == "en" ? "ar" : "en";
+                    context.setLocale(Locale(code));
+                    CacheHelper.setLanguage(context.locale.languageCode);
+                    print(CacheHelper.getLanguage());
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0.r),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.language,
                           color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      const Spacer(),
-                      Image.asset(
-                        Assets.icons.back.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                    ],
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Text(
+                          LocaleKeys.my_account_change_language.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Spacer(),
+                        Image.asset(
+                          Assets.icons.back.path,
+                          width: 18.w,
+                          height: 18.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Divider(
                   height: .3.h,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(16.0.r),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        Assets.icons.star.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      Text(
-                        "تقييم التطبيق",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    _launchUrl(Uri.parse(
+                        "https://play.google.com/store/apps/details?id=com.alalmiya.thamra"));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0.r),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          Assets.icons.star.path,
+                          width: 18.w,
+                          height: 18.h,
                         ),
-                      ),
-                      // Spacer(),
-                      const Spacer(),
-                      Image.asset(
-                        Assets.icons.back.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
-                    ],
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Text(
+                          LocaleKeys.my_account_rate_app.tr(),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Spacer(),
+                        const Spacer(),
+                        Image.asset(
+                          Assets.icons.back.path,
+                          width: 18.w,
+                          height: 18.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -565,7 +645,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           },
           builder: (BuildContext context, state) => GestureDetector(
             onTap: () {
-              if (CacheHelper.getToken() == null) {
+              if (CacheHelper.getToken()!.isEmpty) {
                 navigateTo(const LoginScreen());
               } else {
                 logoutBloc.add(PostLogOutDataEvent());
@@ -579,13 +659,13 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   border: Border.all(color: const Color(0xffF6F6F6)),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(16.0.r),
+                  padding: EdgeInsets.all(16.r),
                   child: Row(
                     children: [
                       Text(
-                        CacheHelper.getToken() == null
-                            ? "تسجيل الدخول"
-                            : "تسجيل الخروج",
+                        CacheHelper.getToken()!.isEmpty
+                            ? LocaleKeys.my_account_log_in.tr()
+                            : LocaleKeys.my_account_log_out.tr(),
                         style: TextStyle(
                           fontSize: 13.sp,
                           color: Theme.of(context).primaryColor,
@@ -594,11 +674,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       ),
                       // Spacer(),
                       const Spacer(),
-                      Image.asset(
-                        Assets.icons.logOut.path,
-                        width: 18.w,
-                        height: 18.h,
-                      ),
+                      if (CacheHelper.getToken()!.isNotEmpty)
+                        Image.asset(
+                          Assets.icons.logOut.path,
+                          width: 18.w,
+                          height: 18.h,
+                        ),
                     ],
                   ),
                 ),
@@ -608,5 +689,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
         ),
       ],
     );
+  }
+
+  Future<void> _launchUrl(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

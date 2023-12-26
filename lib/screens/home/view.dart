@@ -8,7 +8,8 @@ import 'pages/my_account.dart';
 import 'pages/notifications.dart';
 
 class HomeNavScreen extends StatefulWidget {
-  const HomeNavScreen({Key? key}) : super(key: key);
+      int currentPage;
+    HomeNavScreen({Key? key,  this.currentPage=0 }) : super(key: key);
 
   @override
   State<HomeNavScreen> createState() => _HomeNavScreenState();
@@ -36,7 +37,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
     const FAVSPage(),
     const MyAccountPage(),
   ];
-  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -44,11 +45,11 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
         return true;
       },
       child: Scaffold(
-        body: pages[currentPage],
+        body: pages[widget.currentPage],
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentPage,
+          currentIndex:widget. currentPage,
           onTap: (value) {
-            currentPage = value;
+            widget.currentPage = value;
 
             setState(() {});
           },
@@ -64,7 +65,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
                 padding: const EdgeInsets.only(bottom: 4.0),
                 child: Image.asset(
                   icons[index],
-                  color: currentPage == index
+                  color: widget.currentPage == index
                       ? Colors.white
                       : const Color(0xffAED489),
                 ),

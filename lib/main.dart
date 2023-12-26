@@ -6,20 +6,24 @@ import 'package:flutter/material.dart' as mat;
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_course/core/design/res/colors.dart';
+import 'package:thimar_course/core/design/widgets/un_focus.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/logic/kiwi.dart';
 import 'package:thimar_course/firebase_options.dart';
+import 'package:thimar_course/screens/auth/account_activation.dart';
 import 'package:thimar_course/screens/auth/splash.dart';
 import 'generated/codegen_loader.g.dart';
+import 'generated/locale_keys.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseMessaging.instance.getToken().then((value) {
-    debugPrint("My FCM tooooooooooooken");
+    debugPrint("My FCM tooooooooooooooken");
     debugPrint(value.toString());
   });
+
   initKiwi();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: getMaterialColor(primaryColor.value),
@@ -34,8 +38,7 @@ void main() async {
         supportedLocales: const [Locale('en'), Locale('ar')],
         saveLocale: true,
         startLocale: const Locale('ar'),
-        path:
-            'assets/translations', // <-- change the path of the translation files
+        path: 'assets/translations',
         assetLoader: const CodegenLoader(),
         fallbackLocale: const Locale('en'),
         child: const MyApp()),
@@ -58,12 +61,18 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         title: "Thimar",
         navigatorKey: navigatorKey,
-        builder: (context, child) =>
-            Directionality(textDirection: mat.TextDirection.rtl, child: child!),
-        // Directionality(textDirection:mat. TextDirection.rtl, child: child!),
+        builder: (context, child) {
+          return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.sp),
+              child: UnFocus(
+                  child: Directionality(
+                      textDirection: context.locale.languageCode == "en"
+                          ? mat.TextDirection.ltr
+                          : mat.TextDirection.rtl,
+                      child: child!)));
+        },
         theme: ThemeData(
-          // androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-
+          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: getMaterialColor(primaryColor.value),
           unselectedWidgetColor: const Color(0xffF3F3F3),
@@ -79,6 +88,9 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
                 color: primaryColor,
               )),
+          dividerTheme: const DividerThemeData(
+            color: Color(0xffF3F3F3),
+          ),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
             enabledBorder: OutlineInputBorder(
@@ -94,10 +106,10 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
+
         ),
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
-        // home: const BeVipScreen(),
       ),
     );
   }

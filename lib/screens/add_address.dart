@@ -6,9 +6,9 @@ import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/core/widgets/selectable_item.dart';
-
-import '../core/design/widgets/icon_with_bg.dart';
+import '../core/widgets/custom_appbar.dart';
 import '../features/get_adresses/bloc.dart';
+import '../gen/assets.gen.dart';
 
 class AddAddressesScreen extends StatefulWidget {
   final int id;
@@ -48,28 +48,13 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
     final describeController = TextEditingController(
         text: widget.describe.isNotEmpty ? widget.describe : "");
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "اضافة عنوان",
-          style: TextStyle(
-            color: Theme.of(context).primaryColor,
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leadingWidth: 60.w,
-        leading: Padding(
-          padding: EdgeInsetsDirectional.only(start: 16.r),
-          child: IconWithBg(
-            icon: Icons.arrow_back_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+
+      appBar: CustomAppBarScreen(
+        image: Assets.icons.backHome.path,
+      text: "اضافة عنوان",
+    ),
+
+
       body: ListView(
         children: [
           SizedBox(

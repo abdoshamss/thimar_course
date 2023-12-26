@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kiwi/kiwi.dart';
@@ -11,13 +12,11 @@ import 'package:thimar_course/features/current_location/bloc.dart';
 class MapItem extends StatefulWidget {
   late double lat;
   late double lng;
-  final bool? lightMode;
-  MapItem({
-    Key? key,
-    required this.lat,
-    required this.lng,
-    this.lightMode
-  }) : super(key: key);
+  bool lightMode;
+
+  MapItem(
+      {Key? key, required this.lat, required this.lng, this.lightMode = false})
+      : super(key: key);
 
   @override
   State<MapItem> createState() => _State();
@@ -26,28 +25,31 @@ class MapItem extends StatefulWidget {
 class _State extends State<MapItem> {
   Set<Marker> markers = {};
   final _controller = Completer<GoogleMapController>();
-
+  late String location;
   @override
   void initState() {
-
     super.initState();
-    if (widget.lng != 0.0) {
-      goToMyLocation(location: LatLng(widget.lat, widget.lng));
-    }
+    determinePosition();
   }
 
   final bloc = KiwiContainer().resolve<CurrentLocationBloc>();
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomLeft,
       children: [
         GoogleMap(
-          liteModeEnabled: widget.lightMode==true,
-          mapType: MapType.hybrid,
+          liteModeEnabled: widget.lightMode,
+          mapType: MapType.normal,
           markers: markers,
+          mapToolbarEnabled: false,
           onTap: (location) async {
-            await goToMyLocation(location: location);
+            if (!widget.lightMode) {
+              await goToMyLocation(location: location);
+            } else {
+              await getMaps(widget.lat, widget.lng);
+            }
           },
           initialCameraPosition:
               CameraPosition(target: LatLng(widget.lat, widget.lng)),
@@ -55,28 +57,36 @@ class _State extends State<MapItem> {
             _controller.complete(controller);
           },
         ),
-        GestureDetector(
-          onTap: ()   {
-            determinePosition();
-            setState(() {});
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-              vertical: 24.h,
-            ),
-            child: Container(
-              padding: EdgeInsets.all(8.r),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(13)),
-              child: Icon(
-                Icons.location_on_rounded,
-                color: Theme.of(context).primaryColor,
-                size: 32,
+        if (!widget.lightMode)
+          GestureDetector(
+            onTap: () async {
+              determinePosition();
+              List<Placemark> placeMarks =
+                  await placemarkFromCoordinates(52.2165157, 6.9437819);
+              location = placeMarks[0].subAdministrativeArea ?? "";
+              await CacheHelper.saveCurrentLocationWithName(location);
+              print("3" * 88);
+              print(CacheHelper.getCurrentLocationWithName());
+              setState(() {});
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 24.h,
+              ),
+              child: Container(
+                padding: EdgeInsets.all(8.r),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(13.r)),
+                child: Icon(
+                  Icons.location_on_rounded,
+                  color: Theme.of(context).primaryColor,
+                  size: 32,
+                ),
               ),
             ),
-          ),
-        )
+          )
       ],
     );
   }
@@ -84,7 +94,7 @@ class _State extends State<MapItem> {
   Future<void> goToMyLocation({required LatLng location}) async {
     widget.lat = location.latitude;
     widget.lng = location.longitude;
-
+    // getLocation(location.latitude, location.longitude);
     final GoogleMapController controller = await _controller.future;
     markers.add(Marker(
         markerId: const MarkerId("1"),

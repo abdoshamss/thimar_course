@@ -58,7 +58,7 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
                 },
                 controller: bloc.phoneController,
                 labelText: "رقم الجوال",
-                inputType: InputType.phone,
+                inputType: InputType.phone,saudiIcon: false,
               ),
               Input(
                 validator: (value) {
@@ -85,7 +85,7 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
                   bloc: bloc,
                   builder: (context, state) {
                     if (state is GiveAdviceLoadingState) {
-                      loadingWidget();
+                     return loadingWidget();
                     }
                     return AppButton(
                       onPress: () {

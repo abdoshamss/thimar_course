@@ -19,12 +19,12 @@ class CancelOrderBloc extends Bloc<CancelOrderEvents, CancelOrderStates> {
     emit(CancelOrderLoadingState());
     final response = await dioHelper.post("client/orders/${event.id}/cancel");
     if (response.isSuccess) {
-      emit(CancelOrderSuccessState(message: response.message
-
-      ));
-
+      emit(CancelOrderSuccessState(message: response.message));
     } else {
-      emit(CancelOrderErrorState());
+      emit(CancelOrderErrorState(
+        message: response.message,
+        statusCode: response.response!.statusCode ?? 200,
+      ));
     }
   }
 }

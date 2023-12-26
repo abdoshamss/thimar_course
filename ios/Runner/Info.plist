@@ -12,6 +12,34 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>comgooglemaps</string>
+        <string>baidumap</string>
+        <string>iosamap</string>
+        <string>waze</string>
+        <string>yandexmaps</string>
+        <string>yandexnavi</string>
+        <string>citymapper</string>
+        <string>mapswithme</string>
+        <string>osmandmaps</string>
+        <string>dgis</string>
+        <string>qqmap</string>
+        <string>here-location</string>
+        <string>tomtomgo</string>
+        <string>copilot</string>
+        <string>com.sygic.aura</string>
+    </array>
+    <key>CFBundleLocalizations</key>
+    <array>
+    	<string>en</string>
+    	<string>nb</string>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>sms</string>
+      <string>tel</string>
+    </array>
 	<key>CFBundleName</key>
 	<string>thimar_course</string>
 	<key>CFBundlePackageType</key>

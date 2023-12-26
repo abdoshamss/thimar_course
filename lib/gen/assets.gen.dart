@@ -54,6 +54,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/cart.png
   AssetGenImage get cart => const AssetGenImage('assets/icons/cart.png');
 
+  /// File path: assets/icons/cart_home.png
+  AssetGenImage get cartHome =>
+      const AssetGenImage('assets/icons/cart_home.png');
+
   /// File path: assets/icons/check.png
   AssetGenImage get check => const AssetGenImage('assets/icons/check.png');
 
@@ -63,10 +67,6 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/clock.png
   AssetGenImage get clock => const AssetGenImage('assets/icons/clock.png');
-
-  /// File path: assets/icons/crat_home.png
-  AssetGenImage get cratHome =>
-      const AssetGenImage('assets/icons/crat_home.png');
 
   /// File path: assets/icons/dollar.png
   AssetGenImage get dollar => const AssetGenImage('assets/icons/dollar.png');
@@ -97,9 +97,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/log_out.png
   AssetGenImage get logOut => const AssetGenImage('assets/icons/log_out.png');
 
+  /// File path: assets/icons/mark.png
+  AssetGenImage get mark => const AssetGenImage('assets/icons/mark.png');
+
   /// File path: assets/icons/mastercard.png
   AssetGenImage get mastercard =>
       const AssetGenImage('assets/icons/mastercard.png');
+
+  /// File path: assets/icons/message.png
+  AssetGenImage get message => const AssetGenImage('assets/icons/message.png');
 
   /// File path: assets/icons/minus.png
   AssetGenImage get minus => const AssetGenImage('assets/icons/minus.png');
@@ -127,6 +133,10 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/phone.png
   AssetGenImage get phone => const AssetGenImage('assets/icons/phone.png');
+
+  /// File path: assets/icons/phone_call.png
+  AssetGenImage get phoneCall =>
+      const AssetGenImage('assets/icons/phone_call.png');
 
   /// File path: assets/icons/question.png
   AssetGenImage get question =>
@@ -158,6 +168,9 @@ class $AssetsIconsGen {
   AssetGenImage get userHome =>
       const AssetGenImage('assets/icons/user_home.png');
 
+  /// File path: assets/icons/vip.png
+  AssetGenImage get vip => const AssetGenImage('assets/icons/vip.png');
+
   /// File path: assets/icons/visa_pay.png
   AssetGenImage get visaPay => const AssetGenImage('assets/icons/visa_pay.png');
 
@@ -178,10 +191,10 @@ class $AssetsIconsGen {
         calender,
         call,
         cart,
+        cartHome,
         check,
         checkVip,
         clock,
-        cratHome,
         dollar,
         edit,
         editAddress,
@@ -191,7 +204,9 @@ class $AssetsIconsGen {
         home,
         info,
         logOut,
+        mark,
         mastercard,
+        message,
         minus,
         money,
         note,
@@ -200,6 +215,7 @@ class $AssetsIconsGen {
         password,
         personHome,
         phone,
+        phoneCall,
         question,
         rank,
         remove,
@@ -209,6 +225,7 @@ class $AssetsIconsGen {
         tickSquare,
         user,
         userHome,
+        vip,
         visaPay,
         wallet
       ];
@@ -230,6 +247,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/fruit_small.png
   AssetGenImage get fruitSmall =>
       const AssetGenImage('assets/images/fruit_small.png');
+
+  /// File path: assets/images/login_img.jpg
+  AssetGenImage get loginImg =>
+      const AssetGenImage('assets/images/login_img.jpg');
 
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
@@ -269,6 +290,7 @@ class $AssetsImagesGen {
         city,
         drawerBackground,
         fruitSmall,
+        loginImg,
         logo,
         mainLogo,
         orderFinished,

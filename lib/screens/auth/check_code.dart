@@ -1,17 +1,20 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kiwi/kiwi.dart';
+ import 'package:kiwi/kiwi.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/features/auth/resend_code/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/auth/login.dart';
 import 'package:thimar_course/screens/auth/register.dart';
 import 'package:thimar_course/screens/auth/reset_password.dart';
 import '../../core/design/widgets/btn.dart';
+import '../../core/logic/cache_helper.dart';
 import '../../features/auth/check_code/bloc.dart';
 
 class CheckCodeScreen extends StatefulWidget {
@@ -30,19 +33,19 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
 
   final bloc = KiwiContainer().resolve<CheckCodeBloc>();
   final resendCodeBloc = KiwiContainer().resolve<ResendCodeBloc>();
-@override
+  @override
   void dispose() {
-
     super.dispose();
     bloc.close();
     resendCodeBloc.close();
   }
+    final timerController = CountDownController()..start();
+    final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     bloc.phone = widget.phone;
     resendCodeBloc.phone = widget.phone;
-    final timerController = CountDownController()..start();
-    final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -55,9 +58,9 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 width: 150.w,
               ),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment:CacheHelper.getLanguage()=="ar"? Alignment.bottomRight:Alignment.bottomLeft,
                 child: Text(
-                  'نسيت كلمة المرور',
+                 LocaleKeys.forget_password_forget_password.tr(),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 16.sp,
@@ -68,9 +71,9 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 height: 8.h,
               ),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment:CacheHelper.getLanguage()=="ar"? Alignment.bottomRight:Alignment.bottomLeft,
                 child: Text(
-                  'أدخل الكودالمكون من 4 أرقام المرسل علي رقم الجوال',
+                  LocaleKeys.check_code_enter_the_code_4digits.tr(),
                   style:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
@@ -82,7 +85,8 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 children: [
                   Text(
                     bloc.phone,
-                    textDirection: TextDirection.ltr,
+
+
                     style: TextStyle(
                       fontSize: 15.sp,
                       color: Theme.of(context).primaryColor,
@@ -95,9 +99,9 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                     onTap: () {
                       navigateTo(const RegisterScreen());
                     },
-                    child: const Text(
-                      'نغيير رقم الجوال',
-                      style: TextStyle(
+                    child:   Text(
+                      LocaleKeys.check_code_change_phone_number.tr(),
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                       ),
@@ -113,7 +117,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 child: PinCodeTextField(
                   validator: (value) {
                     if (value!.isEmpty || value.length < 4) {
-                      return "ادخل الكود";
+                      return  LocaleKeys.check_code_enter_the_code.tr();
                     }
                     return null;
                   },
@@ -140,14 +144,14 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 bloc: bloc,
                 listener: (context, state) {
                   if (state is CheckCodeSuccessState) {
-                     navigateTo(ResetPasswordScreen(
+                    navigateTo(ResetPasswordScreen(
                         phone: widget.phone, code: bloc.codeController.text));
                   }
                 },
                 builder: (BuildContext context, state) {
                   return AppButton(
                       isLoading: state is CheckCodeLoadingState,
-                      text: 'تأكيد الكود',
+                      text: LocaleKeys.check_code_confirm_the_code.tr(),
                       onPress: () {
                         debugPrint(bloc.codeController.text);
                         if (formKey.currentState!.validate()) {
@@ -163,14 +167,14 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 Column(
                   children: [
                     Text(
-                      'لم تستلم الكود ؟',
+                      LocaleKeys.check_code_didnt_receive_code.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16.sp,
                       ),
                     ),
                     Text(
-                      'يمكنك اعادة ارسال الكود بعد',
+                      LocaleKeys.check_code_you_can_receive_code_after.tr(),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16.sp,
@@ -181,7 +185,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                     ),
                     StatefulBuilder(
                       builder: (BuildContext context,
-                              void Function(void Function()) setStatex) =>
+                              void Function(void Function()) setState2) =>
                           CircularCountDownTimer(
                         controller: timerController,
                         duration: 120,
@@ -209,10 +213,10 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                         timeFormatterFunction:
                             (defaultFormatterFunction, duration) {
                           if (duration.inSeconds == 0) {
-                            // only format for '0'
+
                             return "0";
                           } else {
-                            // other durations by it's default format
+
                             return Function.apply(
                                 defaultFormatterFunction, [duration]);
                           }
@@ -228,7 +232,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                 BlocBuilder(
                   bloc: resendCodeBloc,
                   builder: (BuildContext context, state) => AppButton(
-                    text: 'أعادة الارسال',
+                    text:  LocaleKeys.check_code_resend.tr(),
                     onPress: () {
                       resendCodeBloc.add(PostResendCodeDataEvent());
                       isTimerRunning = true;
@@ -248,7 +252,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                   children: <TextSpan>[
                     TextSpan(
-                      text: 'لديك حساب بالفعل ؟',
+                      text: LocaleKeys.forget_password_you_have_an_account.tr(),
                       style: TextStyle(
                         fontSize: 15.sp,
                         color: Theme.of(context).primaryColor,
@@ -257,7 +261,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => navigateTo(const LoginScreen()),
-                      text: '  تسجيل الدخول ',
+                      text: LocaleKeys.my_account_log_in.tr(),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

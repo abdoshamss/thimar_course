@@ -12,7 +12,7 @@ class Input extends StatefulWidget {
   final GestureTapCallback? onTap;
   final GestureTapCallback? filterIconTap;
   final VoidCallback? onEditingComplete;
-  final  ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onChanged;
   final TapRegionCallback? onTapOutside;
   final String? iconPath;
   final bool isEnabled;
@@ -24,6 +24,8 @@ class Input extends StatefulWidget {
   final int? maxLength;
   final bool saudiIcon;
   final bool filterIcon;
+  final bool backIcon;
+  final bool backgroundColor;
 
   const Input({
     Key? key,
@@ -45,6 +47,8 @@ class Input extends StatefulWidget {
     required this.validator,
     this.saudiIcon = true,
     this.filterIcon = false,
+    this.backIcon = false,
+    this.backgroundColor = false,
   }) : super(key: key);
 
   @override
@@ -60,12 +64,10 @@ class _InputState extends State<Input> {
       child: GestureDetector(
         onTap: widget.enable,
         child: TextFormField(
-onChanged: widget.onChanged,
-
+          onChanged: widget.onChanged,
           onTapOutside: widget.onTapOutside,
           onTap: widget.onTap,
-          onEditingComplete:widget.onEditingComplete ,
-
+          onEditingComplete: widget.onEditingComplete,
           validator: widget.validator,
           keyboardType: widget.inputType == InputType.phone
               ? TextInputType.phone
@@ -85,10 +87,10 @@ onChanged: widget.onChanged,
               fontSize: 15.sp,
               color: widget.inputType == InputType.search
                   ? Theme.of(context).primaryColor
-                  : Colors.black,
+                  : Theme.of(context).hintColor,
             ),
             suffixIcon:
-                widget.filterIcon || widget.inputType == InputType.password
+                (widget.filterIcon || widget.inputType == InputType.password)
                     ? GestureDetector(
                         onTap: () {
                           isPasswordShown = !isPasswordShown;
@@ -96,13 +98,20 @@ onChanged: widget.onChanged,
                         },
                         child: widget.filterIcon
                             ? GestureDetector(
-                                onTap:widget.filterIconTap,
+                                onTap: widget.filterIconTap,
                                 child: Image.asset(Assets.icons.filter.path))
-                            : Icon(
-                                isPasswordShown
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
+                            : widget.backIcon
+                                ? Image.asset(
+                                    Assets.icons.back.path,
+                                    fit: BoxFit.scaleDown,
+                                    width: 18.w,
+                                    height: 18.h,
+                                  )
+                                : Icon(
+                                    isPasswordShown
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
                       )
                     : null,
             prefixIcon: widget.iconPath != null
@@ -117,9 +126,10 @@ onChanged: widget.onChanged,
                   )
                 : null,
             filled: true,
-            fillColor: widget.inputType == InputType.search
-                ? Theme.of(context).primaryColor.withOpacity(.03)
-                : Colors.white,
+            fillColor:
+                widget.inputType == InputType.search || widget.backgroundColor
+                    ? const Color(0xffFAFFF5)
+                    : Colors.white,
             icon: widget.saudiIcon && widget.inputType == InputType.phone
                 ? Container(
                     padding: EdgeInsets.symmetric(
@@ -128,7 +138,9 @@ onChanged: widget.onChanged,
                     ),
                     // width: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: widget.backgroundColor
+                          ? const Color(0xffFAFFF5)
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(15.r),
                       border: Border.all(
                         color: Theme.of(context).unselectedWidgetColor,

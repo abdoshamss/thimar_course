@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import '../../core/design/widgets/btn.dart';
 import '../../core/design/widgets/input.dart';
 import '../../features/auth/get_cities/bloc.dart';
 import '../../features/auth/register/bloc.dart';
+import '../../generated/locale_keys.g.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({
@@ -24,15 +26,16 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-    final bloc = KiwiContainer().resolve<RegisterBloc>();
-    final citiesBloc = KiwiContainer().resolve<GetCitiesScreenBLoc>()..add(GetCitiesScreenDataEvent());
-    @override
+  final bloc = KiwiContainer().resolve<RegisterBloc>();
+  final citiesBloc = KiwiContainer().resolve<GetCitiesScreenBLoc>()
+    ..add(GetCitiesScreenDataEvent());
+  @override
   void dispose() {
-
     super.dispose();
     bloc.close();
     citiesBloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
     int? cityId;
@@ -54,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'مرحبا بك مرة اخري',
+                    LocaleKeys.register_hello_again.tr(),
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 16.sp,
@@ -64,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 12.h,
                   ),
                   Text(
-                    'يمكنك تسجيل حساب جديد الان',
+                    LocaleKeys.register_you_can_register_new_account_now.tr(),
                     style: TextStyle(
                       // color: ,
                       fontSize: 16.sp,
@@ -77,26 +80,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Input(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'بالرجاء ادخال اسمك بالكامل';
+                        return LocaleKeys.register_please_enter_full_name.tr();
                       }
                       return null;
                     },
                     controller: bloc.fullNameController,
-                    labelText: 'اسم المستخدم',
+                    labelText: LocaleKeys.register_user_name.tr(),
                     iconPath: Assets.icons.user.path,
                     textInputAction: TextInputAction.done,
                   ),
                   Input(
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'بالرجاء ادخال رقم هاتفك';
+                      if (value!.isEmpty) {
+                        return LocaleKeys.log_in_please_enter_your_mobile_number
+                            .tr();
                       } else if (value.length < 9) {
-                        return 'بالرجاء ادخال ٩ ارقام';
+                        return LocaleKeys.log_in_please_enter_nine_number.tr();
                       }
                       return null;
                     },
                     controller: bloc.phoneController,
-                    labelText: 'رقم الجوال',
+                    labelText: LocaleKeys.log_in_phone_number.tr(),
                     inputType: InputType.phone,
                     iconPath: Assets.icons.phone.path,
                   ),
@@ -104,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: bloc.cityController,
                     isEnabled: false,
                     iconPath: Assets.icons.flag.path,
-                    labelText: "المدينة",
+                    labelText: LocaleKeys.register_city.tr(),
                     enable: () async {
                       var result = await showModalBottomSheet(
                         shape: RoundedRectangleBorder(
@@ -130,7 +134,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 child: Column(
                                   children: [
-                                    const Text("اختر مدينتك"),
+                                    Text(LocaleKeys.register_choose_your_city
+                                        .tr()),
                                     Center(
                                       child: SizedBox(
                                         height: 16.h,
@@ -173,7 +178,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               );
                             } else {
-                              return const Text("SomeThing Wrong");
+                              return Text(
+                                  LocaleKeys.register_something_wrong.tr());
                             }
                           },
                         ),
@@ -187,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       if (bloc.cityController.text.isEmpty ||
                           cityId == null ||
                           value!.isEmpty) {
-                        return 'بالرجاء ادخال مدينتك';
+                        return LocaleKeys.register_please_enter_your_city.tr();
                       }
                       return null;
                     },
@@ -195,12 +201,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Input(
                     validator: (value) {
                       if (value == null || value.isEmpty || value.length < 6) {
-                        return 'بالرجاء ادخال كلمة السر';
+                        return LocaleKeys
+                            .log_in_please_enter_your_password_again
+                            .tr();
                       }
                       return null;
                     },
                     controller: bloc.passwordController,
-                    labelText: 'كلمة المرور',
+                    labelText: LocaleKeys.log_in_password.tr(),
                     iconPath: Assets.icons.password.path,
                     inputType: InputType.password,
                     textInputAction: TextInputAction.done,
@@ -211,12 +219,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           value.isEmpty ||
                           value.length < 6 ||
                           value != bloc.passwordController.text) {
-                        return 'بالرجاء ادخال كلمة السر مجددا';
+                        return LocaleKeys
+                            .log_in_please_enter_your_password_again
+                            .tr();
                       }
                       return null;
                     },
                     controller: bloc.passwordConfirmController,
-                    labelText: 'تأكيد كلمة المرور',
+                    labelText: LocaleKeys.register_confirm_password.tr(),
                     iconPath: Assets.icons.password.path,
                     inputType: InputType.password,
                     textInputAction: TextInputAction.done,
@@ -236,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     builder: (context, state) {
                       return Center(
                         child: AppButton(
-                          text: 'تسجيل',
+                          text: LocaleKeys.register_register.tr(),
                           isLoading: state is RegisterLoadingState,
                           onPress: () {
                             if (formKey.currentState!.validate()) {
@@ -256,7 +266,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         style: TextStyle(color: Theme.of(context).primaryColor),
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'لديك حساب بالفعل ؟',
+                            text: LocaleKeys.forget_password_you_have_an_account
+                                .tr(),
                             style: TextStyle(
                               fontSize: 15.sp,
                               color: Theme.of(context).primaryColor,
@@ -265,7 +276,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           TextSpan(
                             recognizer: TapGestureRecognizer()
                               ..onTap = () => navigateTo(const LoginScreen()),
-                            text: '  تسجيل الدخول ',
+                            text: LocaleKeys.my_account_log_in.tr(),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,

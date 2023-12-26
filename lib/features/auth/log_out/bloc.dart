@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:thimar_course/core/logic/helper_methods.dart';
 
 import '../../../core/logic/dio_helper.dart';
 
@@ -22,9 +23,9 @@ class LogOutBLoc extends Bloc<LogOutEvents, LogOutStates> {
     emit(LogOutLoadingState());
     final response = await dioHelper.post("logout", data: map);
     if (response.isSuccess) {
-      emit(LogOutSuccessState());
+      emit(LogOutSuccessState(text: response.message));
     } else {
-      emit(LogOutErrorState());
+      emit(LogOutErrorState(text:  response.message));
     }
   }
 }

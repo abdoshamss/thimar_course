@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:thimar_course/features/notifications/bloc.dart';
 
-import '../../../core/design/widgets/app_empty.dart';
+import '../../../core/design/widgets/app_login.dart';
+import '../../../core/logic/cache_helper.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
@@ -17,10 +18,11 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPageState extends State<NotificationsPage> {
   final bloc = KiwiContainer().resolve<NotificationsBloc>()
     ..add(GetNotificationsDataEvent());
-  @override
+
   @override
   void dispose() {
     super.dispose();
+    bloc.close();
   }
 
   @override
@@ -34,106 +36,215 @@ class _NotificationsPageState extends State<NotificationsPage> {
       body: BlocBuilder(
         bloc: bloc,
         builder: (BuildContext context, state) {
+          if (CacheHelper.getToken()!.isEmpty) {
+            return const AppLogin();
+          }else
           if (state is NotificationsLoadingState) {
-            loadingWidget();
-          } else if (state is NotificationsSuccessState) {
-            if (state.list.list.list.isEmpty) {
-              const AppEmpty();
-            }
             return ListView.separated(
                 padding: EdgeInsets.all(16.r),
-                itemCount: state.list.list.list.length,
+                itemCount: 6,
                 separatorBuilder: (context, index) => SizedBox(
                       height: 20.h,
                     ),
                 itemBuilder: (context, index) {
-                  ListView(
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.only(
-                          bottom: 6.r,
-                          start: 10.r,
-                          end: 10.r,
-                          top: 11.r,
-                        ),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0.r),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 10.r,
-                                offset: const Offset(0, 5),
-                                color: const Color(0x01000000),
-                              )
-                            ],
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                  width: 35.w,
-                                  height: 35.h,
-                                  decoration: BoxDecoration(
-                                      color: Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(.13),
-                                      borderRadius: BorderRadius.circular(9.r)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(6.0.r),
-                                    child: Image.network(
-                                      state.list.list.list[index].image,
+                  return Padding(
+                    padding: EdgeInsetsDirectional.only(
+                      bottom: 6.h,
+                      start: 10.h,
+                      end: 10.w,
+                      top: 11.w,
+                    ),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 10.r,
+                            offset: const Offset(0, 5),
+                            color: const Color(0x01000000),
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 35.w,
+                              height: 35.h,
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.13),
+                                  borderRadius: BorderRadius.circular(9.r)),
+                              child: Padding(
+                                  padding: EdgeInsets.all(6.0.r),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.1),
+                                    highlightColor: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.03),
+                                    child: SizedBox(
                                       width: 25.w,
                                       height: 25.h,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              const Text("404"),
                                     ),
-                                  )),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.list.list.list[index].title,
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 4.h,
-                                    ),
-                                    Text(
-                                      state.list.list.list[index].body,
-                                      style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: const Color(0xff989898)),
-                                    ),
-                                    SizedBox(
-                                      height: 6.h,
-                                    ),
-                                    Text(
-                                      state.list.list.list[index].createdAt,
-                                      style: TextStyle(fontSize: 10.sp),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                  ))),
+                          SizedBox(
+                            width: 10.w,
                           ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Shimmer.fromColors(
+                                  baseColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.1),
+                                  highlightColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.03),
+                                  child: Text(
+                                    "title",
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 4.h,
+                                ),
+                                Shimmer.fromColors(
+                                  baseColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.1),
+                                  highlightColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.03),
+                                  child: Text(
+                                    "body",
+                                    style: TextStyle(
+                                        fontSize: 10.sp,
+                                        color: const Color(0xff989898)),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 6.h,
+                                ),
+                                Shimmer.fromColors(
+                                  baseColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.1),
+                                  highlightColor: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(.03),
+                                  child: Text(
+                                    "createdAt",
+                                    style: TextStyle(fontSize: 10.sp),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          } else if (state is NotificationsSuccessState) {
+            if (state.list.isEmpty) {
+              return const Center(child: Text("لا توجد إشعارات"));
+            } else {
+              return ListView.separated(
+                  padding: EdgeInsets.all(16.r),
+                  itemCount: state.list.length,
+                  separatorBuilder: (context, index) => SizedBox(
+                        height: 20.h,
+                      ),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        bottom: 6.h,
+                        start: 10.h,
+                        end: 10.w,
+                        top: 11.w,
+                      ),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 10.r,
+                              offset: const Offset(0, 5),
+                              color: const Color(0x01000000),
+                            )
+                          ],
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                width: 35.w,
+                                height: 35.h,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(.13),
+                                    borderRadius: BorderRadius.circular(9.r)),
+                                child: Padding(
+                                  padding: EdgeInsets.all(6.0.r),
+                                  child: Image.network(
+                                    state.list[index].image,
+                                    width: 25.w,
+                                    height: 25.h,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Text("404"),
+                                  ),
+                                )),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.list[index].title,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
+                                  Text(
+                                    state.list[index].body,
+                                    style: TextStyle(
+                                        fontSize: 10.sp,
+                                        color: const Color(0xff989898)),
+                                  ),
+                                  SizedBox(
+                                    height: 6.h,
+                                  ),
+                                  Text(
+                                    state.list[index].createdAt,
+                                    style: TextStyle(fontSize: 10.sp),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  );
-                  return null;
-                });
+                    );
+                  });
+            }
           } else if (state is NotificationsErrorState) {
-            Text(state.message);
-          }
-          return const SizedBox.shrink();
+            return const Center(child: Text("لا توجد إشعارات"));
+          }return const SizedBox.shrink();
         },
       ),
     );

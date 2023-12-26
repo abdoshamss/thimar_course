@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/core/widgets/toast.dart';
 import '../../core/logic/dio_helper.dart';
 import '../products/bloc.dart';
 
@@ -20,10 +21,10 @@ class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
     emit(FAVSLoadingState());
     final response = await dioHelper.get("client/products/favorites");
     if (response.isSuccess) {
-      final list = ProductsData.fromJson(response.response!.data);
+
       favsData = ProductsData.fromJson(response.response!.data).list;
 
-      // emit(FAVSSuccessState(list: list, message: response.message));
+
       emit(FAVSSuccessState(message: response.message));
     } else {
       emit(FAVSErrorState(
@@ -49,7 +50,7 @@ class FavsBloc extends Bloc<FAVSEvents, FAVSStates> {
     emit(RemoveFromFAVSState(
         message: response.message,
         statusCode: response.response!.statusCode ?? 200));
-    print("event.index.toString()" * 8);
+
 
 
   }

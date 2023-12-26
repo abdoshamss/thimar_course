@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/logic/dio_helper.dart';
@@ -13,16 +12,19 @@ class NotificationsBloc extends Bloc<NotificationsEvents, NotificationsStates> {
     on<GetNotificationsDataEvent>(_getData);
   }
   Future<void> _getData(
-      NotificationsEvents events, Emitter<NotificationsStates> emitter) async {
+      GetNotificationsDataEvent event, Emitter<NotificationsStates> emit) async {
     emit(NotificationsLoadingState());
     final response = await dioHelper.get("notifications");
+
+      final list =
+
+      List.from(response.response!.data?['data']?['notifications'] ?? [])
+          .map((e) => Notifications.fromJson(e))
+          .toList();
 
 
 
     if (response.isSuccess) {
-      final list =
-          NotificationData.fromJson(response.response!.data);
-      debugPrint(response.message);
 
       emit(NotificationsSuccessState(list: list, message: response.message));
     } else {

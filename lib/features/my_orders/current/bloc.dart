@@ -22,7 +22,7 @@ class MyCurrentOrdersBloc
       final list =MyCurrentOrdersData.fromJson(response.response!.data);
       emit(MyCurrentOrdersSuccessState(list: list));
     }else{
-      emit(MyCurrentOrdersErrorState());
+      emit(MyCurrentOrdersErrorState(text: response.message));
     }
     
     

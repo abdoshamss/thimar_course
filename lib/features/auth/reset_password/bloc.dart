@@ -18,7 +18,7 @@ class ResetPasswordBloc extends Bloc<ResetPasswordEvents,ResetPasswordStates> {
  late String phone,code;
   final newPasswordController=TextEditingController();
   final confirmNewPasswordController=TextEditingController();
- Future <void> _postData (ResetPasswordEvents events,Emitter<ResetPasswordStates> emitter)async{
+ Future <void> _postData (PostResetPasswordDataEvent event,Emitter<ResetPasswordStates> emit)async{
      emit(ResetPasswordLoadingState());
    final map ={
      "phone":phone,

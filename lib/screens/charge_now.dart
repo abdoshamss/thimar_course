@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
+import 'package:thimar_course/features/charge/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 
-class ChargeNowScreen extends StatelessWidget {
+class ChargeNowScreen extends StatefulWidget {
   const ChargeNowScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ChargeNowScreen> createState() => _ChargeNowScreenState();
+}
+
+class _ChargeNowScreenState extends State<ChargeNowScreen> {
+  final bloc =KiwiContainer().resolve<ChargeBloc>();
+  @override
+  void dispose() {
+     super.dispose();
+    bloc.close();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +47,8 @@ class ChargeNowScreen extends StatelessWidget {
               SizedBox(
                 height: 16.h,
               ),
-              Input(
+              Input(backgroundColor: true,
+                controller: bloc.amountController,
                 validator: (value) {
                   return null;
                 },
@@ -54,14 +68,14 @@ class ChargeNowScreen extends StatelessWidget {
               SizedBox(
                 height: 16.h,
               ),
-              Input(
+              Input(backgroundColor: true,
                 validator: (value) {
                   return null;
                 },
                 inputType: InputType.normal,
                 labelText: "الاسم",
               ),
-              Input(
+              Input(backgroundColor: true,
                 validator: (value) {
                   return null;
                 },
@@ -73,7 +87,7 @@ class ChargeNowScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 160.w,
-                    child: Input(
+                    child: Input(backgroundColor: true,
                       validator: (value) {
                         return null;
                       },
@@ -82,7 +96,7 @@ class ChargeNowScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     width: 160.w,
-                    child: Input(
+                    child: Input(backgroundColor: true,
                       validator: (value) {
                         return null;
                       },
@@ -97,7 +111,9 @@ class ChargeNowScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(16.0.r),
-        child: AppButton(text: "دفع", onPress: () {}),
+        child: AppButton(text: "دفع", onPress: () {
+          bloc.add(PostChargeDataEvent());
+        }),
       ),
     );
   }

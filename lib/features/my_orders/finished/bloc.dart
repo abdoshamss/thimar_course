@@ -22,7 +22,7 @@ class MyFinishedOrdersBloc
         emit(MyFinishedOrdersSuccessState(list: list));
 
     }else{
-     emit(MyFinishedOrdersErrorState()); 
+     emit(MyFinishedOrdersErrorState(text: response.message));
     }
   }
 }

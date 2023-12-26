@@ -59,7 +59,7 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // navigateTo(  CartScreen());
+                          navigateTo(  HomeNavScreen(currentPage: 1,));
                           FocusManager.instance.primaryFocus
                               ?.unfocus();
                         },
@@ -82,7 +82,7 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          navigateTo(HomeNavScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           fixedSize: Size(165.w, 60.h),

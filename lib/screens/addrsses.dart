@@ -42,7 +42,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
             BlocBuilder(
               bloc: bloc,
               builder: (BuildContext context, state) {
-                if (bloc.addressesList.isNotEmpty) {
+                if (state is GetAddressesLoadingState) {
+                  return loadingWidget();
+                } else if (bloc.addressesList.isNotEmpty) {
                   return Column(
                     children: [
                       ListView.builder(
@@ -168,51 +170,56 @@ class _AddressesScreenState extends State<AddressesScreen> {
                           }),
                     ],
                   );
-                } else if (state is GetAddressesLoadingState) {
-                  loadingWidget();
                 }
-                return const SizedBox.shrink();
+                  return  Center(
+                    child: Text(bloc.message),
+                  );
+
+
               },
             ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.all(16.0.r),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
 
-                navigateTo(AddAddressesScreen(
-                  phone: '',
-                  describe: '',
-                  lng: 0,
-                  lat: 0,
-                  id: 0,
-                ));
-              },
-              child: DottedBorder(
-                borderType: BorderType.RRect,
-                radius: Radius.circular(15.r),
-                borderPadding: EdgeInsets.all(1.r),
-                dashPattern: const [4, 4],
-                color: Theme.of(context).primaryColor,
-                child: Container(
-                  width: 345.w,
-                  height: 55.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF9FCF5),
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "إضافة عنوان",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.sp,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
+            navigateTo(AddAddressesScreen(
+              phone: '',
+              describe: '',
+              lng: 0,
+              lat: 0,
+              id: 0,
+            ));
+          },
+          child: DottedBorder(
+            borderType: BorderType.RRect,
+            radius: Radius.circular(15.r),
+            borderPadding: EdgeInsets.all(1.r),
+            dashPattern: const [4, 4],
+            color: Theme.of(context).primaryColor,
+            child: Container(
+              width: 345.w,
+              height: 55.h,
+              decoration: BoxDecoration(
+                color: const Color(0xffF9FCF5),
+                borderRadius: BorderRadius.circular(15.r),
+              ),
+              child: Center(
+                child: Text(
+                  "إضافة عنوان",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.sp,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

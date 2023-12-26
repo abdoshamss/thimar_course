@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/screens/product_details.dart';
 
+import '../../../core/design/widgets/app_login.dart';
+import '../../../core/logic/cache_helper.dart';
 import '../../../core/logic/helper_methods.dart';
 import '../../../features/FAVS/bloc.dart';
+import '../components/loading_products.dart';
 
 class FAVSPage extends StatefulWidget {
   const FAVSPage({Key? key}) : super(key: key);
@@ -45,8 +48,17 @@ class _FAVSPageState extends State<FAVSPage> {
       body: BlocBuilder(
         bloc: favBloc,
         builder: (BuildContext context, state) {
-          if (state is FAVSLoadingState) {
-            loadingWidget();
+
+          if (CacheHelper.getToken()!.isEmpty) {
+            return const AppLogin();
+          } else if (state is FAVSLoadingState) {
+            return const LoadingProductsItem();
+          }else if (favBloc.favsData.isEmpty) {
+            return const Center(
+              child: Text("بالرجاء اضافة بعض المنتجات الي المفضلة",),
+            );
+          } else if (state is FAVSLoadingState) {
+            return const LoadingProductsItem();
           } else if (favBloc.favsData.isNotEmpty) {
             return GridView.builder(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -59,8 +71,10 @@ class _FAVSPageState extends State<FAVSPage> {
               itemBuilder: (BuildContext context, int index) => GestureDetector(
                 onTap: () {
                   navigateTo(ProductDetailsScreen(
+                    isHome: true,
                     model: favBloc.favsData[index],
                   )).then((value) {
+
                     if (value ?? false) {
                       favBloc.add(GetFAVSDataEvent());
                     }
@@ -102,7 +116,7 @@ class _FAVSPageState extends State<FAVSPage> {
                                       bottomStart: Radius.circular(11.r)),
                                 ),
                                 child: Text(
-                                  "${favBloc.favsData[index].discount}%",
+                                  "${favBloc.favsData[index].stringDiscount}%",
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     color: Colors.white,
@@ -146,7 +160,8 @@ class _FAVSPageState extends State<FAVSPage> {
                             Text.rich(
                               TextSpan(children: [
                                 TextSpan(
-                                  text: "${favBloc.favsData[index].price} ر.س",
+                                  text:
+                                      "${favBloc.favsData[index].stringPrice} ر.س",
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w700,
@@ -154,7 +169,7 @@ class _FAVSPageState extends State<FAVSPage> {
                                 ),
                                 TextSpan(
                                   text:
-                                      " ${favBloc.favsData[index].priceBeforeDiscount} ر.س",
+                                      " ${favBloc.favsData[index].stringPriceBeforeDiscount} ر.س",
                                   style: TextStyle(
                                     fontSize: 13.sp,
                                     fontWeight: FontWeight.w400,
@@ -174,6 +189,8 @@ class _FAVSPageState extends State<FAVSPage> {
                 ),
               ),
             );
+          } else if (state is FAVSErrorState) {
+            return Center(child: Text(state.message));
           }
           return const SizedBox.shrink();
         },

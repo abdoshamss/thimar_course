@@ -20,11 +20,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), ()   {
+    Timer(const Duration(seconds: 3), () {
       if (CacheHelper.getToken()!.isEmpty) {
         navigateTo(const LoginScreen());
       } else {
-      navigateTo(const HomeNavScreen(), removeHistory: true);
+        navigateTo(HomeNavScreen(), removeHistory: true);
       }
     });
   }
@@ -33,26 +33,30 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
+        width:MediaQuery.of(context).size.width.w,
+        height: MediaQuery.of(context).size.height.h,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Assets.images.splashBackground.path),
             fit: BoxFit.cover,
           ),
         ),
-        child: Center(
-          child: SizedBox(
-            width: 200.w,
+        child: SizedBox(
+          width:MediaQuery.of(context).size.width.w,
+          height: MediaQuery.of(context).size.height.h,
+          child: Center(
             child: Stack(
+
               children: [
                 Image.asset(
                   Assets.images.mainLogo.path,
                   height: 190.h,
                   width: 175.w,
                 ),
+
                 Positioned(
-                  right: 70,
+
+                  right: 100,
                   top: 5,
                   child: BounceInDown(
                     child: Image.asset(
@@ -62,9 +66,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                 ),
+
                 Positioned(
-                  top: 70,
-                  right: 100,
+                  top: 60,
+                  right: 95,
                   child: FlipInY(
                     child: Image.asset(
                       Assets.images.sideLeaves.path,

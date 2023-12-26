@@ -8,17 +8,18 @@ class ProductsData {
   late final double minPrice;
 
   ProductsData.fromJson(Map<String, dynamic> json) {
-    list = List.from(json['data'] ??[])
+    list = List.from(json['data'] ?? [])
         .map((e) => ProductItemModel.fromJson(e))
         .toList();
 
     userCartCount = json['user_cart_count'] ?? 0;
-    maxPrice = double.tryParse(json['max_price'].toString()) ?? 0.0;
-    minPrice = double.tryParse(json['min_price'].toString()) ?? 0.0;
+    maxPrice = double.tryParse(json['max_price'].toString()) ?? 0;
+    minPrice = double.tryParse(json['min_price'].toString()) ?? 0;
   }
 }
 
 class ProductItemModel {
+
   late final int categoryId;
   late final int id;
   late final String title;
@@ -29,11 +30,14 @@ class ProductItemModel {
   late final double discount;
   late final double amount;
   late final bool isActive;
-  late   bool isFavorite;
+  late bool isFavorite;
   late final Unit unit;
   late final List<Images> images;
   late final String mainImage;
   late final String createdAt;
+  String get stringPrice=> price.toString().replaceAll(".0", "");
+  String get stringDiscount=> discount.toString().replaceAll(".0", "");
+  String get stringPriceBeforeDiscount=> priceBeforeDiscount.toString().replaceAll(".0", "");
 
   ProductItemModel.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'] ?? 0;
@@ -41,9 +45,11 @@ class ProductItemModel {
     title = json['title'] ?? "";
     description = json['description'] ?? "";
     code = json['code'] ?? "";
-    priceBeforeDiscount =double.tryParse( json['price_before_discount'] .toString())?? 0;
-    price = double.tryParse(json['price'].toString()) ?? 0;
-    discount = (double.tryParse(json['discount'].toString()) ?? 0.0)*100;
+    priceBeforeDiscount =
+        double.tryParse(json['price_before_discount'].toString()) ?? 0;
+    price = (double.tryParse(json['price'].toString() ) ?? 0);
+    discount =
+        ((double.tryParse(json['discount'].toString()) ?? 0) * 100);
 
     amount = double.tryParse(json['amount'].toString()) ?? 0;
     isActive = json['is_active'] == 1;
@@ -81,3 +87,4 @@ class Images {
     url = json['url'] ?? "";
   }
 }
+

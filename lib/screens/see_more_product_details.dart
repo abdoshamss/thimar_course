@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
-
-import '../core/design/widgets/icon_with_bg.dart';
 import '../core/logic/helper_methods.dart';
+import '../core/widgets/custom_appbar.dart';
 import '../features/product_rates/bloc.dart';
+import '../gen/assets.gen.dart';
 
 class SeeMoreRatesScreen extends StatefulWidget {
   const SeeMoreRatesScreen({Key? key}) : super(key: key);
@@ -19,52 +19,33 @@ class _SeeMoreRatesStateScreen extends State<SeeMoreRatesScreen> {
   final bloc = KiwiContainer().resolve<ProductRatesBloc>();
   @override
   void initState() {
-     super.initState();
+    super.initState();
     bloc.add(GetProductRatesEvent());
   }
 
   @override
   void dispose() {
-     super.dispose();
+    super.dispose();
     bloc.close();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "التقييمات",
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-        leadingWidth: 70.w,
-        leading: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
-          child: IconWithBg(
-            icon: Icons.arrow_back_ios_outlined,
-            color: Theme.of(context).primaryColor,
-            onPress: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+      appBar: CustomAppBarScreen(
+        image: Assets.icons.backHome.path,
+        text: "التقييمات",
       ),
       body: BlocBuilder(
         bloc: bloc,
         builder: (context, state) {
           if (state is ProductRatesLoadingState) {
-            loadingWidget();
+         return   loadingWidget();
           } else if (state is ProductRatesSuccessState) {
             return GridView.builder(
-
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                childAspectRatio: 270/90
-              ),
+                  crossAxisCount: 1,
+                  childAspectRatio: 270 / 90,),
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               scrollDirection: Axis.vertical,
               itemCount: state.list.length,
@@ -75,7 +56,6 @@ class _SeeMoreRatesStateScreen extends State<SeeMoreRatesScreen> {
                 child: Row(
                   children: [
                     Column(
-
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
@@ -116,12 +96,11 @@ class _SeeMoreRatesStateScreen extends State<SeeMoreRatesScreen> {
                             width: 120.w,
                             child: Text(
                               state.list[index].comment,
-
                               maxLines: 2,
                             ))
                       ],
                     ),
-                   const Spacer(),
+                    const Spacer(),
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(

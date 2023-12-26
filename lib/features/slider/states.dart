@@ -10,4 +10,8 @@ class SliderDataSuccessState extends SliderDataStates {
   SliderDataSuccessState({required this.list});
 }
 
-class SliderDataErrorState extends SliderDataStates {}
+class SliderDataErrorState extends SliderDataStates {
+  final String? text;
+
+  SliderDataErrorState({required this.text});
+}

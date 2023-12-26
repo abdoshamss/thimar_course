@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import '../../core/design/widgets/btn.dart';
 import '../../core/design/widgets/input.dart';
 import '../../core/logic/helper_methods.dart';
 import '../../features/auth/reset_password/bloc.dart';
+import '../../generated/locale_keys.g.dart';
 import 'login.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -49,7 +51,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'نسيت كلمة المرور',
+                  LocaleKeys.forget_password_forget_password.tr(),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 16.sp,
@@ -59,7 +61,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   height: 12.h,
                 ),
                 Text(
-                  'أدخل كلمة المرور الجديدة',
+                  LocaleKeys.reset_password_new_password.tr(),
                   style: TextStyle(
                       color: secondaryColorText,
                       fontSize: 16.sp,
@@ -77,12 +79,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             if (value == null ||
                                 value.isEmpty ||
                                 value.length < 6) {
-                              return 'بالرجاء ادخال كلمة المرور الجديدة من ٦ حروف';
+                              return LocaleKeys.reset_password_please_enter_new_password_in_6_letters_at_min.tr();
                             }
                             return null;
                           },
                           controller: bloc.newPasswordController,
-                          labelText: 'كلمة المرور الجديدة',
+                          labelText: LocaleKeys.reset_password_new_password.tr(),
                           iconPath: Assets.icons.password.path,
                           inputType: InputType.password,
                           textInputAction: TextInputAction.done,
@@ -93,12 +95,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 value.isEmpty ||
                                 value.length < 6 ||
                                 value != bloc.newPasswordController.text) {
-                              return 'بالرجاء ادخال كلمة المرور الجديدة مجددا';
+                              return LocaleKeys.reset_password_please_enter_new_password_again.tr();
                             }
                             return null;
                           },
                           controller: bloc.confirmNewPasswordController,
-                          labelText: 'تأكيد كلمة المرور الجديدة',
+                          labelText: LocaleKeys.reset_password_confirm_new_password.tr(),
                           iconPath: Assets.icons.password.path,
                           inputType: InputType.password,
                           textInputAction: TextInputAction.done,
@@ -111,14 +113,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 BlocConsumer(
                   bloc: bloc,
                   listener: (context, state) {
-                    debugPrint(widget.code);
+
                     if (state is ResetPasswordSuccessState) {}
                     navigateTo(const LoginScreen());
                   },
                   builder: (context, state) {
                     return AppButton(
                         isLoading: state is ResetPasswordLoadingState,
-                        text: 'تغيير كلمة المرور',
+                        text: LocaleKeys.reset_password_change_password.tr(),
                         onPress: () {
                           if (formKey.currentState!.validate()) {
                             bloc.add(PostResetPasswordDataEvent());
@@ -135,7 +137,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       style: TextStyle(color: Theme.of(context).primaryColor),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'لديك حساب بالفعل؟',
+                          text: LocaleKeys.forget_password_you_have_an_account.tr(),
                           style: TextStyle(
                             fontSize: 15.sp,
                             color: Theme.of(context).primaryColor,
@@ -144,7 +146,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => navigateTo(const LoginScreen()),
-                          text: '  تسجيل الدخول ',
+                          text: LocaleKeys.my_account_log_in.tr(),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

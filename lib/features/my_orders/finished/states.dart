@@ -9,4 +9,8 @@ class MyFinishedOrdersSuccessState extends MyFinishedOrdersStates {
   MyFinishedOrdersSuccessState({required this .list});
 }
 
-class MyFinishedOrdersErrorState extends MyFinishedOrdersStates {}
+class MyFinishedOrdersErrorState extends MyFinishedOrdersStates {
+  final String? text;
+
+  MyFinishedOrdersErrorState({required this.text});
+}

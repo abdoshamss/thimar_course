@@ -1,12 +1,15 @@
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/dio_helper.dart';
+import 'package:thimar_course/features/auth/edit_password/bloc.dart';
 import 'package:thimar_course/features/auth/resend_code/bloc.dart';
 import 'package:thimar_course/features/cart/show_cart/bloc.dart';
 import 'package:thimar_course/features/categories/bloc.dart';
 import 'package:thimar_course/features/category_product/bloc.dart';
+import 'package:thimar_course/features/charge/bloc.dart';
 import 'package:thimar_course/features/compelete_order/bloc.dart';
 import 'package:thimar_course/features/current_location/bloc.dart';
-import 'package:thimar_course/features/edit_profile/cubit.dart';
+import 'package:thimar_course/features/edit_profile/bloc.dart';
+import 'package:thimar_course/features/get_profile/bloc.dart';
 import 'package:thimar_course/features/my_orders/cancel_order/bloc.dart';
 import 'package:thimar_course/features/my_orders/current/bloc.dart';
 import 'package:thimar_course/features/my_orders/finished/bloc.dart';
@@ -17,6 +20,7 @@ import 'package:thimar_course/features/about_app/bloc.dart';
 import 'package:thimar_course/features/give_advices/bloc.dart';
 import 'package:thimar_course/features/product_details/bloc.dart';
 import 'package:thimar_course/features/slider/bloc.dart';
+import 'package:thimar_course/features/terms/bloc.dart';
 import '../../features/FAVS/bloc.dart';
 import '../../features/Wallet/show_wallet/bloc.dart';
 import '../../features/auth/activation/bloc.dart';
@@ -28,6 +32,7 @@ import '../../features/auth/login/bloc.dart';
 import '../../features/auth/register/bloc.dart';
 import '../../features/auth/reset_password/bloc.dart';
 import '../../features/cart/add_to_cart/bloc.dart';
+import '../../features/contact_us/bloc.dart';
 import '../../features/faqs/bloc.dart';
 import '../../features/get_adresses/bloc.dart';
 import '../../features/product_rates/bloc.dart';
@@ -38,7 +43,8 @@ void initKiwi() {
   container.registerSingleton((container) => DioHelper());
   container.registerFactory((c) => LoginBLoc(c.resolve<DioHelper>()));
   container.registerFactory((c) => AboutAppBloc(c.resolve<DioHelper>()));
-  container.registerFactory((c) => EditProfileCubit(c.resolve<DioHelper>()));
+  container.registerFactory((c) => TermsBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => EditProfileBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => PrivacyBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => GiveAdviceBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => GetCitiesScreenBLoc(c.resolve<DioHelper>()));
@@ -72,5 +78,8 @@ void initKiwi() {
   container.registerFactory((c) => CompleteOrderBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => CurrentLocationBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => CancelOrderBloc(c.resolve<DioHelper>()));
-
+  container.registerFactory((c) => ChargeBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => EditPasswordBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => ContactUsBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => GetProfileDataBloc(c.resolve<DioHelper>()));
 }

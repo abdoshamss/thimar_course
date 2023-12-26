@@ -16,24 +16,23 @@ class FAQSScreen extends StatefulWidget {
 }
 
 class _FAQSScreenState extends State<FAQSScreen> {
-    final bloc = KiwiContainer().resolve<FAQSBloc>()..add(GetFAQSDataEvent());
-    @override
+  final _bloc = KiwiContainer().resolve<FAQSBloc>()..add(GetFAQSDataEvent());
+  @override
   void dispose() {
-
     super.dispose();
-    bloc.close();
+    _bloc.close();
+  }
 
-    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar:CustomAppBarScreen(text: "أسئلة متكررة", image: Assets.icons.backHome.path),
+      appBar: CustomAppBarScreen(
+          text: "أسئلة متكررة", image: Assets.icons.backHome.path),
       body: BlocBuilder(
-        bloc: bloc,
+        bloc: _bloc,
         builder: (BuildContext context, state) {
           if (state is FAQSLoadingState) {
-            loadingWidget();
+            return loadingWidget();
           } else if (state is FAQSSuccessState) {
             return Padding(
               padding: EdgeInsets.all(16.0.r),
@@ -42,6 +41,8 @@ class _FAQSScreenState extends State<FAQSScreen> {
                 separatorBuilder: (BuildContext context, int index) =>
                     const SizedBox(),
                 itemBuilder: (BuildContext context, int index) => ExpansionTile(
+                  collapsedIconColor: Theme.of(context).primaryColor,
+
                   title: Text(
                     state.list[index].question,
                     style: TextStyle(
@@ -49,11 +50,19 @@ class _FAQSScreenState extends State<FAQSScreen> {
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor),
                   ),
+                  // collapsedShape: ,
+                  childrenPadding: EdgeInsets.symmetric(horizontal: 8.w),
+                  collapsedShape: RoundedRectangleBorder(
+                    side: BorderSide.none,
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  shape: Border.all(width: 0.w, color: Colors.transparent),
+
                   children: [
                     Text(
                       state.list[index].answer,
                       style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 13,
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).hintColor),
                     ),

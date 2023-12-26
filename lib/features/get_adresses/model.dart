@@ -2,9 +2,11 @@ part of 'bloc.dart';
 
 class GetAddressesData {
   late final List<AddressModel> list;
+  late final String message;
 
   GetAddressesData.fromJson(Map<String, dynamic> json) {
     list = List.from(json['data']??[]).map((e) => AddressModel.fromJson(e)).toList();
+    message=json['message']??"";
   }
 }
 

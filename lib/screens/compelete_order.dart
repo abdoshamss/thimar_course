@@ -12,7 +12,7 @@ import 'package:thimar_course/screens/add_address.dart';
 
 import '../core/logic/helper_methods.dart';
 import '../core/widgets/custom_appbar.dart';
- import '../features/compelete_order/bloc.dart';
+import '../features/compelete_order/bloc.dart';
 import '../features/get_adresses/bloc.dart';
 
 class CompleteOrderScreen extends StatefulWidget {
@@ -319,51 +319,51 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                                         ),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        navigateTo(AddAddressesScreen(
-                                          phone: '',
-                                          describe: '',
-                                          lng: 0.0,
-                                          lat: 0.0,
-                                          id: 0,
-                                        ));
-                                      },
-                                      child: DottedBorder(
-                                        borderType: BorderType.RRect,
-                                        radius: Radius.circular(15.r),
-                                        borderPadding: EdgeInsets.all(1.r),
-                                        dashPattern: const [4, 4],
-                                        color: Theme.of(context).primaryColor,
-                                        child: Container(
-                                          width: 345.w,
-                                          height: 55.h,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffF9FCF5),
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "إضافة عنوان",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15.sp,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+
                                   ],
                                 );
                               } else if (state is GetAddressesLoadingState) {
-                                loadingWidget();
+                                return loadingWidget();
                               }
                               return const SizedBox.shrink();
                             },
+                          ),  GestureDetector(
+                            onTap: () {
+                              navigateTo(AddAddressesScreen(
+                                phone: '',
+                                describe: '',
+                                lng: 0.0,
+                                lat: 0.0,
+                                id: 0,
+                              ));
+                            },
+                            child: DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: Radius.circular(15.r),
+                              borderPadding: EdgeInsets.all(1.r),
+                              dashPattern: const [4, 4],
+                              color: Theme.of(context).primaryColor,
+                              child: Container(
+                                width: 345.w,
+                                height: 55.h,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffF9FCF5),
+                                  borderRadius:
+                                  BorderRadius.circular(15.r),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "إضافة عنوان",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.sp,
+                                      color: Theme.of(context)
+                                          .primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -436,7 +436,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "اختر اليوم والتاريخ",
+                        date==null ? "اختر اليوم والتاريخ" : date.toString(),
                         style: TextStyle(
                           fontSize: 15.sp,
                           color: Theme.of(context).primaryColor,
@@ -475,7 +475,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        "اختر الوقت",
+                      time==null?  "اختر الوقت":time.toString(),
                         style: TextStyle(
                           fontSize: 15.sp,
                           color: Theme.of(context).primaryColor,

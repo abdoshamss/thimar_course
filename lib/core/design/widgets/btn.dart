@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:thimar_course/core/logic/helper_methods.dart';
 
 import '../res/colors.dart';
 
@@ -7,7 +8,7 @@ enum BtnType { elevated, outline, outlineDisabled, cancel, reject }
 
 class AppButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   final BtnType type;
   final bool isBig, isLoading;
   const AppButton({
@@ -22,34 +23,35 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? SizedBox(width: 30.w,height: 30.w,
-          child: FittedBox(
-      fit: BoxFit.scaleDown,
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-              ),
+        ? SizedBox(
+            width: 30.w,
+            height: 30.w,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: loadingWidget(),
             ),
-          ),
-        )
+          )
         : DecoratedBox(
             decoration: BoxDecoration(
               boxShadow: [
-              if(isBig)
-                BoxShadow(
-                    color: const Color(0x1361B80C).withOpacity(.19),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                    blurStyle: BlurStyle.outer),
+                if (isBig)
+                  BoxShadow(
+                      color: const Color(0x1361B80C).withOpacity(.19),
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                      blurStyle: BlurStyle.outer),
               ],
             ),
             child: type == BtnType.outline || type == BtnType.outlineDisabled
                 ? OutlinedButton(
                     onPressed: () {
-                      if (type == BtnType.outlineDisabled) {
-                        FocusManager.instance.primaryFocus?.unfocus();
+                      if (onPress != null) {
+                        if (type == BtnType.outlineDisabled) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        }
+
+                        onPress!();
                       }
-                        onPress();
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: type != BtnType.outlineDisabled
@@ -65,7 +67,7 @@ class AppButton extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding:   EdgeInsets.all(20.0.r),
+                      padding: EdgeInsets.all(20.0.r),
                       child: Text(
                         text,
                         style: TextStyle(
@@ -78,8 +80,10 @@ class AppButton extends StatelessWidget {
                   )
                 : ElevatedButton(
                     onPressed: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      onPress();
+                      if (onPress != null) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        onPress!();
+                      }
                     },
                     style: ElevatedButton.styleFrom(
 
@@ -100,8 +104,10 @@ class AppButton extends StatelessWidget {
                       padding: EdgeInsets.all(isBig ? 20.r : 0),
                       child: Text(
                         text,
-                        style:   TextStyle(
-                            fontSize: isBig?18.sp:12.sp, fontWeight: FontWeight.w600,),
+                        style: TextStyle(
+                          fontSize: isBig ? 18.sp : 12.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

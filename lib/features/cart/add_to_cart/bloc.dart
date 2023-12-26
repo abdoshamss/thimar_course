@@ -27,7 +27,7 @@ class AddToCartBloc extends Bloc<AddToCartEvents, AddToCartStates> {
     if (response.isSuccess) {
       final list = AddToCarData.fromJson(response.response!.data);
 
-      emit(AddToCartSuccessState(message: response.message, list: list));
+      emit(AddToCartSuccessState( list: list,counter:event.counter ));
     } else {
       emit(AddToCartErrorState(
         message: response.message,
