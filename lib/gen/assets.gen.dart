@@ -244,6 +244,10 @@ class $AssetsImagesGen {
   AssetGenImage get drawerBackground =>
       const AssetGenImage('assets/images/drawer_background.png');
 
+  /// File path: assets/images/female_failed.png
+  AssetGenImage get femaleFailed =>
+      const AssetGenImage('assets/images/female_failed.png');
+
   /// File path: assets/images/fruit_small.png
   AssetGenImage get fruitSmall =>
       const AssetGenImage('assets/images/fruit_small.png');
@@ -258,6 +262,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/main_logo.png
   AssetGenImage get mainLogo =>
       const AssetGenImage('assets/images/main_logo.png');
+
+  /// File path: assets/images/male_failed.png
+  AssetGenImage get maleFailed =>
+      const AssetGenImage('assets/images/male_failed.png');
+
+  /// File path: assets/images/normal_failed.png
+  AssetGenImage get normalFailed =>
+      const AssetGenImage('assets/images/normal_failed.png');
 
   /// File path: assets/images/order_finished.png
   AssetGenImage get orderFinished =>
@@ -289,10 +301,13 @@ class $AssetsImagesGen {
         appIcon,
         city,
         drawerBackground,
+        femaleFailed,
         fruitSmall,
         loginImg,
         logo,
         mainLogo,
+        maleFailed,
+        normalFailed,
         orderFinished,
         saudi,
         sideLeaves,

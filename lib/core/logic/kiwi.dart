@@ -67,7 +67,7 @@ void initKiwi() {
   container.registerFactory((c) => ProductDetailsBLoc(c.resolve<DioHelper>()));
   container.registerFactory((c) => ProductRatesBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => ProductsDataBloc(c.resolve<DioHelper>()));
-  container.registerFactory((c) => GetAddressesBloc(c.resolve<DioHelper>()));
+  container.registerFactory((c) => AddressesBloc(c.resolve<DioHelper>()));
   container.registerFactory((c) => AddToCartBloc(c.resolve<DioHelper>()));
 
   container

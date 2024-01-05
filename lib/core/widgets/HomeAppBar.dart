@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/app_image.dart';
+import 'package:thimar_course/core/design/widgets/bottom_sheet_home_appbar.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
@@ -28,18 +29,17 @@ class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _HomeAppBarState extends State<HomeAppBar> {
-  final bloc = KiwiContainer().resolve<GetAddressesBloc>();
+  final bloc = KiwiContainer().resolve<AddressesBloc>();
   final cardDataBLoc = KiwiContainer().resolve<CartDataBloc>()
     ..add(GetCartDataEvent());
   double opacityLevel = 1;
 
-
-@override
+  @override
   void initState() {
-
     super.initState();
     determinePosition();
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -53,6 +53,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
       centerTitle: true,
       title: GestureDetector(
         onTap: () {
+        if(CacheHelper.getToken()!.isNotEmpty){
           bloc.add(GetAddressesDataEvent());
           showModalBottomSheet(
             shape: RoundedRectangleBorder(
@@ -60,237 +61,9 @@ class _HomeAppBarState extends State<HomeAppBar> {
                     topLeft: Radius.circular(38.r),
                     topRight: Radius.circular(38.r))),
             context: context,
-            builder: (context) => SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16.r),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 16.r),
-                      child: Center(
-                        child: Text(
-                          LocaleKeys.home_addresses.tr(),
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    BlocBuilder(
-                      bloc: bloc,
-                      builder: (BuildContext context, state) {
-                        if (bloc.addressesList.isEmpty) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0.r),
-                            child: const Center(
-                              child: Text("لا توجد بيانات"),
-                            ),
-                          );
-                        } else if (bloc.addressesList.isNotEmpty) {
-                          return Column(
-                            children: [
-                              ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: bloc.addressesList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(bottom: 16.h),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 16.w),
-                                        width: 345.w,
-                                        height: 100.h,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                            border: Border.all(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(.02),
-                                                  offset: const Offset(0, 6))
-                                            ]),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  bloc.addressesList[index]
-                                                      .type,
-                                                  style: TextStyle(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${LocaleKeys.home_address.tr()} : ${bloc.addressesList[index].location}",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                Text(
-                                                  bloc.addressesList[index]
-                                                      .description,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                Text(
-                                                  bloc.addressesList[index]
-                                                      .phone,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                              ],
-                                            ),
-                                            const Spacer(),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: 16.h,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      bloc.add(
-                                                          RemoveAddressesDataEvent(
-                                                              index: index,
-                                                              id: bloc
-                                                                  .addressesList[
-                                                                      index]
-                                                                  .id,
-                                                              type: bloc
-                                                                  .addressesList[
-                                                                      index]
-                                                                  .type));
-
-                                                      setState(() {});
-                                                    },
-                                                    child: Image.asset(
-                                                      Assets.icons.remove.path,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 8.w,
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.pop(context);
-                                                      navigateTo(
-                                                          AddAddressesScreen(
-                                                        id: bloc
-                                                            .addressesList[
-                                                                index]
-                                                            .id,
-                                                        phone: bloc
-                                                            .addressesList[
-                                                                index]
-                                                            .phone,
-                                                        describe: bloc
-                                                            .addressesList[
-                                                                index]
-                                                            .description,
-                                                        type: bloc
-                                                            .addressesList[
-                                                                index]
-                                                            .type,
-                                                        lat: bloc
-                                                            .addressesList[
-                                                                index]
-                                                            .lat,
-                                                        lng: bloc
-                                                            .addressesList[
-                                                                index]
-                                                            .lng,
-                                                      ));
-                                                    },
-                                                    child: Image.asset(
-                                                      Assets.icons.editAddress
-                                                          .path,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            ],
-                          );
-                        } else if (state is GetAddressesLoadingState) {
-                          return loadingWidget();
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        navigateTo(AddAddressesScreen(
-                          phone: '',
-                          describe: '',
-                          lng: 0,
-                          lat: 0,
-                          id: 0,
-                        ));
-                      },
-                      child: DottedBorder(
-                        borderType: BorderType.RRect,
-                        radius: Radius.circular(15.r),
-                        borderPadding: EdgeInsets.all(1.r),
-                        dashPattern: const [4, 4],
-                        color: Theme.of(context).primaryColor,
-                        child: Container(
-                          width: 345.w,
-                          height: 55.h,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF9FCF5),
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Center(
-                            child: Text(
-                              LocaleKeys.home_add_addresses.tr(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15.sp,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            builder: (context) =>const BottomSheetInHomeAppBar() ,
           );
+        }
         },
         child: Padding(
           padding: EdgeInsets.only(top: 8.h),
@@ -304,29 +77,28 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 ),
               ),
               Text(
-              CacheHelper.getCurrentLocationName(),
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+                CacheHelper.getCurrentLocationName(),
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-
-              ),
-
             ],
           ),
         ),
       ),
-      leadingWidth: 90.w,
+      leadingWidth: 100.w,
       leading: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+
           Image.asset(
             Assets.images.logo.path,
             width: 20.w,
             height: 20.h,
           ),
-          SizedBox(width: 4.w),
+          // SizedBox(width: 4.w),
           Text(
             LocaleKeys.home_thamara_basket.tr(),
             style: TextStyle(
@@ -335,6 +107,10 @@ class _HomeAppBarState extends State<HomeAppBar> {
               fontWeight: FontWeight.w600,
             ),
           ),
+          if(CacheHelper.getLanguage()=="ar")
+          SizedBox(
+            width: 15 .w,
+          )
         ],
       ),
       actions: [
@@ -395,7 +171,9 @@ class _HomeAppBarState extends State<HomeAppBar> {
         SizedBox(width: 16.w),
       ],
     );
-  }Future<Position> determinePosition() async {
+  }
+
+  Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission = await Geolocator.requestPermission();
 
@@ -420,27 +198,21 @@ class _HomeAppBarState extends State<HomeAppBar> {
     }
     var currentLocation = await Geolocator.getCurrentPosition();
 
-
     print(currentLocation.latitude);
     print(currentLocation.longitude);
-
 
     await CacheHelper.saveCurrentLocation(currentLocation);
     await getLocation(currentLocation.latitude, currentLocation.longitude);
 
-
     return currentLocation;
   }
-  Future<void> getLocation(double lat, double lng) async {
 
-    List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lng);
+  Future<void> getLocation(double lat, double lng) async {
+    List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lng,localeIdentifier:"EG");
     print(placeMarks.toString());
     print("1" * 80);
     print(placeMarks[0].subAdministrativeArea.toString());
     await CacheHelper.setCurrentLocationName(placeMarks[0].locality.toString());
-    setState(() {
-
-    });
-
+    setState(() {});
   }
 }

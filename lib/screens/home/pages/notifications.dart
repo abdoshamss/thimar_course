@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:thimar_course/features/notifications/bloc.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../../../core/design/widgets/app_login.dart';
 import '../../../core/logic/cache_helper.dart';
@@ -29,8 +31,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "الاشعارات",
+        title:   Text(
+          LocaleKeys.home_nav_notifications.tr(),
         ),
       ),
       body: BlocBuilder(
@@ -61,7 +63,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
                           BoxShadow(
                             blurRadius: 10.r,
                             offset: const Offset(0, 5),
-                            color: const Color(0x01000000),
+                            color:   Colors.black.withOpacity(.01),
                           )
                         ],
                       ),

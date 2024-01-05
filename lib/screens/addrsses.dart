@@ -1,8 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/core/design/widgets/app_empty.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/logic/helper_methods.dart';
 import '../core/widgets/custom_appbar.dart';
@@ -18,7 +21,7 @@ class AddressesScreen extends StatefulWidget {
 }
 
 class _AddressesScreenState extends State<AddressesScreen> {
-  final bloc = KiwiContainer().resolve<GetAddressesBloc>()
+  final bloc = KiwiContainer().resolve<AddressesBloc>()
     ..add(GetAddressesDataEvent());
 
   @override
@@ -31,12 +34,11 @@ class _AddressesScreenState extends State<AddressesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-        image: Assets.icons.backHome.path,
-        text: "العناوين",
+      appBar: CustomAppBar(
+        text: LocaleKeys.my_account_addresses.tr(),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0.r),
+        padding: EdgeInsets.all(16.r),
         child: Column(
           children: [
             BlocBuilder(
@@ -87,7 +89,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
                                           ),
                                         ),
                                         Text(
-                                          "العنوان : ${bloc.addressesList[index].location}",
+                                          "${LocaleKeys.addresses_address.tr()} : ${bloc.addressesList[index].location}",
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .primaryColor,
@@ -171,11 +173,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
                     ],
                   );
                 }
-                  return  Center(
-                    child: Text(bloc.message),
-                  );
-
-
+                return Center(
+                  child: AppEmpty(),
+                );
               },
             ),
           ],
@@ -210,7 +210,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
               ),
               child: Center(
                 child: Text(
-                  "إضافة عنوان",
+                  LocaleKeys.addresses_add_address.tr(),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp,

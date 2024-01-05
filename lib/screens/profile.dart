@@ -53,8 +53,10 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-       text: "البيانات الشخصية", image: Assets.icons.backHome.path,value: true,),
+      appBar: CustomAppBar(
+        text: LocaleKeys.my_account_personal_data.tr(),
+        value: true,
+      ),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         children: [
@@ -77,17 +79,17 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                         ),
                         child: selectedImage == null
                             ? Image.network(
-                         CacheHelper.getImage(),
-                          fit: BoxFit.fill,
-                          height: 85.h,
-                          width: 85.h,
-                        )
-                            :Image.file(
-                          selectedImage!,
-                          height: 85.h,
-                          width: 85.h,
-                          fit: BoxFit.fill,
-                        ),
+                                CacheHelper.getImage(),
+                                fit: BoxFit.fill,
+                                height: 85.h,
+                                width: 85.h,
+                              )
+                            : Image.file(
+                                selectedImage!,
+                                height: 85.h,
+                                width: 85.h,
+                                fit: BoxFit.fill,
+                              ),
                       ),
                       Center(
                         child: IconButton(
@@ -108,16 +110,18 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Row(
+                                      Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
+                                          const Icon(Icons.close),
                                           Text(
-                                            "اختر صورة من",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
+                                            LocaleKeys.profile_select_image_from
+                                                .tr(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
                                           ),
-                                          Icon(Icons.close),
                                         ],
                                       ),
                                       SizedBox(
@@ -139,7 +143,8 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                                 selectedImage =
                                                     File(image2.path);
                                                 debugPrint(image2.path);
-                                                Navigator.pop(context);
+                                                Navigator.pop(navigatorKey
+                                                    .currentContext!);
                                               }
                                               setState2(() {});
                                             },
@@ -153,7 +158,8 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                                 SizedBox(
                                                   width: 8.w,
                                                 ),
-                                                const Text("المعرض"),
+                                                Text(LocaleKeys.profile_gallery
+                                                    .tr()),
                                               ],
                                             ),
                                           ),
@@ -183,7 +189,8 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                                 SizedBox(
                                                   width: 8.w,
                                                 ),
-                                                const Text("الكاميرا"),
+                                                Text(LocaleKeys.profile_camera
+                                                    .tr()),
                                               ],
                                             ),
                                           ),
@@ -250,23 +257,23 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
             backgroundColor: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'بالرجاء ادخال اسمك بالكامل';
+                return LocaleKeys.register_please_enter_full_name.tr();
               }
               return null;
             },
             controller: nameController,
-            labelText: "اسم المستحدم",
+            labelText: LocaleKeys.register_user_name.tr(),
           ),
           Input(
             backgroundColor: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'بالرجاء ادخال رقم الجوال';
+                return LocaleKeys.log_in_please_enter_your_mobile_number.tr();
               }
               return null;
             },
             controller: phoneController,
-            labelText: "رقم الجوال",
+            labelText: LocaleKeys.log_in_phone_number.tr(),
             inputType: InputType.phone,
           ),
           StatefulBuilder(
@@ -282,12 +289,13 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                       backgroundColor: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'بالرجاء ادخال مدينتك';
+                          return LocaleKeys.register_please_enter_your_city
+                              .tr();
                         }
                         return null;
                       },
-                      iconPath: "assets/icons/flag.jpg",
-                      labelText: "المدينة",
+                      iconPath: Assets.icons.flag.path,
+                      labelText: LocaleKeys.register_city.tr(),
                       enable: () async {
                         citiesBloc.add(GetCitiesScreenDataEvent());
                         var result = await showModalBottomSheet(
@@ -314,7 +322,9 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                     ),
                                     child: Column(
                                       children: [
-                                        const Text("اختر مدينتك"),
+                                        Text(LocaleKeys
+                                            .register_choose_your_city
+                                            .tr()),
                                         Center(
                                           child: SizedBox(
                                             height: 16.h,
@@ -366,7 +376,8 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                     ),
                                   );
                                 } else {
-                                  return const Text("SomeThing Wrong");
+                                  return Text(
+                                      LocaleKeys.register_something_wrong.tr());
                                 }
                               }),
                           useSafeArea: true,
@@ -404,12 +415,12 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'بالرجاء ادخال كلمة المرور';
+                LocaleKeys.log_in_please_enter_your_password_again.tr();
               }
               return null;
             },
             backIcon: true,
-            labelText: "كلمة المرور",
+            labelText: LocaleKeys.log_in_password.tr(),
             inputType: InputType.password,
             controller: passwordController,
           ),
@@ -421,7 +432,7 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
               bloc: bloc,
               builder: (context, state) {
                 return AppButton(
-                    text: "تعديل البيانات",
+                    text: LocaleKeys.profile_edit_data.tr(),
                     isLoading: State is EditProfileLoadingState,
                     onPress: () async {
                       if (selectedImage != null) {
@@ -432,7 +443,7 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                             cityId: cityId,
                             phone: phoneController.text));
                       } else {
-                        showMessage("اضف صورة رجاءٌ");
+                        showMessage(LocaleKeys.profile_please_add_photo.tr());
                       }
                       setState(() {});
                     });

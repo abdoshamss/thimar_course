@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/features/give_advices/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/widgets/custom_appbar.dart';
 
@@ -29,8 +31,8 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
     return Scaffold(
-      appBar: CustomAppBarScreen(
-          text: "الشكاوي والأقتراحات", image: Assets.icons.backHome.path),
+      appBar: CustomAppBar(
+          text: LocaleKeys.my_account_complaints.tr(),  ),
       body: Form(
           key: formKey,
           child: ListView(
@@ -42,43 +44,45 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
               Input(
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'بالرجاء ادخال اسمك بالكامل';
+                    return LocaleKeys.register_please_enter_full_name.tr();
                   }
                   return null;
                 },
-                labelText: "الاسم",
+                labelText: LocaleKeys.charge_now_name.tr(),
                 controller: bloc.nameController,
               ),
               Input(
                 validator: (value) {
-                  if (value!.isEmpty || value.length < 9) {
-                    return 'بالرجاء ادخال رقم الجوال';
+                  if (value!.isEmpty  ) {
+                    return LocaleKeys.log_in_please_enter_your_mobile_number.tr();
+                  }else if(value.length < 9){
+                    return LocaleKeys.log_in_please_enter_nine_number.tr();
                   }
                   return null;
                 },
                 controller: bloc.phoneController,
-                labelText: "رقم الجوال",
+                labelText: LocaleKeys.log_in_phone_number.tr(),
                 inputType: InputType.phone,saudiIcon: false,
               ),
               Input(
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'بالرجاء ادخال عنوان للموضوع';
+                    return LocaleKeys.give_advice_please_enter_content_title.tr();
                   }
                   return null;
                 },
                 controller: bloc.titleController,
-                labelText: "عنوان الموضوع",
+                labelText:  LocaleKeys.give_advice_content_title.tr(),
               ),
               Input(
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'بالرجاء ادخال الموضوع';
+                    return  LocaleKeys.contact_us_please_enter_content.tr();
                   }
                   return null;
                 },
                 controller: bloc.contentController,
-                labelText: "الموضوع",
+                labelText:  LocaleKeys.contact_us_subject.tr(),
                 maxLines: 4,
               ),
               BlocBuilder(
@@ -93,7 +97,7 @@ class _GiveAdvicesScreenState extends State<GiveAdvicesScreen> {
                           bloc.add(PostGiveAdviceDataEvent());
                         }
                       },
-                      text: "الارسال",
+                      text: LocaleKeys.contact_us_send.tr(),
                     );
                   }),
             ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
@@ -6,6 +7,7 @@ import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/core/widgets/selectable_item.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../features/get_adresses/bloc.dart';
 import '../gen/assets.gen.dart';
@@ -24,9 +26,9 @@ class AddAddressesScreen extends StatefulWidget {
     required this.phone,
     required this.describe,
     this.type = "المنزل",
-     required this.lat,
-    required  this.lng,
-   required this.id,
+    required this.lat,
+    required this.lng,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -34,27 +36,30 @@ class AddAddressesScreen extends StatefulWidget {
 }
 
 class _AddAddressesScreenState extends State<AddAddressesScreen> {
-  // String type = "المنزل";
-  // bool isActive = true;
+  final _formKey = GlobalKey<FormState>();
 
-  final formKey = GlobalKey<FormState>();
-
-  final bloc = KiwiContainer().resolve<GetAddressesBloc>();
+  final _bloc = KiwiContainer().resolve<AddressesBloc>();
 
   @override
   Widget build(BuildContext context) {
+    if (CacheHelper.getLanguage() == "en") {
+      switch (widget.type) {
+        case "المنزل":
+          widget.type = "home";
+          break;
+        case "العمل":
+          widget.type = "work";
+          break;
+      }
+    }
     final phoneController = TextEditingController(
         text: widget.phone.isNotEmpty ? widget.phone : "");
     final describeController = TextEditingController(
         text: widget.describe.isNotEmpty ? widget.describe : "");
     return Scaffold(
-
-      appBar: CustomAppBarScreen(
-        image: Assets.icons.backHome.path,
-      text: "اضافة عنوان",
-    ),
-
-
+      appBar: CustomAppBar(
+        text: LocaleKeys.addresses_add_address.tr(),
+      ),
       body: ListView(
         children: [
           SizedBox(
@@ -67,21 +72,21 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
           Padding(
             padding: EdgeInsets.all(16.0.r),
             child: Form(
-              key: formKey,
+              key: _formKey,
               child: Column(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 16.r),
                     child: Container(
                       padding: EdgeInsets.all(10.r),
-                      height: 55,
+                      height: 55.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(13.r),
                           border: Border.all(color: const Color(0xffF3F3F3))),
                       child: Row(
                         children: [
                           Text(
-                            "نوع العنوان",
+                            LocaleKeys.addresses_address_type.tr(),
                             style: TextStyle(
                                 color: Theme.of(context).hintColor,
                                 fontSize: 15,
@@ -90,80 +95,33 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                           const Spacer(),
                           Row(
                             children: [
-                              SelectableItem('المنزل', widget.type == "المنزل",
-                                  () {
+                              SelectableItem(
+                                  LocaleKeys.addresses_work.tr(),
+                                  widget.type == "المنزل" ||
+                                      widget.type == "home", () {
                                 setState(() {
-                                  widget.type = "المنزل";
+                                  if (CacheHelper.getLanguage() == "en") {
+                                    widget.type = "home";
+                                  } else {
+                                    widget.type = "المنزل";
+                                  }
                                 });
                               }),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     setState(() {
-                              //       widget.type = "المنزل";
-                              //     });
-                              //   },
-                              //   child: Container(
-                              //     height: 40.h,
-                              //     width: 70.w,
-                              //     decoration: BoxDecoration(
-                              //         color: widget.type == "المنزل"
-                              //             ? Theme.of(context).primaryColor
-                              //             : null,
-                              //         borderRadius:
-                              //             BorderRadius.circular(11.r)),
-                              //     child: Center(
-                              //       child: Text(
-                              //         "المنزل",
-                              //         style: TextStyle(
-                              //           color: widget.type == "المنزل"
-                              //               ? Colors.white
-                              //               : Theme.of(context).primaryColor,
-                              //           fontSize: 15.sp,
-                              //           fontWeight: FontWeight.w300,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
                               SizedBox(
                                 width: 8.w,
                               ),
-
-                              SelectableItem('العمل', widget.type == "العمل",
-                                  () {
+                              SelectableItem(
+                                  LocaleKeys.addresses_home.tr(),
+                                  widget.type == "العمل" ||
+                                      widget.type == "work", () {
                                 setState(() {
-                                  widget.type = "العمل";
+                                  if (CacheHelper.getLanguage() == "en") {
+                                    widget.type = "work";
+                                  } else {
+                                    widget.type = "العمل";
+                                  }
                                 });
                               })
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     setState(() {
-                              //       widget.type = "العمل";
-                              //     });
-                              //   },
-                              //   child: Container(
-                              //     height: 40.h,
-                              //     width: 70.w,
-                              //     decoration: BoxDecoration(
-                              //         color: widget.type == "المنزل"
-                              //             ? null
-                              //             : Theme.of(context).primaryColor,
-                              //         borderRadius:
-                              //             BorderRadius.circular(11.r)),
-                              //     child: Center(
-                              //       child: Text(
-                              //         "العمل",
-                              //         style: TextStyle(
-                              //           color: widget.type == "المنزل"
-                              //               ? Theme.of(context).primaryColor
-                              //               : Colors.white,
-                              //           fontSize: 15.sp,
-                              //           fontWeight: FontWeight.w300,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // )
                             ],
                           )
                         ],
@@ -173,13 +131,13 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                   Input(
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return "برجاء ادخال رقم الجوال";
+                        return LocaleKeys.log_in_please_enter_your_mobile_number.tr();
                       } else if (value.length < 9) {
-                        return "بالرجاء ادخال ٩ ارقام";
+                        return LocaleKeys.log_in_please_enter_nine_number.tr();
                       }
                       return null;
                     },
-                    labelText: "أدخل رقم الجوال",
+                    labelText:LocaleKeys.log_in_phone_number.tr(),
                     controller: phoneController,
                     inputType: InputType.phone,
                     saudiIcon: false,
@@ -188,11 +146,11 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                   Input(
                     validator: (String? value) {
                       if (value!.isEmpty) {
-                        return "برجاء ادخال الوصف";
+                        return LocaleKeys.addresses_please_enter_description.tr();
                       }
                       return null;
                     },
-                    labelText: "الوصف",
+                    labelText:  LocaleKeys.addresses_description.tr(),
                     controller: describeController,
                     inputType: InputType.normal,
                     textInputAction: TextInputAction.next,
@@ -201,22 +159,24 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
                     height: 48.h,
                   ),
                   AppButton(
-                    text: "إضافة العنوان",
+                    text:LocaleKeys.addresses_add_address.tr(),
                     onPress: () {
-                      if (formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         if (widget.phone.isEmpty) {
-                          bloc.add(AddAddressesDataEvent(
+                          _bloc.add(AddAddressesDataEvent(
                             type: widget.type,
                             phone: phoneController.text,
                             description: describeController.text,
-                            lat: double.parse(CacheHelper.getLatitude().toString()),
-                            lng:  double.parse(CacheHelper.getLongitude().toString()),
+                            lat: double.parse(
+                                CacheHelper.getLatitude().toString()),
+                            lng: double.parse(
+                                CacheHelper.getLongitude().toString()),
                           ));
                           debugPrint(widget.id.toString());
                           phoneController.clear();
                           describeController.clear();
                         } else {
-                          bloc.add(EditAddressesDataEvent(
+                          _bloc.add(EditAddressesDataEvent(
                               id: widget.id, type: widget.type));
                           debugPrint(widget.id.toString());
                           phoneController.clear();
@@ -231,11 +191,7 @@ class _AddAddressesScreenState extends State<AddAddressesScreen> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: _goToTheLake,
-      //   label: const Text('To the my Location'),
-      //   icon: const Icon(Icons.location_on),
-      // ),
+
     );
   }
 }

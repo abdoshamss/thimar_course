@@ -1,13 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
+import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/features/my_orders/cancel_order/bloc.dart';
 import 'package:thimar_course/features/my_orders/my_orders_details/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import '../core/widgets/custom_appbar.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
@@ -44,12 +47,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-        image: Assets.icons.backHome.path,
-        text: "تفاصيل الطلب",
+      appBar: CustomAppBar(
+        text: LocaleKeys.orders_order_details.tr(),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0.r),
+        padding: EdgeInsets.all(16.r),
         child: BlocBuilder(
           bloc: bloc,
           builder: (BuildContext context, state) {
@@ -60,25 +62,27 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               Color statusColor = Theme.of(context).primaryColor;
               String status = widget.status;
 
-              switch (status) {
-                case "in_way":
-                case "في الطريق":
-                  color = const Color(0xffEDF5E6);
-                  statusColor = Theme.of(context).primaryColor;
-                  status = "في الطريق";
-                  break;
-                case "canceled":
-                case "طلب ملغي":
-                  color = const Color(0xffFFE4E4);
-                  statusColor = Colors.red;
-                  status = "طلب ملغي";
-                  break;
-                case "pending":
-                case "بإنتظار الموافقة":
-                  color = const Color(0xffEDF5E6);
-                  statusColor = Theme.of(context).primaryColor;
-                  status = "بإنتظار الموافقة";
-                  break;
+              if (CacheHelper.getLanguage() == "ar") {
+                switch (status) {
+                  case "in_way":
+                  case "في الطريق":
+                    color = const Color(0xffEDF5E6);
+                    statusColor = Theme.of(context).primaryColor;
+                    status = "في الطريق";
+                    break;
+                  case "canceled":
+                  case "طلب ملغي":
+                    color = const Color(0xffFFE4E4);
+                    statusColor = Colors.red;
+                    status = "طلب ملغي";
+                    break;
+                  case "pending":
+                  case "بإنتظار الموافقة":
+                    color = const Color(0xffEDF5E6);
+                    statusColor = Theme.of(context).primaryColor;
+                    status = "بإنتظار الموافقة";
+                    break;
+                }
               }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,10 +105,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
+
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "طلب #${state.list.list.id}",
+                                  "${LocaleKeys.orders_order.tr()} #${state.list.list.id}",
                                   style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 17.sp,
@@ -112,7 +117,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 8.0.r),
+                                  padding: EdgeInsets.only(top: 8.r),
                                   child: Text(
                                     state.list.list.date,
                                     style: TextStyle(
@@ -151,7 +156,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     top: 8.r,
                                   ),
                                   child: Text(
-                                    "${state.list.list.stringTotalPrice}ر.س",
+                                    "${state.list.list.stringTotalPrice}\t${LocaleKeys.orders_order.tr()}",
                                     style: TextStyle(
                                         fontSize: 15.sp,
                                         color: Theme.of(context).primaryColor,
@@ -238,7 +243,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   if (state.list.list.address.lat != 0.0 &&
                       state.list.list.address.lng != 0.0)
                     Text(
-                      "عنوان التوصيل",
+                    LocaleKeys.orders_delivery_address.tr(),
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 17.sp,
@@ -313,7 +318,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     height: 16.h,
                   ),
                   Text(
-                    'ملخص الطلب',
+                    LocaleKeys.orders_order_summary.tr(),
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 17.sp,
@@ -336,14 +341,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "إجمالي المنتجات",
+                              LocaleKeys.orders_total_products.tr(),
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.stringPriceBeforeDiscount}ر.س",
+                              "${state.list.list.stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -358,14 +363,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "الخصم",
+                              LocaleKeys.orders_discount.tr(),
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.stringDiscount}ر.س",
+                              "${state.list.list.stringDiscount}\t${LocaleKeys.r_s.tr()}",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -383,60 +388,69 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "الاجمالي بعد خصم المنتجات",
+                              LocaleKeys.orders_total_after_discount.tr(),
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.stringOrderPrice}ر.س",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.sp),
-                            ),
-                          ],
-                        ),SizedBox(
-                          height: 8.h,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "سعر التوصيل",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.sp),
-                            ),
-                            Text(
-                              "${state.list.list.stringDeliveryPrice}ر.س",
+                              "${state.list.list.stringOrderPrice}\t${LocaleKeys.r_s.tr()}",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                           ],
-                        ),SizedBox(
+                        ),
+                        SizedBox(
                           height: 8.h,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "خصم عميل مميز",
+                              LocaleKeys.orders_delivery_price.tr(),
+                              style: TextStyle(
+
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                            Text(
+                              "${state.list.list.stringDeliveryPrice}\t${LocaleKeys.r_s.tr()}",
+
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              LocaleKeys.orders_special_dicount.tr(),
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
-                            Text(
-                              "-${state.list.list.stringVipDiscount}ر.س",
-                              style: TextStyle(
-                                  color: Colors.orange,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.sp),
+
+                            SizedBox(
+                              width: 60.w,
+                              child: Text(
+                                "-${state.list.list.stringVipDiscount}\t${LocaleKeys.r_s.tr()}",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.orange,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 15.sp),
+                              ),
                             ),
                           ],
                         ),
@@ -450,14 +464,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "المجموع",
+                              LocaleKeys.orders_total.tr(),
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
                             Text(
-                              "${state.list.list.stringTotalPrice}.س",
+                              "${state.list.list.stringTotalPrice}\t${LocaleKeys.r_s.tr()}",
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
@@ -475,17 +489,22 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              "تم الدفع بواسطة",
+                              LocaleKeys.orders_paid_by.tr(),
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15.sp),
                             ),
-
                             Image.asset(
-                            state.list.list.payType=="cash"?  Assets.icons.money.path:  Assets.images.visa.path,
-                              width: state.list.list.payType=="cash"?70.w:50.w,
-                              height:state.list.list.payType=="cash"? 30.h:15.h,
+                              state.list.list.payType == "cash"
+                                  ? Assets.icons.money.path
+                                  : Assets.images.visa.path,
+                              width: state.list.list.payType == "cash"
+                                  ? 70.w
+                                  : 50.w,
+                              height: state.list.list.payType == "cash"
+                                  ? 30.h
+                                  : 15.h,
                             ),
                           ],
                         ),

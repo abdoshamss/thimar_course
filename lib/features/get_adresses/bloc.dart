@@ -9,9 +9,9 @@ part 'states.dart';
 part 'model.dart';
 part 'events.dart';
 
-class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
+class AddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
   final DioHelper dioHelper;
-  GetAddressesBloc(this.dioHelper) : super(GetAddressesStates()) {
+  AddressesBloc(this.dioHelper) : super(GetAddressesStates()) {
     on<GetAddressesDataEvent>(_getAddresses);
     on<EditAddressesDataEvent>(_editAddresses);
     on<RemoveAddressesDataEvent>(_removeAddresses);
@@ -75,7 +75,7 @@ class GetAddressesBloc extends Bloc<GetAddressesEvents, GetAddressesStates> {
       "type": event.type,
       "phone": event.phone,
       'description': event.description,
-      'location':CacheHelper.getCurrentLocationWithName(),
+      'location': CacheHelper.getCurrentLocationWithNameMap(),
       'lat': event.lat,
       'lng': event.lng,
       'is_default': "1",

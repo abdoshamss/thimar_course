@@ -1,8 +1,12 @@
 {
   "lang": "ar",
+  "r_s": "ر.س",
+  "price": "السعر",
+  "please_add_some_producst_to_favs": "بالرجاء اضافة بعض المنتجات الي المفضلة",
   "login_first": "قم بتسجيل الدخول أولا",
   "cancel": "الغاء",
   "no_internet": "لا يوجد انترنت",
+  "join_us": "انضم الينا لتري لعرض حميع الخدمات",
   "log_in": {
     "hello_again": "مرحبا بك مرة اخري",
     "you_can_login_now": "يمكنك تسجيل الدخول الان",
@@ -85,5 +89,117 @@
     "addresses": "العناوين",
     "address": "العنوان",
     "add_addresses": "إضافة عنوان"
+  },
+  "profile": {
+    "select_image_from": "اختر صورة من",
+    "gallery": "المعرض",
+    "camera": "الكاميرا",
+    "edit_data": "تعديل البيانات",
+    "please_add_photo": "اضف صورة رجاء"
+  },
+  "wallet": {
+    "see_more": "عرض الكل",
+    "charge_now": "اشحن الان",
+    "your_balance": "رصيدك",
+    "history_transactions": "سجل المعاملات"
+  },
+  "change_password": {
+    "change_password": "تغيير كلمة المرور",
+    "please_enter_your_old_password_again_at_least_six_letters": "بالرجاء ادخال كلمة المرور القديمة ٦ حروف علي الاقل",
+    "old_password": "كلمة المرور القديمة",
+    "two_passwords_not_matching": "كلمتان السر غير متطابقتان"
+  },
+  "add_to_cart": "أضف للسلة",
+  "out_of_stock": "تم نفاذ الكمية",
+  "search_about_you_want": "ابحث عما تريد؟",
+  "type_word_to_search": "اكتب كلمة للبحث",
+  "charge_now": {
+    "amount_information": "معلومات المبلغ",
+    "your_amount": "المبلغ الخاص بك",
+    "card_information": "معلومات البطاقة",
+    "name": "الاسم",
+    "card_credit_number": "رقم البطاقة الائتمانية",
+    "expiry_date": "تاريخ الانتهاء",
+    "serial_number": "الرقم المتسلسل",
+    "pay": "دفع"
+  },
+  "addresses": {
+    "work": "العمل",
+    "home": "المنزل",
+    "address": "العنوان",
+    "add_address": "إضافة عنوان",
+    "address_type": "نوع العنوان",
+    "description": "الوصف",
+    "please_enter_description": "برجاء ادخال الوصف"
+  },
+  "contact_us": {
+    "or_you_can_send_message": "أو يمكنك إرسال رسالة",
+    "please_enter_content": "من فضلك ادخل الموضوع",
+    "subject": "الموضوع",
+    "send": "ارسال"
+  },
+  "give_advice": {
+    "please_enter_content_title": "بالرجاء ادخال عنوان للموضوع",
+    "content_title": "عنوان الموضوع"
+  },
+  "home_nav": {
+    "main_page": "الرئيسية",
+    "my_orders": "طلباتي",
+    "notifications": "الاشعارات",
+    "favs": "المفضلة",
+    "my_account": "حسابي"
+  },
+  "orders": {
+    "order": "طلب",
+    "order_details": "تفاصيل الطلب",
+    "order_summary": "ملخص الطلب",
+    "total_products": "إجمالي المنتجات",
+    "discount": "الخصم",
+    "total_after_discount": "الاجمالي بعد خصم المنتجات",
+    "delivery_price": "سعر التوصيل",
+    "special_dicount": "خصم عميل مميز",
+    "total": "المجموع",
+    "paid_by": "تم الدفع بواسطة",
+    "delivery_address": "عنوان التوصيل"
+  },
+  "categories": {
+    "filter": "تصفية",
+    "sort": "الترتيب",
+    "from_min_to_high": "من السعر الأقل للأعلي",
+    "from_high_to_min": "من السعر الأعلى للأقل",
+    "apply": "تطبيق"
+  },
+  "product_details": {
+    "product_details": "تفاصيل المنتج",
+    "product_code": "كود المنتج",
+    "ratings": "التقييمات",
+    "similar_products": "منتجات مشابهة",
+    "add_to_cart": "إضافة إلي السلة",
+    "product_added_to_cart": "تم إضافة المنتج بنجاح",
+    "amount": "الكمية",
+    "go_to_cart": "التحويل إلى السلة",
+    "browse_offers": "تصفح العروض"
+  },
+  "cart": {
+    "cart": "السلة",
+    "add_some_products_to_cart": "أضف بعض المنتجات الي السلة",
+    "you_have_coupon": "عندك كوبون ؟ ادخل رقم الكوبون",
+    "all_prices": "جميع الأسعار تشمل قيمة الضريبة المضافة %15",
+    "move_to_complete_order": "الانتقال لإتمام الطلب"
+  },
+  "complete_order": {
+    "complete_order": "إتمام الطلب",
+    "phone": "الجوال",
+    "choose_the_delivery_address": "اختر عنوان التوصيل",
+    "place": "المكان",
+    "delivery_time": "تحديد وقت التوصيل",
+    "choose_date_and_day": "اختر اليوم والتاريخ",
+    "choose_time": "اختر الوقت",
+    "notes_and_instructions": "ملاحظات وتعليمات",
+    "choose_payment_way": "اختر طريقة الدفع",
+    "cash": "كاش",
+    "finish_order": "إنهاء الطلب",
+    "thank_you": "شكرا لك لقد تم تنفيذ طلبك بنجاح",
+    "you_can_follow": "يمكنك متابعة حالة الطلب او الرجوع للرئيسية"
   }
 }

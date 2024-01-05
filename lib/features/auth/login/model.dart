@@ -44,8 +44,7 @@ class UserModel {
 
 class Country {
   late final String id;
-  late final String name;
-  late final String nationality;
+  late final String name,nationality;
   late final String key;
   late final String flag;
 

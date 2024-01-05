@@ -16,8 +16,8 @@ class BeVipScreen extends StatelessWidget {
       "تسوق من المتجر ودفع التكاليف شهريا",
     ];
     return Scaffold(
-      appBar: CustomAppBarScreen(
-          text: " VIP تحويل لحساب ", image: Assets.icons.backHome.path),
+      appBar: CustomAppBar(
+          text: "VIP تحويل لحساب", ),
       body: Padding(
         padding: EdgeInsets.all(16.0.r),
         child: Column(

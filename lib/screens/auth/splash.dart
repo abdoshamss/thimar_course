@@ -29,6 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,41 +43,10 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         child: SizedBox(
-          width:MediaQuery.of(context).size.width.w,
-          height: MediaQuery.of(context).size.height.h,
-          child: Center(
-            child: Stack(
-
-              children: [
-                Image.asset(
-                  Assets.images.mainLogo.path,
-                  height: 190.h,
-                  width: 175.w,
-                ),
-
-                Positioned(
-
-                  right: 100,
-                  top: 5,
-                  child: BounceInDown(
-                    child: Image.asset(
-                      Assets.images.topLeaves.path,
-                      height: 30.h,
-                      width: 45.w,
-                    ),
-                  ),
-                ),
-
-                Positioned(
-                  top: 60,
-                  right: 95,
-                  child: FlipInY(
-                    child: Image.asset(
-                      Assets.images.sideLeaves.path,
-                    ),
-                  ),
-                ),
-              ],
+          
+          child: BounceInDown(
+            child: Center(
+              child:Image.asset(Assets.images.logo.path),
             ),
           ),
         ),
@@ -84,3 +54,5 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
+

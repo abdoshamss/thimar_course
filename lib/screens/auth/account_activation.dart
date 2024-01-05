@@ -38,35 +38,29 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
   final formKey = GlobalKey<FormState>();
   @override
   void dispose() {
-
     super.dispose();
-  bloc.close();
-  resendCodeBloc.close();
+    bloc.close();
+    resendCodeBloc.close();
   }
+
   @override
   Widget build(BuildContext context) {
-
-
     bloc.phone = widget.phone;
     resendCodeBloc.phone = widget.phone;
 
-
     return Scaffold(
-
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-              Image.asset(
-               Assets.images.logo.path,
-                height: 150.h,
-                width: 150.w,
-              ),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            Image.asset(
+              Assets.images.logo.path,
+              height: 150.h,
+              width: 150.w,
+            ),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-              LocaleKeys.account_activation_activate_account.tr(),
+                LocaleKeys.account_activation_activate_account.tr(),
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontSize: 16.sp,
@@ -99,7 +93,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => navigateTo(const RegisterScreen()),
-                      text:  LocaleKeys.check_code_change_phone_number.tr(),
+                      text: LocaleKeys.check_code_change_phone_number.tr(),
                       style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           decoration: TextDecoration.underline),
@@ -115,7 +109,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                 child: PinCodeTextField(
                   validator: (value) {
                     if (value!.isEmpty || value.length < 4) {
-                      return  LocaleKeys.check_code_enter_the_code.tr();
+                      return LocaleKeys.check_code_enter_the_code.tr();
                     }
                     return null;
                   },
@@ -145,15 +139,14 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                 bloc: bloc,
                 listener: (context, state) {
                   if (state is ActivationAccountSuccessState) {
-                      navigateTo(const LoginScreen());
+                    navigateTo(const LoginScreen());
                   }
                 },
                 builder: (BuildContext context, state) {
                   return Center(
                     child: AppButton(
-                        isLoading:
-                            state is ActivationAccountLoadingState  ,
-                        text:  LocaleKeys.check_code_confirm_the_code.tr(),
+                        isLoading: state is ActivationAccountLoadingState,
+                        text: LocaleKeys.check_code_confirm_the_code.tr(),
                         onPress: () {
                           if (formKey.currentState!.validate()) {
                             bloc.add(PostActivationAccountDataEvent());
@@ -172,8 +165,8 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                       Text(
                         LocaleKeys.check_code_didnt_receive_code.tr(),
                         textAlign: TextAlign.center,
-                        style:
-                            TextStyle(fontSize: 16.sp, color: secondaryColorText),
+                        style: TextStyle(
+                            fontSize: 16.sp, color: secondaryColorText),
                       ),
                       Text(
                         LocaleKeys.check_code_you_can_receive_code_after.tr(),
@@ -255,8 +248,7 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                   style: TextStyle(color: Theme.of(context).primaryColor),
                   children: <TextSpan>[
                     TextSpan(
-                      text: LocaleKeys.forget_password_you_have_an_account
-                          .tr(),
+                      text: LocaleKeys.forget_password_you_have_an_account.tr(),
                       style: TextStyle(
                         fontSize: 15.sp,
                         color: Theme.of(context).primaryColor,
@@ -265,7 +257,8 @@ class _AccountActivationScreenState extends State<AccountActivationScreen> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => navigateTo(const LoginScreen()),
-                      text: LocaleKeys.my_account_log_in.tr(),                      style: const TextStyle(
+                      text: LocaleKeys.my_account_log_in.tr(),
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),

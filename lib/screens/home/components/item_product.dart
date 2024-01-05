@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../../../core/design/widgets/btn.dart';
 import '../../../core/logic/helper_methods.dart';
@@ -58,7 +60,7 @@ class _ItemProductState extends State<ItemProduct> {
                     Image.network(
                       widget.model.mainImage,
                       fit: BoxFit.fill,
-                      width: 150,
+                      width: 150.w,
                       height: 100.h,
                     ),
                     Container(
@@ -105,7 +107,7 @@ class _ItemProductState extends State<ItemProduct> {
                   Row(
                     children: [
                       Text(
-                        "السعر / ${widget.model.unit.name}",
+                        "${LocaleKeys.price.tr()} / ${widget.model.unit.name}",
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
@@ -120,7 +122,8 @@ class _ItemProductState extends State<ItemProduct> {
                         Text.rich(
                           TextSpan(children: [
                             TextSpan(
-                              text: "${widget.model.stringPrice} ر.س ",
+                              text:
+                                  "${widget.model.stringPrice} ${LocaleKeys.r_s.tr()}",
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w700,
@@ -128,7 +131,7 @@ class _ItemProductState extends State<ItemProduct> {
                             ),
                             TextSpan(
                               text:
-                                  " ${widget.model.stringPriceBeforeDiscount} ر.س",
+                                  " ${widget.model.stringPriceBeforeDiscount} ${LocaleKeys.r_s.tr()}",
                               style: TextStyle(
                                 fontSize: 13.sp,
                                 fontWeight: FontWeight.w400,
@@ -149,7 +152,7 @@ class _ItemProductState extends State<ItemProduct> {
                       builder: (BuildContext context, state) {
                         return AppButton(
                           isLoading: state is AddToCartLoadingState,
-                          text: "أضف للسلة",
+                          text: LocaleKeys.add_to_cart.tr(),
                           onPress: () {
                             if (CacheHelper.getToken()!.isNotEmpty) {
                               addToCartBloc.add(PostAddToCartDataEvent(
@@ -163,8 +166,8 @@ class _ItemProductState extends State<ItemProduct> {
                       },
                     ),
                   if (widget.model.amount == 0)
-                    const AppButton(
-                      text: "تم نفاذ الكمية",
+                    AppButton(
+                      text: LocaleKeys.out_of_stock.tr(),
                       type: BtnType.cancel,
                       isBig: false,
                       onPress: null,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/faqs/bloc.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../gen/assets.gen.dart';
 
@@ -26,8 +28,8 @@ class _FAQSScreenState extends State<FAQSScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-          text: "أسئلة متكررة", image: Assets.icons.backHome.path),
+      appBar: CustomAppBar(
+          text: LocaleKeys.my_account_faqs.tr(),  ),
       body: BlocBuilder(
         bloc: _bloc,
         builder: (BuildContext context, state) {

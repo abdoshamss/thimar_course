@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/logic/helper_methods.dart';
 import '../features/Wallet/show_wallet/bloc.dart';
@@ -12,30 +14,32 @@ class HistoryTransactionsScreen extends StatefulWidget {
   const HistoryTransactionsScreen({Key? key}) : super(key: key);
 
   @override
-  State<HistoryTransactionsScreen> createState() => _HistoryTransactionsScreenState();
+  State<HistoryTransactionsScreen> createState() =>
+      _HistoryTransactionsScreenState();
 }
 
 class _HistoryTransactionsScreenState extends State<HistoryTransactionsScreen> {
-  final bloc = KiwiContainer().resolve<WalletBloc>()..add(GetWalletDataEvent());
+  final _bloc = KiwiContainer().resolve<WalletBloc>()..add(GetWalletDataEvent());
 
   @override
   void dispose() {
     super.dispose();
-    bloc.close();
+    _bloc.close();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-          text: "سجل المعاملات", image: Assets.icons.backHome.path),
+      appBar: CustomAppBar(
+        text: LocaleKeys.wallet_history_transactions.tr(),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0.r),
         child: BlocBuilder(
-          bloc: bloc,
+          bloc: _bloc,
           builder: (BuildContext context, state) {
             if (state is GetWalletDataLoadingState) {
-            return  loadingWidget();
+              return loadingWidget();
             } else if (state is GetWalletDataSuccessState) {
               return ListView.separated(
                 separatorBuilder: (context, index) => SizedBox(
@@ -43,9 +47,9 @@ class _HistoryTransactionsScreenState extends State<HistoryTransactionsScreen> {
                 ),
                 itemCount: state.list.list.length,
                 itemBuilder: (context, index) => Container(
-                  height: 100.h,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 8.w, vertical: 16.h),
+                  height: state.list.list[index].images.isEmpty ? 100.h : 130.h,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20.r),
@@ -87,82 +91,76 @@ class _HistoryTransactionsScreenState extends State<HistoryTransactionsScreen> {
                       Padding(
                         padding: EdgeInsets.only(right: 24.r),
                         child: Text(
-                          "${state.list.list[index].afterCharge} ر.س",
+                          "${state.list.list[index].afterCharge} ${LocaleKeys.r_s.tr()}",
                           style: TextStyle(
                               fontSize: 17.sp,
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.w900),
                         ),
                       ),
-
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Row(
-                      //       children: [
-                      //         SizedBox(
-                      //           width: 85.w,
-                      //           height: 25.h,
-                      //           child: ListView.separated(
-                      //             scrollDirection: Axis.horizontal,
-                      //             physics:
-                      //                 const NeverScrollableScrollPhysics(),
-                      //             itemCount: state.list.list[index].images
-                      //                         .length >=
-                      //                     3
-                      //                 ? 3
-                      //                 : state
-                      //                     .list.list[index].images.length,
-                      //             separatorBuilder: (context, index) =>
-                      //                 SizedBox(
-                      //               width: 4.w,
-                      //             ),
-                      //             itemBuilder: (context, imagesIndex) =>
-                      //                 Container(
-                      //               width: 25.w,
-                      //               height: 25.h,
-                      //               decoration: BoxDecoration(
-                      //                   borderRadius:
-                      //                       BorderRadius.circular(7.r),
-                      //                   image: DecorationImage(
-                      //                       image: NetworkImage(state
-                      //                           .list
-                      //                           .list[index]
-                      //                           .images[imagesIndex]
-                      //                           .url))),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         if (state.list.list[index].images.length >
-                      //             3)
-                      //           Container(
-                      //             width: 25.w,
-                      //             height: 25.h,
-                      //             decoration: BoxDecoration(
-                      //               color: const Color(0xffEDF5E6),
-                      //               borderRadius:
-                      //                   BorderRadius.circular(7.r),
-                      //             ),
-                      //             child: Center(
-                      //               child: Text(
-                      //                 state.list.list[index].images
-                      //                             .length >
-                      //                         3
-                      //                     ? "${state.list.list[index].images.length - 3}+"
-                      //                     : "0+",
-                      //                 style: TextStyle(
-                      //                   fontWeight: FontWeight.bold,
-                      //                   fontSize: 11.sp,
-                      //                   color: Theme.of(context)
-                      //                       .primaryColor,
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
+                      if (state.list.list[index].images.isNotEmpty)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 85.w,
+                                  height: 25.h,
+                                  child: ListView.separated(
+                                    scrollDirection: Axis.horizontal,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: state.list.list[index].images
+                                                .length >=
+                                            3
+                                        ? 3
+                                        : state.list.list[index].images.length,
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(
+                                      width: 4.w,
+                                    ),
+                                    itemBuilder: (context, imagesIndex) =>
+                                        Container(
+                                      width: 25.w,
+                                      height: 25.h,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(7.r),
+                                          image: DecorationImage(
+                                              image: NetworkImage(state
+                                                  .list
+                                                  .list[index]
+                                                  .images[imagesIndex]
+                                                  .url))),
+                                    ),
+                                  ),
+                                ),
+                                if (state.list.list[index].images.length > 3)
+                                  Container(
+                                    width: 25.w,
+                                    height: 25.h,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffEDF5E6),
+                                      borderRadius: BorderRadius.circular(7.r),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        state.list.list[index].images.length > 3
+                                            ? "${state.list.list[index].images.length - 3}+"
+                                            : "0+",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11.sp,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ),

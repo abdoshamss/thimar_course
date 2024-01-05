@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/home/pages/order.dart';
 
 import 'pages/favs.dart';
@@ -8,8 +10,8 @@ import 'pages/my_account.dart';
 import 'pages/notifications.dart';
 
 class HomeNavScreen extends StatefulWidget {
-      int currentPage;
-    HomeNavScreen({Key? key,  this.currentPage=0 }) : super(key: key);
+  int currentPage;
+  HomeNavScreen({Key? key, this.currentPage = 0}) : super(key: key);
 
   @override
   State<HomeNavScreen> createState() => _HomeNavScreenState();
@@ -17,11 +19,11 @@ class HomeNavScreen extends StatefulWidget {
 
 class _HomeNavScreenState extends State<HomeNavScreen> {
   List<String> titles = [
-    "الرئيسية",
-    "طلباتي",
-    "الاشعارات",
-    "المفضلة",
-    "حسابي",
+    LocaleKeys.home_nav_main_page.tr(),
+    LocaleKeys.home_nav_my_orders.tr(),
+    LocaleKeys.home_nav_notifications.tr(),
+    LocaleKeys.home_nav_favs.tr(),
+    LocaleKeys.home_nav_my_account.tr(),
   ];
   List icons = [
     Assets.icons.home.path,
@@ -47,10 +49,9 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
       child: Scaffold(
         body: pages[widget.currentPage],
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex:widget. currentPage,
+          currentIndex: widget.currentPage,
           onTap: (value) {
             widget.currentPage = value;
-
             setState(() {});
           },
           type: BottomNavigationBarType.fixed,

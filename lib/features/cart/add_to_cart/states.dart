@@ -32,7 +32,7 @@ final int? counter;
                         width: 16.w,
                       ),
                       Text(
-                        "تم إضافة المنتج بنجاح",
+                        LocaleKeys.product_details_product_added_to_cart.tr(),
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
@@ -76,7 +76,7 @@ final int? counter;
                             height: 4.h,
                           ),
                           Text(
-                            "الكمية : ${counter??1}",
+                            "${LocaleKeys.product_details_amount.tr()} : ${counter??1}",
                             style: TextStyle(
                               fontWeight: FontWeight.w300,
                               fontSize: 12.sp,
@@ -87,7 +87,7 @@ final int? counter;
                             height: 4.h,
                           ),
                           Text(
-                            "${list.data.price}ر.س",
+                            "${list.data.price}\t${LocaleKeys.r_s.tr()}",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 16.sp,
@@ -120,9 +120,9 @@ final int? counter;
                             borderRadius: BorderRadius.circular(15.r),
                           ),
                         ),
-                        child: const Center(
+                        child:   Center(
                           child: Text(
-                            "التحويل إلى السلة",
+                            LocaleKeys.product_details_go_to_cart.tr(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -144,7 +144,7 @@ final int? counter;
                         ),
                         child: Center(
                           child: Text(
-                            "تصفح العروض",
+                            LocaleKeys.product_details_browse_offers.tr(),
                             style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w500),

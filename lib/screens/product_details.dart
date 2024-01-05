@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -10,6 +11,7 @@ import 'package:thimar_course/features/FAVS/bloc.dart';
 import 'package:thimar_course/features/product_details/bloc.dart';
 import 'package:thimar_course/features/product_rates/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/logic/cache_helper.dart';
 import '../features/cart/add_to_cart/bloc.dart';
@@ -45,6 +47,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ..add(GetProductRatesEvent());
 
   @override
+
+
+
+
   void initState() {
     super.initState();
 
@@ -71,28 +77,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
-          "تفاصيل المنتج",
+          LocaleKeys.product_details_product_details.tr(),
           style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColor),
         ),
-        centerTitle: true,
+
         leading: Row(
           children: [
             SizedBox(
               width: 16.w,
             ),
-            GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Image.asset(
-                  Assets.icons.backHome.path,
-                  width: 32.w,
-                  height: 32.h,
-                  fit: BoxFit.fill,
-                )),
+            GestureDetector(onTap: (){
+              Navigator.pop(context);
+            },
+              child: Container(
+                height: 32.h,
+                width: 32.w,
+                decoration: BoxDecoration(
+                    color: const Color(0xff4C8613).withOpacity(.13)
+                    ,borderRadius: BorderRadius.circular(10.r)
+                ),
+                child: Center(
+                    child:   Icon(Icons.arrow_back_ios_outlined,color: Theme.of(context).primaryColor,size: 18,)
+                ),
+              ),
+            ),
           ],
         ),
         actions: [
@@ -210,6 +221,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     );
                   } else if (state is ProductDetailsSuccessState) {
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Stack(
                           alignment: Alignment.bottomCenter,
@@ -301,7 +313,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         ),
                                         TextSpan(
                                           text:
-                                              '${widget.model.stringPrice}ر.س',
+                                              '${widget.model.stringPrice}\t${LocaleKeys.r_s.tr()}',
                                           style: TextStyle(
                                             fontSize: 17.sp,
                                             color:
@@ -311,7 +323,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         ),
                                         TextSpan(
                                           text:
-                                              '  ${widget.model.stringPriceBeforeDiscount}ر.س ',
+                                              '  ${widget.model.stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}',
                                           style: TextStyle(
                                             fontSize: 13.sp,
                                             color:
@@ -334,7 +346,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "السعر / ${widget.model.unit.name}",
+                                    "${LocaleKeys.price.tr()} / ${widget.model.unit.name}",
                                     style: TextStyle(
                                         fontSize: 19.sp,
                                         color: Theme.of(context).hintColor,
@@ -438,7 +450,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      "كود المنتج",
+                                      LocaleKeys.product_details_product_code.tr(),
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 17.sp,
@@ -462,7 +474,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               const Divider(
                                 color: Color(0xffF9F9F9),
                                 thickness: 2,
-                                height: 1,
+
                               ),
                             ],
                           ),
@@ -473,7 +485,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "تفاصيل المنتج",
+                                LocaleKeys.product_details_product_details.tr(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 17.sp,
@@ -501,12 +513,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 },
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.r),
+                padding: EdgeInsets.symmetric(horizontal: 16.r),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "التقييمات",
+                      LocaleKeys.product_details_ratings.tr(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17.sp,
@@ -518,7 +530,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         navigateTo(const SeeMoreRatesScreen());
                       },
                       child: Text(
-                        "عرض الكل",
+                        LocaleKeys.wallet_see_more.tr(),
                         style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w300,
@@ -738,7 +750,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: Row(
                   children: [
                     Text(
-                      "منتجات مشابهة",
+                      LocaleKeys.product_details_similar_products.tr(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 17.sp,
@@ -853,7 +865,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     Row(
                                       children: [
                                         Text(
-                                          "السعر / ${state.list[index].unit.name}",
+                                          "${LocaleKeys.price.tr()} / ${state.list[index].unit.name}",
                                           style: TextStyle(
                                               fontSize: 12.sp,
                                               fontWeight: FontWeight.bold,
@@ -871,7 +883,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             TextSpan(children: [
                                               TextSpan(
                                                 text:
-                                                    "${state.list[index].stringPrice} ر.س",
+                                                    "${state.list[index].stringPrice}\t${LocaleKeys.r_s.tr()}",
                                                 style: TextStyle(
                                                   fontSize: 16.sp,
                                                   fontWeight: FontWeight.w700,
@@ -879,7 +891,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               ),
                                               TextSpan(
                                                 text:
-                                                    " ${state.list[index].stringPriceBeforeDiscount} ر.س",
+                                                    " ${state.list[index].stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
                                                 style: TextStyle(
                                                   fontSize: 13.sp,
                                                   fontWeight: FontWeight.w400,
@@ -951,7 +963,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           width: 16.w,
                         ),
                         Text(
-                          "إضافة إلي السلة",
+                          LocaleKeys.product_details_add_to_cart.tr(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15.sp,
@@ -967,7 +979,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 bloc: bloc,
                 builder: (context, state) {
                   return Text(
-                    "${counter * widget.model.price} ر.س",
+                    "${counter * widget.model.price}\t${LocaleKeys.r_s.tr()}",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15.sp,

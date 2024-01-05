@@ -25,7 +25,7 @@ class MapItem extends StatefulWidget {
 class _State extends State<MapItem> {
   Set<Marker> markers = {};
   final _controller = Completer<GoogleMapController>();
-  late String location;
+  late String locationName;
   @override
   void initState() {
     super.initState();
@@ -47,6 +47,7 @@ class _State extends State<MapItem> {
           onTap: (location) async {
             if (!widget.lightMode) {
               await goToMyLocation(location: location);
+              await CacheHelper.saveCurrentLocationWithNameHome(locationName);
             } else {
               await getMaps(widget.lat, widget.lng);
             }
@@ -61,12 +62,7 @@ class _State extends State<MapItem> {
           GestureDetector(
             onTap: () async {
               determinePosition();
-              List<Placemark> placeMarks =
-                  await placemarkFromCoordinates(52.2165157, 6.9437819);
-              location = placeMarks[0].subAdministrativeArea ?? "";
-              await CacheHelper.saveCurrentLocationWithName(location);
-              print("3" * 88);
-              print(CacheHelper.getCurrentLocationWithName());
+
               setState(() {});
             },
             child: Padding(
@@ -103,6 +99,7 @@ class _State extends State<MapItem> {
         CameraPosition(zoom: 14, target: location)));
     bloc.add(PostCurrentLocationDataEvent(
         lat: location.latitude, lng: location.longitude));
+    getLocation(location.latitude, location.longitude);
     setState(() {});
   }
 
@@ -139,7 +136,18 @@ class _State extends State<MapItem> {
     widget.lng = currentLocation.longitude;
 
     await CacheHelper.saveCurrentLocation(currentLocation);
+getLocation(currentLocation.latitude, currentLocation.longitude);
+
 
     return currentLocation;
   }
+}
+
+Future<void> getLocation(double lat, double lng) async {
+  List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lng,localeIdentifier:"EG");
+  print(placeMarks.toString());
+  print("1" * 80);
+  print(placeMarks[0].subAdministrativeArea.toString());
+  await CacheHelper.saveCurrentLocationWithNameMap(placeMarks[0].locality.toString());
+
 }

@@ -1,4 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/add_address.dart';
 
 import '../core/logic/helper_methods.dart';
@@ -32,7 +34,7 @@ class CompleteOrderScreen extends StatefulWidget {
 }
 
 class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
-  final addressesBloc = KiwiContainer().resolve<GetAddressesBloc>();
+  final addressesBloc = KiwiContainer().resolve<AddressesBloc>();
   final bloc = KiwiContainer().resolve<CompleteOrderBloc>();
 
   AddressModel? selectedAddress;
@@ -40,22 +42,22 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-        text: 'إتمام الطلب',
-        image: Assets.icons.backHome.path,
+      appBar: CustomAppBar(
+        text: LocaleKeys.complete_order_complete_order.tr(),
+
       ),
       body: ListView(
         padding: EdgeInsets.all(16.r),
         children: [
           Text(
-            "الإسم : ${CacheHelper.getFullName()}",
+            "${LocaleKeys.charge_now_name.tr()} : ${CacheHelper.getFullName()}",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.sp,
                 color: Theme.of(context).primaryColor),
           ),
           Text(
-            "الجوال : ${CacheHelper.getPhone()}",
+            "${LocaleKeys.complete_order_phone.tr()} : ${CacheHelper.getPhone()}",
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.sp,
@@ -68,7 +70,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "اختر عنوان التوصيل",
+                LocaleKeys.complete_order_choose_the_delivery_address.tr(),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17.sp,
@@ -122,7 +124,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                             padding: EdgeInsets.only(bottom: 16.r),
                             child: Center(
                               child: Text(
-                                "العناوين",
+                               LocaleKeys.my_account_addresses.tr(),
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: 15.sp,
@@ -198,7 +200,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      "العنوان : ${addressesBloc.addressesList[index].location}",
+                                                      "${LocaleKeys.addresses_address.tr()} : ${addressesBloc.addressesList[index].location}",
                                                       style: TextStyle(
                                                           color:
                                                               Theme.of(context)
@@ -353,7 +355,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    "إضافة عنوان",
+                                   LocaleKeys.addresses_add_address.tr(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15.sp,
@@ -376,8 +378,8 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                 children: [
                   Text(
                     selectedAddress == null
-                        ? "اختر عنوان التوصيل"
-                        : "المكان : ${selectedAddress!.location}",
+                        ? LocaleKeys.complete_order_choose_the_delivery_address.tr()
+                        : "${LocaleKeys.complete_order_place.tr()} : ${selectedAddress!.location}",
                     style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w500,
@@ -399,7 +401,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
             height: 36.h,
           ),
           Text(
-            "تحديد وقت التوصيل",
+            LocaleKeys.complete_order_delivery_time.tr(),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.sp,
@@ -436,7 +438,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        date==null ? "اختر اليوم والتاريخ" : date.toString(),
+                        date==null ? LocaleKeys.complete_order_choose_date_and_day.tr() : date.toString(),
                         style: TextStyle(
                           fontSize: 15.sp,
                           color: Theme.of(context).primaryColor,
@@ -475,7 +477,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                      time==null?  "اختر الوقت":time.toString(),
+                      time==null? LocaleKeys.complete_order_choose_time.tr():time.toString(),
                         style: TextStyle(
                           fontSize: 15.sp,
                           color: Theme.of(context).primaryColor,
@@ -496,7 +498,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
             height: 24.h,
           ),
           Text(
-            "ملاحظات وتعليمات",
+            LocaleKeys.complete_order_notes_and_instructions.tr(),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.sp,
@@ -516,7 +518,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
             height: 24.h,
           ),
           Text(
-            "اختر طريقة الدفع",
+            LocaleKeys.complete_order_choose_payment_way.tr(),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.sp,
@@ -543,7 +545,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                       width: 30.w,
                     ),
                     Text(
-                      "كاش",
+                      LocaleKeys.complete_order_cash.tr(),
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 18.sp,
@@ -592,7 +594,7 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
             height: 16.h,
           ),
           Text(
-            "ملخص الطلب",
+           LocaleKeys.orders_order_summary.tr(),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17.sp,
@@ -619,14 +621,14 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "الخصم",
+                       LocaleKeys.orders_discount.tr(),
                           style: TextStyle(
                               fontSize: 15.sp,
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "-${widget.discount}ر.س",
+                          "-${widget.discount}\t${LocaleKeys.r_s.tr()}",
                           style: TextStyle(
                               fontSize: 15.sp,
                               color: Theme.of(context).primaryColor,
@@ -645,14 +647,14 @@ class _CompleteOrderScreenState extends State<CompleteOrderScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "المجموع",
+                       LocaleKeys.orders_total.tr(),
                           style: TextStyle(
                               fontSize: 15.sp,
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "${widget.totalPrice}ر.س",
+                          "${widget.totalPrice}\t${LocaleKeys.r_s.tr()}",
                           style: TextStyle(
                               fontSize: 15.sp,
                               color: Theme.of(context).primaryColor,

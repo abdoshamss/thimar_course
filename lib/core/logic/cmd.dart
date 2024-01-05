@@ -20,7 +20,7 @@
 // flutter pub run easy_localization:generate -S assets/langs -f keys -o locale_keys.g.dart
 
 //
-//     pod install --repo-update
+//  pod install --repo-update
 
 // cd android
 // gradlew assembleDebug --stacktrace

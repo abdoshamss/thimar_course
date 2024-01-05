@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,7 @@ import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/map.dart';
 import 'package:thimar_course/features/contact_us/bloc.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/widgets/custom_appbar.dart';
 import '../gen/assets.gen.dart';
@@ -37,8 +39,8 @@ final _formKey=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-          text: "تواصل معنا", image: Assets.icons.backHome.path),
+      appBar: CustomAppBar(
+          text: LocaleKeys.my_account_call_us.tr(),  ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.r),
         child: Column(
@@ -79,7 +81,7 @@ final _formKey=GlobalKey<FormState>();
                                 borderRadius: BorderRadius.circular(15.r),
                                 color: Colors.white
                                   ,boxShadow: [BoxShadow(
-                                color: Colors.black.withOpacity(.02),offset: Offset(0, 6)
+                                color: Colors.black.withOpacity(.02),offset: const Offset(0, 6)
                               )]
                               ),
                               child: Column(children: [
@@ -120,13 +122,13 @@ final _formKey=GlobalKey<FormState>();
                   } else if (state is GetContactUsDataErrorState) {
                     return   Text(state.message);
                   }
-                  return const Text("لا يوجد بيانات");
+                  return   Text( LocaleKeys.home_data_not_found.tr());
                 }),
             SizedBox(
               height: 64.h,
             ),
             Text(
-              "أو يمكنك إرسال رسالة ",
+              LocaleKeys.contact_us_or_you_can_send_message.tr(),
               style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w800,
@@ -143,23 +145,23 @@ final _formKey=GlobalKey<FormState>();
                   controller: _postBlocData.nameController,
                   validator: (value) {
                     if(value!.isEmpty){
-                      return "من فضلك ادخل اسمك";
+                      return LocaleKeys.register_please_enter_full_name.tr();
                     }
                     return null;
                   },
-                  labelText: "الإسم",
+                  labelText: LocaleKeys.charge_now_name.tr(),
                 ),
                 Input(
                   controller: _postBlocData.phoneController,
                   validator: (value) {
                     if(value!.isEmpty){
-                      return "من فضلك ادخل رقم هاتفك";
+                      return LocaleKeys.log_in_please_enter_your_mobile_number.tr();
                     }else if(value.length < 9){
-                      return "بالرجاء ادخال ٩ ارقام";
+                      return LocaleKeys.log_in_please_enter_nine_number.tr();
                     }
                     return null;
                   },
-                  labelText: "رقم الموبايل",
+                  labelText: LocaleKeys.log_in_phone_number.tr(),
                   inputType: InputType.phone,
                   saudiIcon: false,
                 ),
@@ -167,11 +169,11 @@ final _formKey=GlobalKey<FormState>();
                   controller: _postBlocData.contentController,
                   validator: (value) {
                     if(value!.isEmpty){
-                      return "من فضلك ادخل الموضوع";
+                      return LocaleKeys.contact_us_please_enter_content.tr();
                     }
                     return null;
                   },
-                  hintText: "الموضوع",
+                  hintText:  LocaleKeys.contact_us_subject.tr(),
                   maxLines: 5,
                 ),
               ],
@@ -181,7 +183,7 @@ final _formKey=GlobalKey<FormState>();
                 builder: (context, state) {
                   return AppButton(
                     isLoading: state is PostContactUsDataLoadingState,
-                      text: "إرسال",
+                      text: LocaleKeys.contact_us_send.tr(),
                       onPress: () {
                         if(_formKey.currentState!.validate()) {
                           _postBlocData.add(PostContactUsDataEvent());

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/product_details.dart';
 
 import '../../../core/design/widgets/app_login.dart';
@@ -38,7 +40,7 @@ class _FAVSPageState extends State<FAVSPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "المفضلة",
+         LocaleKeys.home_nav_favs.tr(),
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
@@ -48,17 +50,11 @@ class _FAVSPageState extends State<FAVSPage> {
       body: BlocBuilder(
         bloc: favBloc,
         builder: (BuildContext context, state) {
-
           if (CacheHelper.getToken()!.isEmpty) {
             return const AppLogin();
           } else if (state is FAVSLoadingState) {
             return const LoadingProductsItem();
-          }else if (favBloc.favsData.isEmpty) {
-            return const Center(
-              child: Text("بالرجاء اضافة بعض المنتجات الي المفضلة",),
-            );
-          } else if (state is FAVSLoadingState) {
-            return const LoadingProductsItem();
+
           } else if (favBloc.favsData.isNotEmpty) {
             return GridView.builder(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -74,7 +70,6 @@ class _FAVSPageState extends State<FAVSPage> {
                     isHome: true,
                     model: favBloc.favsData[index],
                   )).then((value) {
-
                     if (value ?? false) {
                       favBloc.add(GetFAVSDataEvent());
                     }
@@ -93,7 +88,7 @@ class _FAVSPageState extends State<FAVSPage> {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
+                    padding:   EdgeInsets.only(bottom: 32.h),
                     child: Column(children: [
                       Expanded(
                         child: ClipRRect(
@@ -104,6 +99,8 @@ class _FAVSPageState extends State<FAVSPage> {
                               Image.network(
                                 favBloc.favsData[index].mainImage,
                                 fit: BoxFit.fill,
+                                width: 150.w,
+                                height: 100.h,
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(
@@ -128,68 +125,78 @@ class _FAVSPageState extends State<FAVSPage> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 4.h),
-                        child: Row(
-                          children: [
-                            Text(
-                              favBloc.favsData[index].title,
-                              style: TextStyle(
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "السعر / كجم",
-                            style: TextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).hintColor),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 4.h),
-                        child: Row(
-                          children: [
-                            Text.rich(
-                              TextSpan(children: [
-                                TextSpan(
-                                  text:
-                                      "${favBloc.favsData[index].stringPrice} ر.س",
-                                  style: TextStyle(
+                    Padding(
+                      padding:   EdgeInsets.symmetric(horizontal: 4.w),
+                      child: Column(
+                        children: [  Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: Row(
+                            children: [
+                              Text(
+                                favBloc.favsData[index].title,
+                                style: TextStyle(
                                     fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      " ${favBloc.favsData[index].stringPriceBeforeDiscount} ر.س",
-                                  style: TextStyle(
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w400,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                              ]),
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                          Row(
+                            children: [
+                              Text(
+                                "${LocaleKeys.price.tr()} / ${favBloc.favsData[index].unit.name}",
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).hintColor),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4.h),
+                            child: Row(
+                              children: [
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                      "${favBloc.favsData[index].stringPrice}\t${LocaleKeys.r_s.tr()}",
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                      " ${favBloc.favsData[index].stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
+                                      style: TextStyle(
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.w400,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                  ]),
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),],
                       ),
+                    ),
                     ]),
                   ),
                 ),
               ),
             );
-          } else if (state is FAVSErrorState) {
+          } else if (favBloc.favsData.isEmpty) {
+    return   Center(
+    child: Text(
+    LocaleKeys.please_add_some_producst_to_favs.tr(),
+    ),
+    );}else if (state is FAVSErrorState) {
             return Center(child: Text(state.message));
           }
           return const SizedBox.shrink();

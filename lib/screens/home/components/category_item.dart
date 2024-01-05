@@ -29,7 +29,7 @@ class CategoryItem extends StatelessWidget {
              width: 95.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.r),
-                // color: const Color(0xffF6F9F3 * 2),
+
               ),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               padding:   EdgeInsets.all(16.r),

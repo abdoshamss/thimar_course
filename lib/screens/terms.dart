@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/widgets/custom_appbar.dart';
 import '../features/terms/bloc.dart';
@@ -15,29 +17,29 @@ class TermsScreen extends StatefulWidget {
   State<TermsScreen> createState() => _TermsScreenState();
 }
 
-class _TermsScreenState extends State<TermsScreen> { final bloc = KiwiContainer().resolve<TermsBloc>()
-  ..add(GetTermsDataEvent());
-@override
-void dispose() {
-  super.dispose();
-  bloc.close();
-}
+class _TermsScreenState extends State<TermsScreen> {
+  final bloc = KiwiContainer().resolve<TermsBloc>()..add(GetTermsDataEvent());
+  @override
+  void dispose() {
+    super.dispose();
+    bloc.close();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-        image: Assets.icons.backHome.path,
-        text:    "الشروط والاحكام",
+      appBar: CustomAppBar(
+        text: LocaleKeys.my_account_terms.tr(),
       ),
       body: SafeArea(
         child: ListView(
           children: [
             Center(
                 child: Image.asset(
-                  Assets.images.logo.path,
-                  width: 160.w,
-                  height: 160.h,
-                )),
+              Assets.images.logo.path,
+              width: 160.w,
+              height: 160.h,
+            )),
             BlocBuilder(
                 bloc: bloc,
                 builder: (context, state) {
@@ -64,5 +66,6 @@ void dispose() {
           ],
         ),
       ),
-    );  }
+    );
+  }
 }

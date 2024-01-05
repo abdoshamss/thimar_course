@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:thimar_course/core/design/widgets/app_login.dart';
 import 'package:thimar_course/core/logic/cache_helper.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../../../features/my_orders/current/bloc.dart';
 import '../../../features/my_orders/finished/bloc.dart';
@@ -23,7 +25,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     ..add(GetMyCurrentOrdersDataEvent());
   final myFinishedOrdersBloc = KiwiContainer().resolve<MyFinishedOrdersBloc>()
     ..add(GetMyFinishedOrdersDataEvent());
-  String isSelectable = "الحالية";
+  String isSelectable = CacheHelper.getLanguage()=="en"?"current":"الحالية";
 
   @override
   void dispose() {
@@ -36,8 +38,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "طلباتي",
+        title:   Text(
+          LocaleKeys.home_nav_my_orders.tr(),
         ),
       ),
       body: Padding(
@@ -70,7 +72,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              isSelectable = "الحالية";
+                              isSelectable = CacheHelper.getLanguage()=="en"?"current":"الحالية";
                               myCurrentOrdersBloc
                                   .add(GetMyCurrentOrdersDataEvent());
                               setState(() {});
@@ -80,15 +82,15 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                               height: 42.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.r),
-                                color: isSelectable == "الحالية"
+                                color: isSelectable == "الحالية"||isSelectable=="current"
                                     ? Theme.of(context).primaryColor
                                     : null,
                               ),
                               child: Center(
                                 child: Text(
-                                  "الحالية",
+                                  CacheHelper.getLanguage()=="en"?"current":"الحالية",
                                   style: TextStyle(
-                                    color: isSelectable == "الحالية"
+                                    color: isSelectable == "الحالية"||isSelectable=="current"
                                         ? Colors.white
                                         : const Color(0xffA2A1A4),
                                     fontWeight: FontWeight.bold,
@@ -100,7 +102,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              isSelectable = "المنتهية";
+                              isSelectable =  CacheHelper.getLanguage()=="en"?"finished": "المنتهية";
                               myFinishedOrdersBloc
                                   .add(GetMyFinishedOrdersDataEvent());
                               setState(() {});
@@ -110,15 +112,15 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                               height: 42.h,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.r),
-                                color: isSelectable == "المنتهية"
+                                color: isSelectable == "المنتهية"||isSelectable=="finished"
                                     ? Theme.of(context).primaryColor
                                     : null,
                               ),
                               child: Center(
                                 child: Text(
-                                  "المنتهية",
+                                  CacheHelper.getLanguage()=="en"?"finished":  "المنتهية",
                                   style: TextStyle(
-                                    color: isSelectable == "المنتهية"
+                                    color: isSelectable == "المنتهية"||isSelectable=="finished"
                                         ? Colors.white
                                         : const Color(0xffA2A1A4),
                                     fontWeight: FontWeight.bold,
@@ -139,7 +141,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                     ),
                     Column(
                       children: [
-                        if (isSelectable == "الحالية")
+                        if (isSelectable == "الحالية"||isSelectable=="current")
                           BlocBuilder(
                               bloc: myCurrentOrdersBloc,
                               builder: (context, state) {
@@ -185,7 +187,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "طلب #0000",
+                                                      "${LocaleKeys.orders_order.tr()} #0000",
                                                       style: TextStyle(
                                                         color: Theme.of(context)
                                                             .primaryColor,
@@ -395,22 +397,24 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                       String status =
                                           state.list.list[index].status;
 
-                                      switch (status) {
-                                        case "in_way":
-                                        case "في الطريق":
-                                          color = const Color(0xffEDF5E6);
-                                          statusColor =
-                                              Theme.of(context).primaryColor;
-                                          status = "في الطريق";
-                                          break;
-                                        case "pending":
-                                        case "بإنتظار الموافقة":
-                                          color = const Color(0xffEDF5E6);
-                                          statusColor =
-                                              Theme.of(context).primaryColor;
-                                          status = "في الطريق";
-                                          break;
-                                      }
+                                     if(CacheHelper.getLanguage()=="ar"){
+                                       switch (status) {
+                                         case "in_way":
+                                         case "في الطريق":
+                                           color = const Color(0xffEDF5E6);
+                                           statusColor =
+                                               Theme.of(context).primaryColor;
+                                           status = "في الطريق";
+                                           break;
+                                         case "pending":
+                                         case "بإنتظار الموافقة":
+                                           color = const Color(0xffEDF5E6);
+                                           statusColor =
+                                               Theme.of(context).primaryColor;
+                                           status = "في الطريق";
+                                           break;
+                                       }
+                                     }
                                       return GestureDetector(
                                         onTap: () {
                                           navigateTo(OrderDetailsScreen(
@@ -451,7 +455,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        "طلب #${state.list.list[index].id}",
+                                                        "${LocaleKeys.orders_order.tr()} #${state.list.list[index].id}",
                                                         style: TextStyle(
                                                           color:
                                                               Theme.of(context)
@@ -622,7 +626,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                           ),
                                                       ]),
                                                   Text(
-                                                    "${state.list.list[index].totalPrice}ر.س",
+                                                    "${state.list.list[index].totalPrice}\t${LocaleKeys.r_s.tr()}",
                                                     style: TextStyle(
                                                         fontSize: 15.sp,
                                                         color: Theme.of(context)
@@ -641,11 +645,11 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                 } else if (state is MyCurrentOrdersErrorState) {
                                   return Center(
                                       child:
-                                          Text(state.text ?? "لا يوجد بيانات"));
+                                          Text(state.text ?? LocaleKeys.home_data_not_found.tr()));
                                 }
                                 return const SizedBox.shrink();
                               }),
-                        if (isSelectable == "المنتهية")
+                        if (isSelectable == "المنتهية"||isSelectable=="finished")
                           BlocBuilder(
                             bloc: myFinishedOrdersBloc,
                             builder: (context, state) {
@@ -689,7 +693,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "طلب #0000",
+                                                    "${LocaleKeys.orders_order.tr()} #0000",
                                                     style: TextStyle(
                                                       color: Theme.of(context)
                                                           .primaryColor,
@@ -897,21 +901,23 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                     String status =
                                         state.list.list[index].status;
 
-                                    switch (status) {
-                                      case "in_way":
-                                      case "في الطريق":
-                                        color = const Color(0xffEDF5E6);
-                                        statusColor =
-                                            Theme.of(context).primaryColor;
-                                        status = "في الطريق";
-                                        break;
-                                      case "canceled":
-                                      case "طلب ملغي":
-                                        color = const Color(0xffFFE4E4);
-                                        statusColor = Colors.red;
-                                        status = "طلب ملغي";
-                                        break;
-                                    }
+                                   if(CacheHelper.getLanguage()=="ar"){
+                                     switch (status) {
+                                       case "in_way":
+                                       case "في الطريق":
+                                         color = const Color(0xffEDF5E6);
+                                         statusColor =
+                                             Theme.of(context).primaryColor;
+                                         status = "في الطريق";
+                                         break;
+                                       case "canceled":
+                                       case "طلب ملغي":
+                                         color = const Color(0xffFFE4E4);
+                                         statusColor = Colors.red;
+                                         status = "طلب ملغي";
+                                         break;
+                                     }
+                                   }
                                     return GestureDetector(
                                       onTap: () {
                                         navigateTo(OrderDetailsScreen(
@@ -945,7 +951,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "طلب #${state.list.list[index].id}",
+                                                      "${LocaleKeys.orders_order.tr()} #${state.list.list[index].id}",
                                                       style: TextStyle(
                                                         color: Theme.of(context)
                                                             .primaryColor,
@@ -1109,7 +1115,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                         ),
                                                     ]),
                                                 Text(
-                                                  "${state.list.list[index].totalPrice}ر.س",
+                                                  "${state.list.list[index].totalPrice}\t${LocaleKeys.r_s.tr()}",
                                                   style: TextStyle(
                                                       fontSize: 15.sp,
                                                       color: Theme.of(context)
@@ -1128,7 +1134,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                               } else if (state is MyFinishedOrdersErrorState) {
                                 return Center(
                                     child:
-                                        Text(state.text ?? "لا يوجد بيانات"));
+                                        Text(state.text ?? LocaleKeys.home_data_not_found.tr()));
                               }
                               return const SizedBox.shrink();
                             },

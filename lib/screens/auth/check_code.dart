@@ -29,7 +29,7 @@ class CheckCodeScreen extends StatefulWidget {
 }
 
 class _CheckCodeScreenState extends State<CheckCodeScreen> {
-  bool isTimerRunning = true;
+  bool _isTimerRunning = true;
 
   final bloc = KiwiContainer().resolve<CheckCodeBloc>();
   final resendCodeBloc = KiwiContainer().resolve<ResendCodeBloc>();
@@ -130,8 +130,8 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                     selectedColor: Theme.of(context).primaryColor,
                     inactiveColor: Theme.of(context).unselectedWidgetColor,
                     borderRadius: BorderRadius.circular(15.r),
-                    fieldHeight: 60,
-                    fieldWidth: 70,
+                    fieldHeight: 60.h,
+                    fieldWidth: 70.w,
                     activeFillColor: Colors.white,
                   ),
                   cursorColor: Theme.of(context).primaryColor,
@@ -163,7 +163,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
               SizedBox(
                 height: 34.h,
               ),
-              if (isTimerRunning)
+              if (_isTimerRunning)
                 Column(
                   children: [
                     Text(
@@ -206,7 +206,7 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                         onComplete: () {
-                          isTimerRunning = false;
+                          _isTimerRunning = false;
                           setState(() {});
                         },
                         textFormat: CountdownTextFormat.MM_SS,
@@ -228,14 +228,14 @@ class _CheckCodeScreenState extends State<CheckCodeScreen> {
                     ),
                   ],
                 ),
-              if (!isTimerRunning)
+              if (!_isTimerRunning)
                 BlocBuilder(
                   bloc: resendCodeBloc,
                   builder: (BuildContext context, state) => AppButton(
                     text:  LocaleKeys.check_code_resend.tr(),
                     onPress: () {
                       resendCodeBloc.add(PostResendCodeDataEvent());
-                      isTimerRunning = true;
+                      _isTimerRunning = true;
                       setState(() {});
                       timerController.restart(duration: 4);
                     },

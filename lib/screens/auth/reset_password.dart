@@ -129,7 +129,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                 ),
                 SizedBox(
-                  height: 48.sp,
+                  height: 48.h,
                 ),
                 Center(
                   child: RichText(

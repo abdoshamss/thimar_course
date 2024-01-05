@@ -32,7 +32,7 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
                     height: 24.h,
                   ),
                   Text(
-                    "شكرا لك لقد تم تنفيذ طلبك بنجاح",
+                     LocaleKeys.complete_order_thank_you.tr(),
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 20.sp,
@@ -43,7 +43,7 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
                     height: 16.h,
                   ),
                   Text(
-                    "يمكنك متابعة حالة الطلب او الرجوع للرئيسية",
+                    LocaleKeys.complete_order_you_can_follow.tr(),
                     style: TextStyle(
                       color: const Color(0xffACACAC),
                       fontSize: 17.sp,
@@ -71,10 +71,10 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
                             BorderRadius.circular(15.r),
                           ),
                         ),
-                        child: const Center(
+                        child:   Center(
                           child: Text(
-                            "طلباتي",
-                            style: TextStyle(
+                           LocaleKeys.home_nav_my_orders.tr(),
+                            style:const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -97,7 +97,7 @@ class CompleteOrderSuccessState extends CompleteOrderStates {
                         ),
                         child: Center(
                           child: Text(
-                            "الرئيسية",
+                            LocaleKeys.home_nav_main_page.tr(),
                             style: TextStyle(
                                 color: Theme.of(context)
                                     .primaryColor,

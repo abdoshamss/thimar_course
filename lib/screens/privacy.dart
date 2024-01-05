@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -7,6 +8,7 @@ import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/privacy/bloc.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 
 
 class PrivacyScreen extends StatefulWidget {
@@ -29,12 +31,12 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-          text: "سياسة الخصوصية", image: Assets.icons.backHome.path),
+      appBar: CustomAppBar(
+          text: LocaleKeys.my_account_policy.tr(), ),
       body: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0.r),
+            padding: EdgeInsets.all(16.r),
             child: BlocBuilder(
               bloc: bloc,
               builder: (BuildContext context, state) {

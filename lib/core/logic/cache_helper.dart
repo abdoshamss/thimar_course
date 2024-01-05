@@ -46,9 +46,10 @@ class CacheHelper {
 
   static Future setImage(String path) async {
     await _prefs.setString("image", path);
-  }static String getCurrentLocationName() {
-    return _prefs.getString("currentLocationName") ??
-        "مدينتك";
+  }
+
+  static String getCurrentLocationName() {
+    return _prefs.getString("currentLocationName") ?? "مدينتك";
   }
 
   static Future setCurrentLocationName(String path) async {
@@ -94,11 +95,19 @@ class CacheHelper {
     await _prefs.setDouble("longitude", currentLocation.longitude);
   }
 
-  static Future saveCurrentLocationWithName(String location) async {
+  static Future saveCurrentLocationWithNameHome(String location) async {
     await _prefs.setString("location", location);
   }
 
-  static String getCurrentLocationWithName() {
+  static String getCurrentLocationWithNameHome() {
+    return _prefs.getString("location") ?? "";
+  }
+
+  static Future saveCurrentLocationWithNameMap(String location) async {
+    await _prefs.setString("location", location);
+  }
+
+  static String getCurrentLocationWithNameMap() {
     return _prefs.getString("location") ?? "";
   }
 

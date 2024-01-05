@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import '../core/logic/helper_methods.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../features/product_rates/bloc.dart';
@@ -32,9 +34,9 @@ class _SeeMoreRatesStateScreen extends State<SeeMoreRatesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-        image: Assets.icons.backHome.path,
-        text: "التقييمات",
+      appBar: CustomAppBar(
+
+        text: LocaleKeys.product_details_ratings.tr(),
       ),
       body: BlocBuilder(
         bloc: bloc,
@@ -60,11 +62,15 @@ class _SeeMoreRatesStateScreen extends State<SeeMoreRatesScreen> {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              state.list[index].clientName,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22.sp,
+                            SizedBox(
+                              width: 70.w,
+                              child: Text(
+                                state.list[index].clientName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22.sp,
+                                ),
                               ),
                             ),
                             SizedBox(

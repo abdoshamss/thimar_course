@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/compelete_order.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../features/cart/show_cart/bloc.dart';
@@ -32,9 +34,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarScreen(
-        image: Assets.icons.backHome.path,
-        text: "السلة",
+      appBar: CustomAppBar(
+
+        text: LocaleKeys.cart_cart.tr(),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0.r),
@@ -47,8 +49,8 @@ class _CartScreenState extends State<CartScreen> {
             } else if (state is CartDataSuccessState) {
               if (state.list.list.isEmpty) {
                 isEmpty = true;
-                return const Center(
-                  child: Text("أضف بعض المنتجات الي السلة"),
+                return   Center(
+                  child: Text(LocaleKeys.cart_add_some_products_to_cart.tr()),
                 );
               } else {
                 isEmpty = false;
@@ -103,7 +105,7 @@ class _CartScreenState extends State<CartScreen> {
                                           fontSize: 15.sp),
                                     ),
                                     Text(
-                                      "${cardDataBLoc.cartData[index].price} ر.س",
+                                      "${cardDataBLoc.cartData[index].price}\t${LocaleKeys.r_s.tr()}",
                                       style: TextStyle(
                                           color: Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
@@ -267,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(
                                 8.0.w, 24.0.h, 8.0.w, 24.0.h),
-                            labelText: "عندك كوبون ؟ ادخل رقم الكوبون",
+                            labelText: LocaleKeys.cart_you_have_coupon.tr(),
                             suffixIcon: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 8.0.w),
                               child: ElevatedButton(
@@ -282,10 +284,10 @@ class _CartScreenState extends State<CartScreen> {
                                     borderRadius: BorderRadius.circular(15.r),
                                   ),
                                 ),
-                                child: const Center(
+                                child:   Center(
                                   child: Text(
-                                    "تطبيق",
-                                    style: TextStyle(
+                                   LocaleKeys.categories_apply.tr() ,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -304,7 +306,7 @@ class _CartScreenState extends State<CartScreen> {
                     Align(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        "جميع الأسعار تشمل قيمة الضريبة المضافة 15%",
+                        LocaleKeys.cart_all_prices.tr(),
                         style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 15.sp,
@@ -328,14 +330,14 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "إجمالي المنتجات",
+                               LocaleKeys.orders_total_products.tr(),
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context).primaryColor),
                               ),
                               Text(
-                                "${state.list.totalPriceBeforeDiscount}ر.س",
+                                "${state.list.totalPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
@@ -350,14 +352,14 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "الخصم",
+                                LocaleKeys.orders_discount.tr(),
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context).primaryColor),
                               ),
                               Text(
-                                "${state.list.totalDiscount}-ر.س",
+                                "-${state.list.totalDiscount}\t${LocaleKeys.r_s.tr()}",
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
@@ -376,14 +378,14 @@ class _CartScreenState extends State<CartScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "المجموع",
+                                LocaleKeys.orders_total.tr(),
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context).primaryColor),
                               ),
                               Text(
-                                "${state.list.totalPriceWithVat}ر.س",
+                                "${state.list.totalPriceWithVat}\t${LocaleKeys.r_s.tr()}",
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w500,
@@ -413,7 +415,7 @@ class _CartScreenState extends State<CartScreen> {
             if (state is CartDataSuccessState && state.list.list.isNotEmpty) {
               return AppButton(
                   isLoading: state is CartDataLoadingState,
-                  text: "الانتقال لإتمام الطلب",
+                  text: LocaleKeys.cart_move_to_complete_order.tr(),
                   onPress: () {
                     navigateTo(CompleteOrderScreen(
                       coupon: cardDataBLoc.couponController.text,

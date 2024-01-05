@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
+import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/auth/login.dart';
 import 'package:thimar_course/screens/auth/register.dart';
 
@@ -21,7 +23,7 @@ class AppLogin extends StatelessWidget {
           height: 250.h,
         ),
         Text(
-          "انضم الينا لتري لعرض حميع الخدمات",
+         LocaleKeys.join_us.tr(),
           style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -33,11 +35,11 @@ class AppLogin extends StatelessWidget {
           children: [
 
             AppButton(
-              text: "تسجيل الدخول",
+              text: LocaleKeys.my_account_log_in.tr(),
               onPress: () {  navigateTo(const LoginScreen());},
               isBig: false,
             ),AppButton(
-              text: "تسجيل",
+              text: LocaleKeys.log_in_register_now.tr(),
               onPress: () {
                 navigateTo(const RegisterScreen());
               },
