@@ -14,7 +14,7 @@ class CheckCodeBloc extends Bloc<CheckCodeEvents,CheckCodeStates> {
   }
   final codeController = TextEditingController();
   late String phone;
-  Future<void> _postData(CheckCodeEvents events,Emitter<CheckCodeStates>emitter) async {
+  Future<void> _postData(PostCheckCodeDataEvent event,Emitter<CheckCodeStates>emit) async {
     emit(CheckCodeLoadingState());
     final map = {
       'code': codeController.text,
@@ -28,7 +28,6 @@ class CheckCodeBloc extends Bloc<CheckCodeEvents,CheckCodeStates> {
           message: response.message,
           statueCode: response.response?.statusCode ?? 200));
 
-      debugPrint("failed");
-    }
+     }
   }
 }

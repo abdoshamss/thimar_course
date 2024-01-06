@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
  import 'package:thimar_course/core/logic/cache_helper.dart';
- import 'package:thimar_course/generated/locale_keys.g.dart';
 
 class DioHelper {
   final _dio = Dio(BaseOptions(

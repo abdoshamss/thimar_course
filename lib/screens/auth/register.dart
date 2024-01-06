@@ -44,7 +44,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.all(16.r),
-        children: [   SizedBox(height: 16.h,),
+        children: [
+          SizedBox(
+            height: 16.h,
+          ),
           Image.asset(
             Assets.images.logo.path,
             height: 150.h,
@@ -68,9 +71,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Text(
                   LocaleKeys.register_you_can_register_new_account_now.tr(),
                   style: TextStyle(
-
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.w400, color: secondaryColorText,
+                    fontWeight: FontWeight.w400,
+                    color: secondaryColorText,
                   ),
                 ),
                 SizedBox(
@@ -120,11 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         bloc: citiesBloc,
                         builder: (context, state) {
                           if (state is GetCitiesScreenLoadingState) {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            );
+                            return loadingWidget();
                           } else if (state is GetCitiesScreenSuccessState) {
                             return Container(
                               padding: EdgeInsets.all(16.r),
@@ -154,21 +153,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                   },
                                                   child: Container(
                                                       width: double.infinity,
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        color: Theme.of(
-                                                                context)
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(context)
                                                             .primaryColor
                                                             .withOpacity(.1),
                                                       ),
                                                       margin: EdgeInsets.only(
                                                           bottom: 16.h),
-                                                      padding: EdgeInsets.all(
-                                                          16.r),
+                                                      padding:
+                                                          EdgeInsets.all(16.r),
                                                       child: Center(
                                                           child: Text(state
-                                                              .list[i]
-                                                              .name))),
+                                                              .list[i].name))),
                                                 )),
                                       ),
                                     ),
@@ -200,8 +196,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Input(
                   validator: (value) {
                     if (value == null || value.isEmpty || value.length < 6) {
-                      return LocaleKeys
-                          .log_in_please_enter_your_password_again
+                      return LocaleKeys.log_in_please_enter_your_password_again
                           .tr();
                     }
                     return null;
@@ -218,8 +213,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         value.isEmpty ||
                         value.length < 6 ||
                         value != bloc.passwordController.text) {
-                      return LocaleKeys
-                          .log_in_please_enter_your_password_again
+                      return LocaleKeys.log_in_please_enter_your_password_again
                           .tr();
                     }
                     return null;

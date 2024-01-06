@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
-import 'package:thimar_course/core/widgets/toast.dart';
 import '../../core/logic/dio_helper.dart';
 import '../products/bloc.dart';
 

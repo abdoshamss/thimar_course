@@ -7,7 +7,6 @@ import 'package:kiwi/kiwi.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/privacy/bloc.dart';
-import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 
 

@@ -8,7 +8,6 @@ import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/faqs/bloc.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 
-import '../gen/assets.gen.dart';
 
 class FAQSScreen extends StatefulWidget {
   const FAQSScreen({Key? key}) : super(key: key);

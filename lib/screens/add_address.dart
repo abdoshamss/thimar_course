@@ -10,7 +10,6 @@ import 'package:thimar_course/core/widgets/selectable_item.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../features/get_adresses/bloc.dart';
-import '../gen/assets.gen.dart';
 
 class AddAddressesScreen extends StatefulWidget {
   final int id;

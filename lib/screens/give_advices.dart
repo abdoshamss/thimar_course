@@ -7,7 +7,6 @@ import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/core/design/widgets/input.dart';
 import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/features/give_advices/bloc.dart';
-import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 
 import '../core/widgets/custom_appbar.dart';

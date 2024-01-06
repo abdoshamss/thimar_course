@@ -13,7 +13,7 @@ class ResendCodeBloc extends Bloc<ResendCodeEvents,ResendCodeStates> {
     on<PostResendCodeDataEvent>(_postData);
   }
   var phone;
-  Future<void>  _postData(ResendCodeEvents events,Emitter<ResendCodeStates>emitter) async {
+  Future<void>  _postData(PostResendCodeDataEvent event,Emitter<ResendCodeStates>emit) async {
     emit(ResendCodeLoadingState());
      final  map = {
       "phone": phone,

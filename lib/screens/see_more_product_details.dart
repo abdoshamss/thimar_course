@@ -8,7 +8,6 @@ import 'package:thimar_course/generated/locale_keys.g.dart';
 import '../core/logic/helper_methods.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../features/product_rates/bloc.dart';
-import '../gen/assets.gen.dart';
 
 class SeeMoreRatesScreen extends StatefulWidget {
   const SeeMoreRatesScreen({Key? key}) : super(key: key);

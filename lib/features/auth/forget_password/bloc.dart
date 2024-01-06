@@ -15,7 +15,7 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvents,ForgetPasswordStates>
   final phoneController = TextEditingController(text: "966512345188");
 
    var code;
-  Future<void> _postData(ForgetPasswordEvents events,Emitter<ForgetPasswordStates>emitter) async {
+  Future<void> _postData(ForgetPasswordEvents event,Emitter<ForgetPasswordStates>emit) async {
     emit(ForgetPasswordLoadingState());
     final map = {
       "phone": phoneController.text,
