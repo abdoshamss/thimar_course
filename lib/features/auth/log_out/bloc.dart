@@ -15,7 +15,7 @@ class LogOutBLoc extends Bloc<LogOutEvents, LogOutStates> {
     on<PostLogOutDataEvent>(_postData);
   }
   Future<void> _postData(
-      LogOutEvents events, Emitter<LogOutStates> emitter) async {
+      PostLogOutDataEvent event, Emitter<LogOutStates> emit) async {
     final map = {
       "device_token": FirebaseMessaging.instance.getToken(),
       "type": Platform.operatingSystem,

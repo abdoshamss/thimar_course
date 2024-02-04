@@ -136,7 +136,7 @@ class _InputState extends State<Input> {
                       horizontal: 16.w,
                       vertical: 8.h,
                     ),
-                    // width: 60,
+
                     decoration: BoxDecoration(
                       color: widget.backgroundColor
                           ? const Color(0xffFAFFF5)
@@ -173,22 +173,7 @@ class _InputState extends State<Input> {
                     : BorderSide(
                         color: Theme.of(context).unselectedWidgetColor,
                       )),
-            // disabledBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(15.r),
-            //   borderSide: widget.inputType == InputType.search
-            //       ? BorderSide.none
-            //       : BorderSide(
-            //           color: Theme.of(context).unselectedWidgetColor,
-            //         ),
-            // ),
-            // enabledBorder: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(15.r),
-            //   borderSide: widget.inputType == InputType.search
-            //       ? BorderSide.none
-            //       : BorderSide(
-            //           color: Theme.of(context).unselectedWidgetColor,
-            //         ),
-            // ),
+
           ),
           obscureText:
               widget.inputType == InputType.password && isPasswordShown,

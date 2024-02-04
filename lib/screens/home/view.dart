@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/home/pages/order.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'pages/favs.dart';
 import 'pages/home.dart';
 import 'pages/my_account.dart';
@@ -55,7 +55,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
             setState(() {});
           },
           type: BottomNavigationBarType.fixed,
-          unselectedFontSize: 12,
+          unselectedFontSize: 12.sp,
           backgroundColor: Theme.of(context).primaryColor,
           selectedItemColor: Colors.white,
           unselectedItemColor: const Color(0xffAED489),
@@ -63,7 +63,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
             titles.length,
             (index) => BottomNavigationBarItem(
               icon: Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
+                padding:   EdgeInsets.only(bottom: 4.0.h),
                 child: Image.asset(
                   icons[index],
                   color: widget.currentPage == index

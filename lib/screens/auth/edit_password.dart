@@ -22,6 +22,7 @@ class EditPasswordScreen extends StatefulWidget {
 class _ChangePasswordStateScreen extends State<EditPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _bloc = KiwiContainer().resolve<EditPasswordBloc>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,8 +105,9 @@ class _ChangePasswordStateScreen extends State<EditPasswordScreen> {
         child: BlocConsumer(
           bloc: _bloc,
           listener: (context, state) {
-            if (state is EditPasswordSuccessState) {}
-            navigateTo(const EditProfileDetailsScreen());
+            if (state is EditPasswordSuccessState) {
+              navigateTo(const EditProfileDetailsScreen());
+            }
           },
           builder: (context, state) {
             return AppButton(

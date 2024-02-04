@@ -47,6 +47,17 @@ class CacheHelper {
     await _prefs.setString("image", path);
   }
 
+
+  static Future setName(String name) async {
+    await _prefs.setString("fullname", name);
+  }
+  static Future setCityId(String cityId) async {
+    await _prefs.setString("cityId", cityId);
+  }
+  static Future setPhone(String phone) async {
+    await _prefs.setString("phone", phone);
+  }
+
   static String getCurrentLocationName() {
     return _prefs.getString("currentLocationName") ?? "مدينتك";
   }
@@ -124,6 +135,9 @@ class CacheHelper {
 
   static Future removeCityName() async {
     await _prefs.remove("cityName");
+  }
+  static Future removeCityId() async {
+    await _prefs.remove("cityId");
   }
 
   static Future removeLoginData() async {

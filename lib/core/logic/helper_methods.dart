@@ -2,10 +2,14 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:thimar_course/core/design/widgets/btn.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/auth/login.dart';
+
+import 'cache_helper.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 // Future<dynamic> push(String named, {dynamic arguments, NavigatorAnimation? type}) {
@@ -88,7 +92,6 @@ void showMessage(String message,
     ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(SnackBar(
         padding: EdgeInsets.all(16.r),
         backgroundColor: bgColor,
-
         shape: const StadiumBorder(),
         behavior: SnackBarBehavior.floating,
         content: Center(
@@ -129,12 +132,15 @@ AwesomeDialog dialog() => AwesomeDialog(
         isBig: false,
       ),
     )..show();
+
 Widget loadingWidget() => const Center(
       child: CircularProgressIndicator(),
     );
+
 Widget noInternet() => Center(
       child: Text(LocaleKeys.no_internet.tr()),
     );
+
 Future<void> getMaps(double lat, double lng) async {
   final availableMaps = await MapLauncher.installedMaps;
   print(availableMaps);
@@ -145,6 +151,7 @@ Future<void> getMaps(double lat, double lng) async {
     );
   }
 }
+
 
 ///  Platform  Firebase App Id
 // android   1:563451404729:android:7c1a21beea852083c89668

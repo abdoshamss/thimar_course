@@ -13,6 +13,7 @@ import 'package:thimar_course/gen/assets.gen.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
 import 'package:thimar_course/screens/auth/forget_password.dart';
 import 'package:thimar_course/screens/auth/register.dart';
+
 import '../../features/auth/login/bloc.dart';
 import '../home/view.dart';
 
@@ -40,7 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: ListView(
         padding: EdgeInsets.all(16.r),
         children: [
-          SizedBox(height: 16.h,),
+          SizedBox(
+            height: 16.h,
+          ),
           Image.asset(
             Assets.images.logo.path,
             height: 150.h,
@@ -88,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Input(
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value!.isEmpty) {
                           return LocaleKeys
                               .log_in_please_enter_your_password_again
                               .tr();

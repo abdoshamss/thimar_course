@@ -15,6 +15,7 @@ import 'package:thimar_course/screens/auth/edit_password.dart';
 import '../core/design/widgets/input.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../features/auth/get_cities/bloc.dart';
+import '../features/get_profile/bloc.dart';
 import '../gen/assets.gen.dart';
 import '../generated/locale_keys.g.dart';
 
@@ -38,15 +39,21 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
   var passwordController = TextEditingController();
 
   int cityId = CacheHelper.getCityId();
-
+String cityName="";
   final citiesBloc = KiwiContainer().resolve<GetCitiesScreenBLoc>();
 
-  final bloc = KiwiContainer().resolve<EditProfileBloc>();
-
+  final editProfileBLoc = KiwiContainer().resolve<EditProfileBloc>();
+  // final getProfileBloc = KiwiContainer().resolve<GetProfileDataBloc>();
+  // @override
+  // void initState() {
+  //
+  //   super.initState();
+  //   getProfileBloc.add(GetProfileDataEvent());
+  // }
   @override
   void dispose() {
     super.dispose();
-    bloc.close();
+    editProfileBLoc.close();
     citiesBloc.close();
   }
 
@@ -345,6 +352,8 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                                                             state.list[index]
                                                                 .name,
                                                           );
+cityName=  state.list[index]
+    .name;
                                                         },
                                                         child: Container(
                                                             width:
@@ -396,6 +405,7 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
                         onPressed: () {
                           CacheHelper.removeCityName();
                           cityController.text = "";
+                          CacheHelper.removeCityId();
                         },
                         icon: const Icon(
                           Icons.close,
@@ -429,22 +439,24 @@ class _EditProfileDetailsScreenState extends State<EditProfileDetailsScreen> {
       bottomNavigationBar: Padding(
           padding: EdgeInsets.all(16.r),
           child: BlocBuilder(
-              bloc: bloc,
+              bloc: editProfileBLoc,
               builder: (context, state) {
                 return AppButton(
                     text: LocaleKeys.profile_edit_data.tr(),
                     isLoading: State is EditProfileLoadingState,
                     onPress: () async {
-                      if (selectedImage != null) {
-                        await CacheHelper.setImage(selectedImage!.path);
-                        bloc.add(PostEditProfileDataEvent(
-                            image: selectedImage!,
-                            name: nameController.text,
-                            cityId: cityId,
-                            phone: phoneController.text));
-                      } else {
-                        showMessage(LocaleKeys.profile_please_add_photo.tr());
-                      }
+                 if(selectedImage!=null)     await CacheHelper.setImage(selectedImage!.path);
+                  await CacheHelper.setName(nameController.text);
+                  await CacheHelper.setCityId(cityId.toString());
+                  await CacheHelper.setCityName(cityName);
+                  await CacheHelper.setPhone(phoneController.text);
+
+                      editProfileBLoc.add(PostEditProfileDataEvent(
+                          image: selectedImage,
+                          name: nameController.text,
+                          cityId: cityId,
+                          phone: phoneController.text));
+
                       setState(() {});
                     });
               })),

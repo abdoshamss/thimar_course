@@ -511,44 +511,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     ),
                   ),
                 ),
-                Divider(
-                  height: .3.h,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16.0.r),
-                  child: GestureDetector(
-                    onTap: () {
-                      navigateTo(const TermsScreen());
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          Assets.icons.note.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Text(
-                          LocaleKeys.my_account_faqs.tr(),
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // Spacer(),
-                        const Spacer(),
-                        Image.asset(
-                          Assets.icons.back.path,
-                          width: 18.w,
-                          height: 18.h,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+
                 Divider(
                   height: .3.h,
                 ),

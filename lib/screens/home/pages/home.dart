@@ -287,45 +287,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  BlocBuilder(
-                      bloc: productsDataBloc,
-                      builder: (context, state) {
-                        if (state is GetProductsDataLoadingState) {
-                          return const LoadingProductsItem();
-                        } else if (state is GetProductsDataSuccessState) {
-                          return GridView.builder(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                            ),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 160 / 215,
-                              crossAxisSpacing: 16.h,
-                              mainAxisSpacing: 16.w,
-                            ),
-                            itemCount: state.list.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                ItemProduct(model: state.list[index]),
-                          );
-                        } else if (state is GetProductsDataErrorState) {
-                          return Center(
-                              child: Text(state.text ??
-                                  LocaleKeys.home_data_not_found.tr()));
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      }),
+
                 ],
               ),
-            if (productsDataBloc.searchController.text.isNotEmpty)
+
               BlocBuilder(
                   bloc: productsDataBloc,
                   builder: (context, state) {
                     if (state is GetProductsDataLoadingState) {
-                      return loadingWidget();
+                      return LoadingProductsItem();
                     } else if (state is GetProductsDataSuccessState) {
                       if (state.list.isNotEmpty) {
                         return GridView.builder(

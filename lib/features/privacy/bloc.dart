@@ -11,7 +11,7 @@ class PrivacyBloc extends Bloc<PrivacyEvents, PrivacyStates> {
   }
   var data;
 
-  void _getData(GetPrivacyDataEvent event, Emitter<PrivacyStates> emitter) async {
+  void _getData(GetPrivacyDataEvent event, Emitter<PrivacyStates> emit) async {
     emit(PrivacyLoadingState());
     final response = await dioHelper.get("policy");
     if (response.isSuccess) {

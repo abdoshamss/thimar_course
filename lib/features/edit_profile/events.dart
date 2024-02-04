@@ -3,7 +3,7 @@ part of'bloc.dart';
 class EditProfileEvents {}
 
 class PostEditProfileDataEvent extends EditProfileEvents {
-final  File image;
+final  File? image;
    final   String name, phone;
     final  int cityId;
 

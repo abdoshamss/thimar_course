@@ -29,7 +29,11 @@ class _State extends State<MapItem> {
   @override
   void initState() {
     super.initState();
-    determinePosition();
+    if(widget.lat==0&&widget.lng==0) {
+      determinePosition();
+    }else{
+      goToMyLocation(location: LatLng(widget.lat, widget.lng));
+    }
   }
 
   final bloc = KiwiContainer().resolve<CurrentLocationBloc>();

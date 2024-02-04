@@ -19,7 +19,7 @@ class AboutAppScreen extends StatefulWidget {
 }
 
 class _AboutAppScreenState extends State<AboutAppScreen> {
-  @override
+
   final _bloc = KiwiContainer().resolve<AboutAppBloc>()
     ..add(GetAboutDataEvent());
   @override

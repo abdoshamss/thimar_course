@@ -10,11 +10,11 @@ import 'package:thimar_course/core/logic/helper_methods.dart';
 import 'package:thimar_course/core/widgets/custom_appbar.dart';
 import 'package:thimar_course/features/categories/bloc.dart';
 import 'package:thimar_course/generated/locale_keys.g.dart';
+import 'package:thimar_course/screens/home/components/loading_products.dart';
 import 'package:thimar_course/screens/product_details.dart';
 
 import '../core/design/widgets/btn.dart';
 import '../core/design/widgets/input.dart';
-import '../features/category_product/bloc.dart';
 import '../features/products/bloc.dart';
 import '../gen/assets.gen.dart';
 
@@ -22,6 +22,7 @@ class CategoryProductsScreen extends StatefulWidget {
   CategoriesData model;
   final int index, id;
   double minPrice, maxPrice;
+
   CategoryProductsScreen(
       {Key? key,
       required this.model,
@@ -36,15 +37,15 @@ class CategoryProductsScreen extends StatefulWidget {
 }
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
-  final bloc = KiwiContainer().resolve<CategoryProductBloc>();
-  final searchBloc = KiwiContainer().resolve<ProductsDataBloc>();
+  final bloc = KiwiContainer().resolve<ProductsDataBloc>();
   Timer? timer;
   double _lowerValue = 1;
   double _upperValue = 200;
   static String filter = "asc";
   static String? value;
+
   void _getData(String value) {
-    searchBloc.add(GetProductsDataEvent(
+    bloc.add(GetProductsDataEvent(
       id: widget.id,
       value: value,
       minPrice: widget.minPrice,
@@ -56,7 +57,10 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   @override
   void initState() {
     super.initState();
-    bloc.add(GetCategoryProductEvent(id: widget.model.list[widget.index].id));
+
+    bloc.add(GetProductsDataEvent(
+      id: widget.id,
+    ));
   }
 
   @override
@@ -261,7 +265,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                               AppButton(
                                   text: LocaleKeys.categories_apply.tr(),
                                   onPress: () {
-                                    searchBloc.add(GetProductsDataEvent(
+                                    bloc.add(GetProductsDataEvent(
                                         id: widget.id,
                                         minPrice: widget.minPrice,
                                         maxPrice: widget.maxPrice,
@@ -275,7 +279,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                         );
                       }));
             },
-            controller: searchBloc.searchController,
+            controller: bloc.searchController,
             onChanged: (value) {
               if (timer?.isActive == true) {
                 timer?.cancel();
@@ -296,300 +300,150 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             iconPath: Assets.icons.search.path,
             hintText: LocaleKeys.search_about_you_want.tr(),
           ),
-          if (searchBloc.searchController.text.isEmpty)
-            BlocBuilder(
-              bloc: bloc,
-              builder: (BuildContext context, state) {
-                if (state is CategoryProductLoadingState) {
-                  return loadingWidget();
-                } else if (state is CategoryProductSuccessState) {
-                  if (state.list.isNotEmpty) {
-                    return GridView.builder(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 160 / 215,
-                        crossAxisSpacing: 16.h,
-                      ),
-                      itemCount: state.list.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
-                        onTap: () {
-                          navigateTo(ProductDetailsScreen(
-                            model: state.list[index],
-                          ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(.02),
-                                offset: const Offset(0, 2),
-                                blurRadius: 11.r,
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 16.h),
-                            child: Column(children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(11.r),
-                                  child: Stack(
-                                    alignment: AlignmentDirectional.topEnd,
-                                    children: [
-                                      Image.network(
-                                        state.list[index].mainImage,
-                                        fit: BoxFit.fill,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w,
-                                          vertical: 4.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor,
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                                  bottomStart:
-                                                      Radius.circular(10.r)),
-                                        ),
-                                        child: Text(
-                                          "${state.list[index].stringDiscount}%",
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.h),
-                                child: Row(
+          BlocBuilder(
+            bloc: bloc,
+            builder: (BuildContext context, state) {
+              if (state is GetProductsDataLoadingState) {
+                return const LoadingProductsItem();
+              } else if (state is GetProductsDataSuccessState) {
+                if (state.list.isNotEmpty) {
+                  return GridView.builder(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 160 / 215,
+                      crossAxisSpacing: 16.h,
+                    ),
+                    itemCount: state.list.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                      onTap: () {
+                        navigateTo(ProductDetailsScreen(
+                          model: state.list[index],
+                        ));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.02),
+                              offset: const Offset(0, 2),
+                              blurRadius: 11.r,
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 16.h),
+                          child: Column(children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(11.r),
+                                child: Stack(
+                                  alignment: AlignmentDirectional.topEnd,
                                   children: [
-                                    Text(
-                                      state.list[index].title,
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
+                                    Image.network(
+                                      state.list[index].mainImage,
+                                      fit: BoxFit.fill,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 10.w,
+                                        vertical: 4.h,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        borderRadius:
+                                            BorderRadiusDirectional.only(
+                                                bottomStart:
+                                                    Radius.circular(11.r)),
+                                      ),
+                                      child: Text(
+                                        "${state.list[index].stringDiscount}%",
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          color:
-                                              Theme.of(context).primaryColor),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Row(
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 4.h),
+                              child: Row(
                                 children: [
                                   Text(
-                                    "${LocaleKeys.price.tr()} / ${state.list[index].unit.name}",
+                                    state.list[index].title,
                                     style: TextStyle(
-                                        fontSize: 12.sp,
+                                        fontSize: 16.sp,
                                         fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).hintColor),
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.h),
-                                child: Row(
-                                  children: [
-                                    Text.rich(
-                                      TextSpan(children: [
-                                        TextSpan(
-                                          text:
-                                              "${state.list[index].stringPrice}\t${LocaleKeys.r_s.tr()}",
-                                          style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              " ${state.list[index].stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w400,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
-                                        ),
-                                      ]),
-                                      style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "${LocaleKeys.price.tr()} / ${state.list[index].unit.name}",
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).hintColor),
                                 ),
-                              ),
-                            ]),
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  return Center(
-                      child: Text(LocaleKeys.home_data_not_found.tr()));
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          if (searchBloc.searchController.text.isNotEmpty)
-            BlocBuilder(
-              bloc: searchBloc,
-              builder: (BuildContext context, state) {
-                if (state is CategoryProductLoadingState) {
-                  return loadingWidget();
-                } else if (state is CategoryProductSuccessState) {
-                  if (state.list.isNotEmpty) {
-                    return GridView.builder(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 160 / 215,
-                        crossAxisSpacing: 16.h,
-                      ),
-                      itemCount: state.list.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
-                        onTap: () {
-                          navigateTo(ProductDetailsScreen(
-                            model: state.list[index],
-                          ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16.r),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(.02),
-                                offset: const Offset(0, 2),
-                                blurRadius: 11.r,
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 16.h),
-                            child: Column(children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(11.r),
-                                  child: Stack(
-                                    alignment: AlignmentDirectional.topEnd,
-                                    children: [
-                                      Image.network(
-                                        state.list[index].mainImage,
-                                        fit: BoxFit.fill,
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 10.w,
-                                          vertical: 4.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor,
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                                  bottomStart:
-                                                      Radius.circular(11.r)),
-                                        ),
-                                        child: Text(
-                                          "${state.list[index].stringDiscount}%",
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.h),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      state.list[index].title,
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 4.h),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    "${LocaleKeys.price.tr()} / ${state.list[index].unit.name}",
+                                  Text.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                        text:
+                                            "${state.list[index].stringPrice}\t${LocaleKeys.r_s.tr()}",
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:
+                                            " ${state.list[index].stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
+                                        style: TextStyle(
+                                          fontSize: 13.sp,
+                                          fontWeight: FontWeight.w400,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                    ]),
                                     style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).hintColor),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(vertical: 4.h),
-                                child: Row(
-                                  children: [
-                                    Text.rich(
-                                      TextSpan(children: [
-                                        TextSpan(
-                                          text:
-                                              "${state.list[index].stringPrice}\t${LocaleKeys.r_s.tr()}",
-                                          style: TextStyle(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                              " ${state.list[index].stringPriceBeforeDiscount}\t${LocaleKeys.r_s.tr()}",
-                                          style: TextStyle(
-                                            fontSize: 13.sp,
-                                            fontWeight: FontWeight.w400,
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                          ),
-                                        ),
-                                      ]),
-                                      style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ]),
-                          ),
+                            ),
+                          ]),
                         ),
                       ),
-                    );
-                  }
-                  return Center(
-                      child: Text(LocaleKeys.home_data_not_found.tr()));
+                    ),
+                  );
                 }
-                return const SizedBox.shrink();
-              },
-            ),
+                return Center(child: Text(LocaleKeys.home_data_not_found.tr()));
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ],
       ),
     );

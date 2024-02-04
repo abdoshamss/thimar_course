@@ -35,7 +35,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
   @override
   void initState() {
     super.initState();
-    determinePosition();
+    determinePosition().then((value) => setState((){}));
   }
 
   @override
@@ -51,17 +51,17 @@ class _HomeAppBarState extends State<HomeAppBar> {
       centerTitle: true,
       title: GestureDetector(
         onTap: () {
-        if(CacheHelper.getToken()!.isNotEmpty){
-          bloc.add(GetAddressesDataEvent());
-          showModalBottomSheet(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(38.r),
-                    topRight: Radius.circular(38.r))),
-            context: context,
-            builder: (context) =>const BottomSheetInHomeAppBar() ,
-          );
-        }
+          if (CacheHelper.getToken()!.isNotEmpty) {
+            bloc.add(GetAddressesDataEvent());
+            showModalBottomSheet(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(38.r),
+                      topRight: Radius.circular(38.r))),
+              context: context,
+              builder: (context) => const BottomSheetInHomeAppBar(),
+            );
+          }
         },
         child: Padding(
           padding: EdgeInsets.only(top: 8.h),
@@ -90,7 +90,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
       leading: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-
           Image.asset(
             Assets.images.logo.path,
             width: 20.w,
@@ -105,10 +104,10 @@ class _HomeAppBarState extends State<HomeAppBar> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          if(CacheHelper.getLanguage()=="ar")
-          SizedBox(
-            width: 15 .w,
-          )
+          if (CacheHelper.getLanguage() == "ar")
+            SizedBox(
+              width: 15.w,
+            )
         ],
       ),
       actions: [
@@ -206,11 +205,11 @@ class _HomeAppBarState extends State<HomeAppBar> {
   }
 
   Future<void> getLocation(double lat, double lng) async {
-    List<Placemark> placeMarks = await placemarkFromCoordinates(lat, lng,localeIdentifier:"EG");
+    List<Placemark> placeMarks =
+        await placemarkFromCoordinates(lat, lng, localeIdentifier: "EG");
     print(placeMarks.toString());
     print("1" * 80);
     print(placeMarks[0].subAdministrativeArea.toString());
     await CacheHelper.setCurrentLocationName(placeMarks[0].locality.toString());
-    setState(() {});
-  }
+   }
 }
